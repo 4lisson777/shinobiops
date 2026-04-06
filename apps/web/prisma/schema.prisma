@@ -1,0 +1,260 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma/client"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum Role {
+  TECH_LEAD
+  DEVELOPER
+  SUPPORT_LEAD
+  SUPPORT_MEMBER
+}
+
+enum TicketType {
+  TICKET
+  BUG
+}
+
+enum Severity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING_FOR_INFO
+  DONE
+  CANCELLED
+}
+
+enum Environment {
+  PRODUCTION
+  STAGING
+  OTHER
+}
+
+enum TicketEventType {
+  CREATED
+  STATUS_CHANGED
+  ASSIGNED
+  REASSIGNED
+  SEVERITY_CHANGED
+  DEADLINE_CHANGED
+  PRIORITY_REORDERED
+  REORDER_REQUESTED
+  REORDER_APPROVED
+  REORDER_DECLINED
+  HELP_REQUESTED
+  CHECKPOINT_MENTION
+  DONE
+  CANCELLED
+}
+
+enum ReorderStatus {
+  PENDING
+  APPROVED
+  DECLINED
+}
+
+enum DevStatus {
+  ACTIVE
+  IN_CHECKPOINT
+  BLOCKED
+  HELPING
+}
+
+enum NotificationType {
+  TICKET_CREATED
+  BUG_CREATED
+  TICKET_ASSIGNED
+  TICKET_STATUS_CHANGED
+  TICKET_DONE
+  TICKET_CANCELLED
+  HELP_REQUEST_NEW
+  HELP_REQUEST_RESPONDED
+  CHECKPOINT_PROMPT
+}
+
+model User {
+  id            String  @id @default(cuid())
+  name          String
+  email         String  @unique
+  passwordHash  String
+  role          Role
+  avatarUrl     String?
+  ninjaAlias    String
+  isActive      Boolean @default(true)
+  notifyTickets Boolean @default(true)
+  notifyBugs    Boolean @default(true)
+  soundEnabled  Boolean @default(true)
+  devStatus     DevStatus? @default(ACTIVE)
+  currentTask   String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  openedTickets     Ticket[]              @relation("OpenedTickets")
+  assignedTickets   Ticket[]              @relation("AssignedTickets")
+  actorEvents       TicketEvent[]         @relation("ActorEvents")
+  requestedReorders ReorderRequest[]      @relation("RequestedReorders")
+  resolvedReorders  ReorderRequest[]      @relation("ResolvedReorders")
+  notifications     Notification[]
+  requestedHelp     HelpRequest[]         @relation("RequestedHelp")
+  helpResponses     HelpRequestResponse[] @relation("RespondedHelp")
+  checkpoints       Checkpoint[]
+
+  @@map("users")
+}
+
+model Ticket {
+  id            String       @id @default(cuid())
+  publicId      String       @unique
+  title         String
+  description   String
+  type          TicketType
+  severity      Severity
+  status        TicketStatus @default(OPEN)
+  deadline      DateTime
+  priorityOrder Int
+  openedById    String
+  assignedToId  String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  resolvedAt    DateTime?
+
+  openedBy   User  @relation("OpenedTickets", fields: [openedById], references: [id])
+  assignedTo User? @relation("AssignedTickets", fields: [assignedToId], references: [id])
+
+  bugReport       BugReport?
+  events          TicketEvent[]
+  reorderRequests ReorderRequest[]
+  notifications   Notification[]
+
+  @@map("tickets")
+}
+
+model BugReport {
+  id                String      @id @default(cuid())
+  ticketId          String      @unique
+  affectedModule    String
+  stepsToReproduce  String
+  expectedBehavior  String
+  actualBehavior    String
+  environment       Environment
+  customerId        String?
+
+  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  @@map("bug_reports")
+}
+
+model TicketEvent {
+  id        String          @id @default(cuid())
+  ticketId  String
+  eventType TicketEventType
+  actorId   String
+  metadata  String          @default("{}")
+  createdAt DateTime        @default(now())
+
+  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  actor  User   @relation("ActorEvents", fields: [actorId], references: [id])
+
+  @@map("ticket_events")
+}
+
+model ReorderRequest {
+  id                String        @id @default(cuid())
+  ticketId          String
+  requestedById     String
+  requestedPosition Int
+  reason            String?
+  status            ReorderStatus @default(PENDING)
+  resolvedById      String?
+  resolvedAt        DateTime?
+  createdAt         DateTime      @default(now())
+
+  ticket      Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  requestedBy User   @relation("RequestedReorders", fields: [requestedById], references: [id])
+  resolvedBy  User?  @relation("ResolvedReorders", fields: [resolvedById], references: [id])
+
+  @@map("reorder_requests")
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  type      NotificationType
+  title     String
+  body      String
+  ticketId  String?
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ticket Ticket? @relation(fields: [ticketId], references: [id], onDelete: SetNull)
+
+  @@index([userId, isRead])
+  @@map("notifications")
+}
+
+model HelpRequest {
+  id             String   @id @default(cuid())
+  requestedById  String
+  contextMessage String
+  createdAt      DateTime @default(now())
+
+  requestedBy User                  @relation("RequestedHelp", fields: [requestedById], references: [id])
+  responses   HelpRequestResponse[]
+
+  @@map("help_requests")
+}
+
+model HelpRequestResponse {
+  id            String   @id @default(cuid())
+  helpRequestId String
+  responderId   String
+  respondedAt   DateTime @default(now())
+
+  helpRequest HelpRequest @relation(fields: [helpRequestId], references: [id], onDelete: Cascade)
+  responder   User        @relation("RespondedHelp", fields: [responderId], references: [id])
+
+  @@map("help_request_responses")
+}
+
+model Checkpoint {
+  id          String   @id @default(cuid())
+  userId      String
+  currentTask String
+  isBlocked   Boolean
+  notes       String?
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId, createdAt])
+  @@map("checkpoints")
+}
+
+model CheckpointConfig {
+  id               String  @id @default(cuid())
+  intervalMinutes  Int     @default(60)
+  activeHoursStart String  @default("09:00")
+  activeHoursEnd   String  @default("18:00")
+  isEnabled        Boolean @default(true)
+
+  @@map("checkpoint_config")
+}
+
+model TvConfig {
+  id              String  @id @default(cuid())
+  isEnabled       Boolean @default(true)
+  refreshInterval Int     @default(30)
+
+  @@map("tv_config")
+}

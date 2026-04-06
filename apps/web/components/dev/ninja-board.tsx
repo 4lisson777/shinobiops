@@ -1,0 +1,414 @@
+"use client"
+
+import * as React from "react"
+import { DeveloperCard } from "@/components/dev/developer-card"
+import { SmokeSignalModal } from "@/components/dev/smoke-signal-modal"
+import { StatusScrollModal } from "@/components/dev/status-scroll-modal"
+import { useSSEContext } from "@/lib/sse-context"
+import { cn } from "@workspace/ui/lib/utils"
+import type { DevCardData } from "@/components/dev/developer-card"
+
+interface NinjaBoardProps {
+  initialDevs: DevCardData[]
+  currentUserId: string
+  currentUserRole: string
+}
+
+interface NewArrivalBanner {
+  publicId: string
+  type: "TICKET" | "BUG"
+}
+
+interface IncomingHelpRequest {
+  helpRequestId: string
+  requestedById: string
+  requesterName: string
+  requesterAlias: string
+  contextMessage: string
+}
+
+interface CheckpointConfigData {
+  intervalMinutes: number
+  activeHoursStart: string
+  activeHoursEnd: string
+  isEnabled: boolean
+}
+
+export function NinjaBoard({
+  initialDevs,
+  currentUserId,
+  currentUserRole,
+}: NinjaBoardProps) {
+  const [devs, setDevs] = React.useState<DevCardData[]>(initialDevs)
+  const [newArrival, setNewArrival] = React.useState<NewArrivalBanner | null>(null)
+  const [incomingHelp, setIncomingHelp] = React.useState<IncomingHelpRequest | null>(null)
+  const [smokeSignalOpen, setSmokeSignalOpen] = React.useState(false)
+  const [checkpointOpen, setCheckpointOpen] = React.useState(false)
+  const [awaitingCheckpoint, setAwaitingCheckpoint] = React.useState<Set<string>>(new Set())
+  const [isRespondingHelp, setIsRespondingHelp] = React.useState(false)
+
+  const { subscribe } = useSSEContext()
+  const arrivalTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+  const checkpointPromptTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const isDevRole = currentUserRole === "DEVELOPER" || currentUserRole === "TECH_LEAD"
+
+  const triggerCheckpointPrompt = React.useCallback(() => {
+    setCheckpointOpen(true)
+    // 4.9 — set 10-minute no-response timer
+    if (checkpointPromptTimerRef.current) clearTimeout(checkpointPromptTimerRef.current)
+    checkpointPromptTimerRef.current = setTimeout(() => {
+      setAwaitingCheckpoint((prev) => new Set(prev).add(currentUserId))
+    }, 10 * 60 * 1000)
+    // Mark dev as IN_CHECKPOINT
+    void fetch("/api/users/me/status", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ devStatus: "IN_CHECKPOINT" }),
+    })
+  }, [currentUserId])
+
+  async function refetchDevs() {
+    try {
+      const res = await fetch("/api/users?role=DEVELOPER&isActive=true")
+      if (!res.ok) return
+      const data = await res.json() as {
+        users: Array<DevCardData & { assignedTickets?: DevCardData["assignedTicket"][] }>
+      }
+      setDevs(
+        data.users.map((u) => ({
+          ...u,
+          assignedTicket: u.assignedTickets?.[0] ?? null,
+        }))
+      )
+    } catch {
+      // Silently ignore network errors
+    }
+  }
+
+  // SSE subscriptions
+  React.useEffect(() => {
+    return subscribe((event) => {
+      // 3.13 — new ticket/bug arrival banner
+      if (event.type === "ticket:created") {
+        const payload = event.payload as { publicId: string; type: "TICKET" | "BUG" }
+        if (arrivalTimerRef.current) clearTimeout(arrivalTimerRef.current)
+        setNewArrival({ publicId: payload.publicId, type: payload.type })
+        arrivalTimerRef.current = setTimeout(() => setNewArrival(null), 5000)
+      }
+
+      // Developer status/task updated
+      if (event.type === "developer:status_changed") {
+        const payload = event.payload as {
+          userId: string
+          devStatus: string
+          currentTask: string | null
+        }
+        setDevs((prev) =>
+          prev.map((d) =>
+            d.id === payload.userId
+              ? { ...d, devStatus: payload.devStatus, currentTask: payload.currentTask }
+              : d
+          )
+        )
+        // Clear no-response indicator when dev updates their status
+        if (payload.userId === currentUserId && payload.devStatus !== "IN_CHECKPOINT") {
+          if (checkpointPromptTimerRef.current) {
+            clearTimeout(checkpointPromptTimerRef.current)
+          }
+          setAwaitingCheckpoint((prev) => {
+            const next = new Set(prev)
+            next.delete(payload.userId)
+            return next
+          })
+        }
+      }
+
+      // Ticket assigned — refetch to update dev cards
+      if (event.type === "ticket:assigned") {
+        void refetchDevs()
+      }
+
+      // 4.4 — incoming help request banner
+      if (event.type === "help_request:new") {
+        const payload = event.payload as unknown as IncomingHelpRequest
+        // Don't show the banner to the requester themselves
+        if (payload.requestedById !== currentUserId) {
+          setIncomingHelp(payload)
+        }
+      }
+
+      // 4.6/4.9 — server-pushed checkpoint prompt
+      if (event.type === "checkpoint:prompt") {
+        const payload = event.payload as { userId: string }
+        if (payload.userId === currentUserId) {
+          triggerCheckpointPrompt()
+        }
+      }
+    })
+  }, [subscribe, currentUserId, triggerCheckpointPrompt])
+
+  // 4.6 — Client-side checkpoint scheduler
+  React.useEffect(() => {
+    if (!isDevRole) return
+
+    let intervalId: ReturnType<typeof setInterval>
+
+    async function setupScheduler() {
+      try {
+        const res = await fetch("/api/checkpoints/config")
+        if (!res.ok) return
+        const { config } = await res.json() as { config: CheckpointConfigData }
+        if (!config.isEnabled) return
+
+        const intervalMs = config.intervalMinutes * 60 * 1000
+
+        function isInActiveHours(): boolean {
+          const now = new Date()
+          const [startH = 0, startM = 0] = config.activeHoursStart.split(":").map(Number)
+          const [endH = 23, endM = 59] = config.activeHoursEnd.split(":").map(Number)
+          const nowMinutes = now.getHours() * 60 + now.getMinutes()
+          return nowMinutes >= startH * 60 + startM && nowMinutes < endH * 60 + endM
+        }
+
+        intervalId = setInterval(() => {
+          if (isInActiveHours()) {
+            triggerCheckpointPrompt()
+          }
+        }, intervalMs)
+      } catch {
+        // Silently ignore if config endpoint not reachable
+      }
+    }
+
+    void setupScheduler()
+
+    return () => {
+      if (intervalId) clearInterval(intervalId)
+    }
+  }, [isDevRole, currentUserId, triggerCheckpointPrompt])
+
+  // Cleanup timers on unmount
+  React.useEffect(() => {
+    return () => {
+      if (arrivalTimerRef.current) clearTimeout(arrivalTimerRef.current)
+      if (checkpointPromptTimerRef.current) clearTimeout(checkpointPromptTimerRef.current)
+    }
+  }, [])
+
+  async function handleHelpRespond(helpRequestId: string) {
+    setIsRespondingHelp(true)
+    try {
+      const res = await fetch(`/api/help-requests/${helpRequestId}/respond`, {
+        method: "POST",
+      })
+      if (res.ok) {
+        setIncomingHelp(null)
+      }
+    } finally {
+      setIsRespondingHelp(false)
+    }
+  }
+
+  function handleCheckpointSubmitted() {
+    // Clear the no-response timer when dev submits the checkpoint
+    if (checkpointPromptTimerRef.current) clearTimeout(checkpointPromptTimerRef.current)
+    setAwaitingCheckpoint((prev) => {
+      const next = new Set(prev)
+      next.delete(currentUserId)
+      return next
+    })
+    setCheckpointOpen(false)
+  }
+
+  async function handleStatusChange(devId: string, status: string) {
+    if (devId !== currentUserId) return
+    const res = await fetch("/api/users/me/status", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ devStatus: status }),
+    })
+    if (res.ok) {
+      const data = await res.json() as { devStatus: string | null; currentTask: string | null }
+      setDevs((prev) =>
+        prev.map((d) =>
+          d.id === devId ? { ...d, devStatus: data.devStatus } : d
+        )
+      )
+    }
+  }
+
+  async function handleTaskChange(devId: string, task: string) {
+    if (devId !== currentUserId) return
+    const res = await fetch("/api/users/me/status", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ currentTask: task }),
+    })
+    if (res.ok) {
+      const data = await res.json() as { devStatus: string | null; currentTask: string | null }
+      setDevs((prev) =>
+        prev.map((d) =>
+          d.id === devId ? { ...d, currentTask: data.currentTask } : d
+        )
+      )
+    }
+  }
+
+  // Stats
+  const activeCount = devs.filter((d) => d.devStatus === "ACTIVE" || !d.devStatus).length
+  const blockedCount = devs.filter((d) => d.devStatus === "BLOCKED").length
+  const inCheckpointCount = devs.filter((d) => d.devStatus === "IN_CHECKPOINT").length
+  const helpingCount = devs.filter((d) => d.devStatus === "HELPING").length
+
+  return (
+    <div className="flex min-h-full flex-col gap-6 p-6">
+      {/* 3.13 — New ticket/bug arrival banner */}
+      {newArrival && (
+        <div
+          className={cn(
+            "flex items-center justify-between rounded-lg border px-4 py-2.5 text-sm font-medium",
+            newArrival.type === "BUG"
+              ? "border-red-500/40 bg-red-500/10 text-red-700 dark:text-red-400"
+              : "border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-400"
+          )}
+        >
+          <span>
+            {newArrival.type === "BUG" ? "New bug report" : "New ticket"}{" "}
+            <span className="font-mono">{newArrival.publicId}</span> has arrived.
+          </span>
+          <button
+            onClick={() => {
+              if (arrivalTimerRef.current) clearTimeout(arrivalTimerRef.current)
+              setNewArrival(null)
+            }}
+            className="ml-4 text-current opacity-60 hover:opacity-100"
+            aria-label="Dismiss"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
+      {/* 4.4 — Incoming help request banner */}
+      {incomingHelp && (
+        <div className="flex items-start justify-between gap-4 rounded-lg border border-blue-500/40 bg-blue-500/10 px-4 py-3 text-sm">
+          <div className="flex flex-col gap-0.5">
+            <span className="font-semibold text-blue-700 dark:text-blue-300">
+              Smoke Signal from {incomingHelp.requesterAlias}
+            </span>
+            <span className="text-muted-foreground">{incomingHelp.contextMessage}</span>
+          </div>
+          <div className="flex shrink-0 gap-2">
+            <button
+              onClick={() => void handleHelpRespond(incomingHelp.helpRequestId)}
+              disabled={isRespondingHelp}
+              className="rounded-md bg-blue-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
+            >
+              I can help
+            </button>
+            <button
+              onClick={() => setIncomingHelp(null)}
+              className="rounded-md px-3 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground"
+            >
+              Dismiss
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Page header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Ninja Board</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Real-time team overview
+          </p>
+        </div>
+        {/* 4.2 — Send Smoke Signal button */}
+        {isDevRole && (
+          <button
+            onClick={() => setSmokeSignalOpen(true)}
+            className="flex items-center gap-2 rounded-lg border border-amber-500/50 bg-amber-500/10 px-3 py-2 text-sm font-medium text-amber-700 hover:bg-amber-500/20 dark:text-amber-400"
+          >
+            <span>🔥</span>
+            Send Smoke Signal
+          </button>
+        )}
+      </div>
+
+      {/* Stats bar */}
+      <div className="flex flex-wrap gap-3">
+        <StatPill label="Active" count={activeCount} color="text-green-600 dark:text-green-400" bg="bg-green-500/10" />
+        {blockedCount > 0 && (
+          <StatPill label="Blocked" count={blockedCount} color="text-red-600 dark:text-red-400" bg="bg-red-500/10" />
+        )}
+        {inCheckpointCount > 0 && (
+          <StatPill label="In Checkpoint" count={inCheckpointCount} color="text-amber-600 dark:text-amber-400" bg="bg-amber-500/10" />
+        )}
+        {helpingCount > 0 && (
+          <StatPill label="Helping" count={helpingCount} color="text-blue-600 dark:text-blue-400" bg="bg-blue-500/10" />
+        )}
+        <StatPill label="Total" count={devs.length} color="text-muted-foreground" bg="bg-muted/40" />
+      </div>
+
+      {/* Developer grid */}
+      {devs.length === 0 ? (
+        <div className="flex flex-1 items-center justify-center py-20 text-sm text-muted-foreground">
+          No active developers found.
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {devs.map((dev) => (
+            <DeveloperCard
+              key={dev.id}
+              dev={dev}
+              isCurrentUser={dev.id === currentUserId}
+              isAwaitingCheckpoint={awaitingCheckpoint.has(dev.id)}
+              onStatusChange={(status) => handleStatusChange(dev.id, status)}
+              onTaskChange={(task) => handleTaskChange(dev.id, task)}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* 4.2 — Smoke Signal modal */}
+      <SmokeSignalModal
+        open={smokeSignalOpen}
+        onOpenChange={setSmokeSignalOpen}
+      />
+
+      {/* 4.7 — Status Scroll modal */}
+      <StatusScrollModal
+        open={checkpointOpen}
+        onOpenChange={setCheckpointOpen}
+        onSubmitted={handleCheckpointSubmitted}
+      />
+    </div>
+  )
+}
+
+function StatPill({
+  label,
+  count,
+  color,
+  bg,
+}: {
+  label: string
+  count: number
+  color: string
+  bg: string
+}) {
+  return (
+    <div
+      className={cn(
+        "flex items-center gap-1.5 rounded-full border border-transparent px-3 py-1 text-xs font-medium",
+        bg,
+        color
+      )}
+    >
+      <span className="tabular-nums">{count}</span>
+      <span>{label}</span>
+    </div>
+  )
+}

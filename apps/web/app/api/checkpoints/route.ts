@@ -1,0 +1,90 @@
+import { NextRequest, NextResponse } from "next/server"
+import { z } from "zod"
+import { db } from "@/lib/db"
+import { requireRole } from "@/lib/auth"
+import { emitShinobiEvent } from "@/lib/sse-emitter"
+
+const createSchema = z.object({
+  currentTask: z.string().min(1).max(500),
+  isBlocked: z.boolean(),
+  notes: z.string().max(1000).optional(),
+})
+
+const querySchema = z.object({
+  userId: z.string().optional(),
+  limit: z.coerce.number().int().min(1).max(100).default(50),
+})
+
+export async function POST(request: NextRequest): Promise<NextResponse> {
+  const { session, error } = await requireRole("DEVELOPER", "TECH_LEAD")
+  if (error) return error
+
+  const body: unknown = await request.json()
+  const parsed = createSchema.safeParse(body)
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: "Validation failed", details: parsed.error.flatten().fieldErrors },
+      { status: 400 }
+    )
+  }
+
+  const { currentTask, isBlocked, notes } = parsed.data
+
+  const [checkpoint, updatedUser] = await db.$transaction(async (tx) => {
+    const cp = await tx.checkpoint.create({
+      data: {
+        userId: session.userId,
+        currentTask,
+        isBlocked,
+        notes: notes ?? null,
+      },
+    })
+    const user = await tx.user.update({
+      where: { id: session.userId },
+      data: {
+        currentTask,
+        devStatus: isBlocked ? "BLOCKED" : "ACTIVE",
+      },
+      select: { id: true, devStatus: true, currentTask: true },
+    })
+    return [cp, user]
+  })
+
+  emitShinobiEvent({
+    type: "developer:status_changed",
+    payload: {
+      userId: updatedUser.id,
+      devStatus: updatedUser.devStatus,
+      currentTask: updatedUser.currentTask,
+    },
+  })
+
+  return NextResponse.json({ checkpoint }, { status: 201 })
+}
+
+export async function GET(request: NextRequest): Promise<NextResponse> {
+  const { error } = await requireRole("TECH_LEAD")
+  if (error) return error
+
+  const { searchParams } = request.nextUrl
+  const parsed = querySchema.safeParse(Object.fromEntries(searchParams.entries()))
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: "Invalid query params", details: parsed.error.flatten().fieldErrors },
+      { status: 400 }
+    )
+  }
+
+  const { userId, limit } = parsed.data
+
+  const checkpoints = await db.checkpoint.findMany({
+    where: userId ? { userId } : undefined,
+    orderBy: { createdAt: "desc" },
+    take: limit,
+    include: {
+      user: { select: { id: true, name: true, ninjaAlias: true } },
+    },
+  })
+
+  return NextResponse.json({ checkpoints })
+}
