@@ -1,0 +1,184 @@
+- generic:
+  - button "Open Next.js Dev Tools" [ref=e29] [cursor=pointer]:
+    - img [ref=e30]
+  - alert: Painel Ninja — ShinobiOps | ShinobiOps
+  - generic:
+    - complementary:
+      - generic:
+        - generic:
+          - img
+        - generic: ShinobiOps
+      - navigation:
+        - generic:
+          - link:
+            - /url: /dev
+            - img
+            - text: Painel Ninja
+          - link:
+            - /url: /dev/queue
+            - img
+            - text: Painel de Missões
+          - link:
+            - /url: /admin
+            - img
+            - text: Dojô de Comando
+        - generic:
+          - link:
+            - /url: /admin/team
+            - img
+            - text: Equipe
+          - link:
+            - /url: /admin/notifications
+            - img
+            - text: Notificações
+          - link:
+            - /url: /admin/checkpoints
+            - img
+            - text: Pergaminhos de Status
+          - link:
+            - /url: /admin/log
+            - img
+            - text: Log
+    - generic:
+      - banner:
+        - button:
+          - img
+        - generic:
+          - generic:
+            - generic:
+              - img
+            - searchbox
+            - generic:
+              - generic: ⌘K
+        - button:
+          - img
+        - button [expanded]:
+          - generic:
+            - generic: YT
+          - generic: Yuki Tanaka
+      - main:
+        - generic:
+          - generic:
+            - generic:
+              - heading [level=1]: Painel Ninja
+              - paragraph: Visão geral da equipe em tempo real
+            - button:
+              - generic: 🔥
+              - text: Enviar Sinal de Fumaça
+          - generic:
+            - generic:
+              - generic: "6"
+              - generic: Ativos
+            - generic:
+              - generic: "6"
+              - generic: Total
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - img
+                  - generic:
+                    - paragraph: Alisson
+                    - paragraph: VengefulKunai
+                - generic:
+                  - generic: Ativo
+                - generic:
+                  - paragraph: Tarefa Atual
+                  - paragraph: Sem tarefa atual
+                - generic:
+                  - paragraph: Missão Ativa
+                  - paragraph: Sem missão ativa
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - img
+                  - generic:
+                    - paragraph: Alisson Santos
+                    - paragraph: SilverLotus
+                - generic:
+                  - generic: Ativo
+                - generic:
+                  - paragraph: Tarefa Atual
+                  - paragraph: Sem tarefa atual
+                - generic:
+                  - paragraph: Missão Ativa
+                  - paragraph: Sem missão ativa
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic: "N"
+                  - generic:
+                    - paragraph: Nicoli
+                    - paragraph: IronWolf
+                - generic:
+                  - generic: Ativo
+                - generic:
+                  - paragraph: Tarefa Atual
+                  - paragraph: Testando
+                - generic:
+                  - paragraph: Missão Ativa
+                  - paragraph: Sem missão ativa
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic: RH
+                  - generic:
+                    - paragraph: Ryu Hayabusa
+                    - paragraph: SilentBlade
+                - generic:
+                  - generic: Ativo
+                - generic:
+                  - paragraph: Tarefa Atual
+                  - paragraph: Sem tarefa atual
+                - generic:
+                  - paragraph: Missão Ativa
+                  - paragraph: Sem missão ativa
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic: T0
+                  - generic:
+                    - paragraph: Teste 01
+                    - paragraph: ScarletHawk
+                - generic:
+                  - generic: Ativo
+                - generic:
+                  - paragraph: Tarefa Atual
+                  - paragraph: Sem tarefa atual
+                - generic:
+                  - paragraph: Missão Ativa
+                  - paragraph: Sem missão ativa
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic: YT
+                  - generic:
+                    - paragraph: Yuki Tanaka
+                    - paragraph: IronJonin
+                - generic:
+                  - button:
+                    - generic: Ativo
+                - generic:
+                  - paragraph: Tarefa Atual
+                  - button: Sem tarefa atual
+                - generic:
+                  - paragraph: Missão Ativa
+                  - paragraph: Sem missão ativa
+  - menu "Menu do usuário Yuki Tanaka" [active] [ref=e208]:
+    - generic [ref=e210]:
+      - generic [ref=e211]: Yuki Tanaka
+      - generic [ref=e212]: TECH LEAD
+    - separator [ref=e213]
+    - menuitem "Perfil" [ref=e214]:
+      - img
+      - text: Perfil
+    - separator [ref=e215]
+    - menuitem "Sair" [ref=e216]:
+      - img
+      - text: Sair

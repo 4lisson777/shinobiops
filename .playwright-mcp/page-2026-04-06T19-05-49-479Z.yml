@@ -1,0 +1,80 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e6]
+        - generic [ref=e9]: ShinobiOps
+      - navigation [ref=e10]:
+        - generic [ref=e11]:
+          - link "Início do Suporte" [ref=e12] [cursor=pointer]:
+            - /url: /support
+            - img [ref=e13]
+            - text: Início do Suporte
+          - link "Painel de Missões" [ref=e18] [cursor=pointer]:
+            - /url: /support/queue
+            - img [ref=e19]
+            - text: Painel de Missões
+          - link "Meus Itens" [ref=e23] [cursor=pointer]:
+            - /url: /support/my-items
+            - img [ref=e24]
+            - text: Meus Itens
+        - generic [ref=e28]:
+          - link "Novo Chamado" [ref=e29] [cursor=pointer]:
+            - /url: /support/ticket/new
+            - img [ref=e30]
+            - text: Novo Chamado
+          - link "Reportar Bug" [ref=e32] [cursor=pointer]:
+            - /url: /support/bug/new
+            - img [ref=e33]
+            - text: Reportar Bug
+    - generic [ref=e37]:
+      - banner [ref=e38]:
+        - generic [ref=e40]:
+          - generic:
+            - img
+          - searchbox "Pesquisa global" [ref=e41]
+          - generic:
+            - generic: ⌘K
+        - button "Notificações (0 não lidas)" [ref=e42]:
+          - img [ref=e43]
+        - button "Menu do usuário Kenji Mori" [ref=e46]:
+          - generic [ref=e48]: KM
+          - generic [ref=e49]: Kenji Mori
+      - main [ref=e50]:
+        - generic [ref=e51]:
+          - generic [ref=e52]:
+            - heading "Quadro de Missões" [level=1] [ref=e53]
+            - paragraph [ref=e54]: Todas as missões ativas ordenadas por prioridade. Missões canceladas estão ocultas.
+          - generic [ref=e55]:
+            - generic [ref=e56]:
+              - searchbox "Buscar por ID ou título..." [ref=e57]
+              - text: 1 de 3 missões
+            - generic [ref=e58]:
+              - tablist [ref=e60]:
+                - tab "Todos" [ref=e61]
+                - tab "Chamado" [ref=e62]
+                - tab "Bug" [active] [selected] [ref=e63]
+              - combobox [ref=e64]:
+                - generic: Todas as Severidades
+                - img [ref=e65]
+              - combobox [ref=e68]:
+                - generic: Todos os Status
+                - img [ref=e69]
+            - generic [ref=e104]:
+              - generic [ref=e105]:
+                - generic [ref=e106]:
+                  - generic [ref=e107]: Crítica
+                  - button "BUG-0001" [ref=e108]
+                  - generic [ref=e109]: Bug
+                  - generic [ref=e110]: Aberto
+                - link "E2E Bug test" [ref=e111] [cursor=pointer]:
+                  - /url: /ticket/BUG-0001
+                - generic [ref=e112]:
+                  - generic [ref=e113]: Aberto por Kenji Mori
+                  - generic [ref=e114]: Prazo 19 de abr. de 2026
+              - generic [ref=e115]:
+                - generic [ref=e116]: Não Atribuído
+                - button "Solicitar Reordenação" [ref=e117]
+  - button "Open Next.js Dev Tools" [ref=e123] [cursor=pointer]:
+    - img [ref=e124]
+  - alert [ref=e127]

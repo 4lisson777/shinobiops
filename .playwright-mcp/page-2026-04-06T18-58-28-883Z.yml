@@ -1,0 +1,30 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - img [ref=e5]
+      - heading "ShinobiOps" [level=1] [ref=e8]
+      - paragraph [ref=e9]: Inovar Sistemas — Ferramenta Interna
+    - generic [ref=e10]:
+      - generic [ref=e11]:
+        - heading "Bem-vindo de volta, Shinobi" [level=2] [ref=e12]
+        - paragraph [ref=e13]: Faça login para continuar sua missão
+      - generic [ref=e14]:
+        - alert [ref=e34]: E-mail ou senha inválidos
+        - generic [ref=e15]:
+          - generic [ref=e16]: Email
+          - textbox "Email" [ref=e17]:
+            - /placeholder: ninja@inovar.com
+            - text: wrong@email.com
+        - generic [ref=e18]:
+          - generic [ref=e19]: Senha
+          - textbox "Senha" [ref=e20]:
+            - /placeholder: ••••••••
+            - text: wrongpassword
+        - button "Entrar no Dojo" [ref=e21]
+        - paragraph [ref=e22]:
+          - text: Novo shinobi?
+          - link "Entrar para o clã" [ref=e23] [cursor=pointer]:
+            - /url: /register
+  - button "Open Next.js Dev Tools" [ref=e29] [cursor=pointer]:
+    - img [ref=e30]
+  - alert [ref=e33]

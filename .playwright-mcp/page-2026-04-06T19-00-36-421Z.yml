@@ -1,0 +1,65 @@
+- generic [active] [ref=e1]:
+  - button "Open Next.js Dev Tools" [ref=e41] [cursor=pointer]:
+    - img [ref=e42]
+  - alert [ref=e46]: Início do Suporte — ShinobiOps | ShinobiOps
+  - generic [ref=e54]:
+    - complementary [ref=e55]:
+      - generic [ref=e56]:
+        - img [ref=e58]
+        - generic [ref=e61]: ShinobiOps
+      - navigation [ref=e62]:
+        - generic [ref=e63]:
+          - link "Início do Suporte" [ref=e64] [cursor=pointer]:
+            - /url: /support
+            - img [ref=e65]
+            - text: Início do Suporte
+          - link "Painel de Missões" [ref=e70] [cursor=pointer]:
+            - /url: /support/queue
+            - img [ref=e71]
+            - text: Painel de Missões
+          - link "Meus Itens" [ref=e75] [cursor=pointer]:
+            - /url: /support/my-items
+            - img [ref=e76]
+            - text: Meus Itens
+        - generic [ref=e80]:
+          - link "Novo Chamado" [ref=e81] [cursor=pointer]:
+            - /url: /support/ticket/new
+            - img [ref=e82]
+            - text: Novo Chamado
+          - link "Reportar Bug" [ref=e84] [cursor=pointer]:
+            - /url: /support/bug/new
+            - img [ref=e85]
+            - text: Reportar Bug
+    - generic [ref=e89]:
+      - banner [ref=e90]:
+        - generic [ref=e92]:
+          - generic:
+            - img
+          - searchbox "Pesquisa global" [ref=e93]
+          - generic:
+            - generic: ⌘K
+        - button "Notificações (0 não lidas)" [ref=e94]:
+          - img [ref=e95]
+        - button "Menu do usuário Test User E2E" [ref=e98]:
+          - generic [ref=e100]: TE
+          - generic [ref=e101]: Test User E2E
+      - main [ref=e102]:
+        - generic [ref=e103]:
+          - generic [ref=e104]:
+            - heading "Início do Suporte" [level=1] [ref=e105]
+            - paragraph [ref=e106]: O que você precisa reportar para a equipe de desenvolvimento?
+          - generic [ref=e107]:
+            - link "Abrir Chamado Ajustes de funcionalidade, configurações, correções de dados e outras tarefas para o time dev Abrir Chamado" [ref=e108] [cursor=pointer]:
+              - /url: /support/ticket/new
+              - img [ref=e110]
+              - generic [ref=e112]:
+                - heading "Abrir Chamado" [level=2] [ref=e113]
+                - paragraph [ref=e114]: Ajustes de funcionalidade, configurações, correções de dados e outras tarefas para o time dev
+              - generic [ref=e115]: Abrir Chamado
+            - link "Relatório de Ameaça Erros reportados por clientes que parecem ser defeitos no software Reportar Bug" [ref=e116] [cursor=pointer]:
+              - /url: /support/bug/new
+              - img [ref=e118]
+              - generic [ref=e122]:
+                - heading "Relatório de Ameaça" [level=2] [ref=e123]
+                - paragraph [ref=e124]: Erros reportados por clientes que parecem ser defeitos no software
+              - generic [ref=e125]: Reportar Bug

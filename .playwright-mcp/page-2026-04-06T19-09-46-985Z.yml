@@ -1,0 +1,167 @@
+- generic:
+  - generic:
+    - complementary:
+      - generic:
+        - generic:
+          - img
+        - generic: ShinobiOps
+      - navigation:
+        - generic:
+          - link:
+            - /url: /dev
+            - img
+            - text: Painel Ninja
+          - link:
+            - /url: /dev/queue
+            - img
+            - text: Painel de Missões
+    - generic:
+      - banner:
+        - generic:
+          - generic:
+            - generic:
+              - img
+            - searchbox
+            - generic:
+              - generic: ⌘K
+        - button:
+          - img
+          - generic: "3"
+        - button:
+          - generic:
+            - generic: RH
+          - generic: Ryu Hayabusa
+      - main:
+        - generic:
+          - generic:
+            - generic:
+              - heading [level=1]: Painel Ninja
+              - paragraph: Visão geral da equipe em tempo real
+            - button:
+              - generic: 🔥
+              - text: Enviar Sinal de Fumaça
+          - generic:
+            - generic:
+              - generic: "5"
+              - generic: Ativos
+            - generic:
+              - generic: "1"
+              - generic: Bloqueados
+            - generic:
+              - generic: "6"
+              - generic: Total
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - img
+                  - generic:
+                    - paragraph: Alisson
+                    - paragraph: VengefulKunai
+                - generic:
+                  - generic: Ativo
+                - generic:
+                  - paragraph: Tarefa Atual
+                  - paragraph: Sem tarefa atual
+                - generic:
+                  - paragraph: Missão Ativa
+                  - paragraph: Sem missão ativa
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - img
+                  - generic:
+                    - paragraph: Alisson Santos
+                    - paragraph: SilverLotus
+                - generic:
+                  - generic: Ativo
+                - generic:
+                  - paragraph: Tarefa Atual
+                  - paragraph: Sem tarefa atual
+                - generic:
+                  - paragraph: Missão Ativa
+                  - paragraph: Sem missão ativa
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic: "N"
+                  - generic:
+                    - paragraph: Nicoli
+                    - paragraph: IronWolf
+                - generic:
+                  - generic: Ativo
+                - generic:
+                  - paragraph: Tarefa Atual
+                  - paragraph: Testando
+                - generic:
+                  - paragraph: Missão Ativa
+                  - paragraph: Sem missão ativa
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic: RH
+                  - generic:
+                    - paragraph: Ryu Hayabusa
+                    - paragraph: SilentBlade
+                - generic:
+                  - button:
+                    - generic: Bloqueado
+                - generic:
+                  - paragraph: Tarefa Atual
+                  - button: Sem tarefa atual
+                - generic:
+                  - paragraph: Missão Ativa
+                  - paragraph: Sem missão ativa
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic: T0
+                  - generic:
+                    - paragraph: Teste 01
+                    - paragraph: ScarletHawk
+                - generic:
+                  - generic: Ativo
+                - generic:
+                  - paragraph: Tarefa Atual
+                  - paragraph: Sem tarefa atual
+                - generic:
+                  - paragraph: Missão Ativa
+                  - paragraph: Sem missão ativa
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic: YT
+                  - generic:
+                    - paragraph: Yuki Tanaka
+                    - paragraph: IronJonin
+                - generic:
+                  - generic: Ativo
+                - generic:
+                  - paragraph: Tarefa Atual
+                  - paragraph: Sem tarefa atual
+                - generic:
+                  - paragraph: Missão Ativa
+                  - paragraph: Sem missão ativa
+  - button "Open Next.js Dev Tools" [ref=e157] [cursor=pointer]:
+    - img [ref=e158]
+  - alert
+  - dialog "🔥 Enviar Sinal de Fumaça" [ref=e167]:
+    - heading "🔥 Enviar Sinal de Fumaça" [level=2] [ref=e169]
+    - generic [ref=e170]:
+      - generic [ref=e171]:
+        - generic [ref=e172]: Com o que você precisa de ajuda?
+        - textbox "Com o que você precisa de ajuda?" [active] [ref=e173]:
+          - /placeholder: Descreva brevemente no que você está travado…
+        - paragraph [ref=e174]: 280 caracteres restantes
+      - generic [ref=e175]:
+        - button "Cancelar" [ref=e176]
+        - button "Enviar Sinal" [disabled]
+    - button "Close" [ref=e177]:
+      - img
+      - generic [ref=e178]: Close

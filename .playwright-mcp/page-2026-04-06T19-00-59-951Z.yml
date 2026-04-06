@@ -1,0 +1,44 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - img [ref=e5]
+      - heading "ShinobiOps" [level=1] [ref=e8]
+      - paragraph [ref=e9]: Inovar Sistemas — Ferramenta Interna
+    - generic [ref=e10]:
+      - generic [ref=e11]:
+        - heading "Entre para o Clã" [level=2] [ref=e12]
+        - paragraph [ref=e13]: Crie seu perfil de shinobi
+      - generic [ref=e14]:
+        - generic [ref=e15]:
+          - generic [ref=e16]: Nome Completo
+          - textbox "Nome Completo" [ref=e17]:
+            - /placeholder: Ryu Hayabusa
+            - text: Duplicate User
+        - generic [ref=e18]:
+          - generic [ref=e19]: Email
+          - textbox "Email" [ref=e20]:
+            - /placeholder: ninja@inovar.com
+            - text: e2etest@shinobiops.dev
+        - generic [ref=e21]:
+          - generic [ref=e22]: Senha
+          - textbox "Senha" [ref=e23]:
+            - /placeholder: Mín. 8 caracteres
+            - text: Password123!
+        - generic [ref=e24]:
+          - generic [ref=e25]: Cargo
+          - combobox "Cargo" [active] [ref=e26]:
+            - generic: Ninja (Desenvolvedor)
+            - img [ref=e27]
+          - combobox [ref=e29]
+        - generic [ref=e30]:
+          - generic [ref=e31]: Ninja Alias (opcional)
+          - textbox "Ninja Alias (opcional)" [ref=e32]:
+            - /placeholder: Gerado automaticamente se vazio
+        - button "Entrar para o Clã" [ref=e33]
+        - paragraph [ref=e34]:
+          - text: Já é shinobi?
+          - link "Entrar no Dojo" [ref=e35] [cursor=pointer]:
+            - /url: /login
+  - button "Open Next.js Dev Tools" [ref=e41] [cursor=pointer]:
+    - img [ref=e42]
+  - alert [ref=e45]

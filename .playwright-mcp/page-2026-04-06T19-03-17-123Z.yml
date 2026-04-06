@@ -1,0 +1,115 @@
+- generic:
+  - generic:
+    - complementary:
+      - generic:
+        - generic:
+          - img
+        - generic: ShinobiOps
+      - navigation:
+        - generic:
+          - link:
+            - /url: /support
+            - img
+            - text: Início do Suporte
+          - link:
+            - /url: /support/queue
+            - img
+            - text: Painel de Missões
+          - link:
+            - /url: /support/my-items
+            - img
+            - text: Meus Itens
+        - generic:
+          - link:
+            - /url: /support/ticket/new
+            - img
+            - text: Novo Chamado
+          - link:
+            - /url: /support/bug/new
+            - img
+            - text: Reportar Bug
+    - generic:
+      - banner:
+        - generic:
+          - generic:
+            - generic:
+              - img
+            - searchbox
+            - generic:
+              - generic: ⌘K
+        - button:
+          - img
+        - button:
+          - generic:
+            - generic: KM
+          - generic: Kenji Mori
+      - main:
+        - generic:
+          - generic:
+            - heading [level=1]: Relatório de Ameaça
+            - paragraph: Reporte um defeito identificado por um cliente ao time dev. Seja o mais específico possível — isso ajuda os ninjas a responderem mais rápido.
+          - generic:
+            - generic:
+              - generic:
+                - generic: Título
+                - textbox:
+                  - /placeholder: Breve descrição do bug
+                  - text: E2E Bug - NF-e generation fails on retry
+              - generic:
+                - generic: Módulo / Tela Afetada
+                - textbox:
+                  - /placeholder: "ex: Tela de faturas de clientes, Tela de login"
+                  - text: Tela de Notas Fiscais
+              - generic:
+                - generic: Passos para Reproduzir
+                - textbox:
+                  - /placeholder: "1. Vá para...\n2. Clique em...\n3. Veja o erro"
+                  - text: 1. Go to NF-e screen 2. Generate a NF-e 3. Wait for timeout 4. Click retry 5. See error
+              - generic:
+                - generic:
+                  - generic: Comportamento Esperado
+                  - textbox:
+                    - /placeholder: O que deveria ter acontecido?
+                    - text: NF-e should be generated successfully on retry
+                - generic:
+                  - generic: Comportamento Atual
+                  - textbox:
+                    - /placeholder: O que realmente aconteceu?
+                    - text: Error 500 appears on retry, duplicate NF-e created
+              - generic:
+                - generic:
+                  - generic: Severidade
+                  - combobox:
+                    - generic:
+                      - generic: Crítica — Faixa Preta
+                    - img
+                  - combobox
+                - generic:
+                  - generic: Ambiente
+                  - combobox [expanded]:
+                    - generic: Selecione o ambiente
+                    - img
+                  - combobox
+              - generic:
+                - generic: Prazo
+                - textbox: 2026-04-20
+              - generic:
+                - generic: Nome / ID do Cliente (opcional)
+                - textbox:
+                  - /placeholder: "ex: Acme Corp ou CUST-1234"
+                  - text: Acme Corp
+              - generic:
+                - button:
+                  - img
+                  - text: Copiar para Formato ClickUp
+              - button: Enviar Relatório de Ameaça
+  - button "Open Next.js Dev Tools" [ref=e101] [cursor=pointer]:
+    - img [ref=e102]
+  - alert
+  - listbox [ref=e130]:
+    - option "Produção" [active] [ref=e131]:
+      - generic [ref=e133]: Produção
+    - option "Homologação" [ref=e134]:
+      - generic [ref=e136]: Homologação
+    - option "Outro" [ref=e137]:
+      - generic [ref=e139]: Outro

@@ -1,0 +1,270 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e6]
+        - generic [ref=e9]: ShinobiOps
+      - navigation [ref=e10]:
+        - generic [ref=e11]:
+          - link "Painel Ninja" [ref=e12] [cursor=pointer]:
+            - /url: /dev
+            - img [ref=e13]
+            - text: Painel Ninja
+          - link "Painel de Missões" [ref=e18] [cursor=pointer]:
+            - /url: /dev/queue
+            - img [ref=e19]
+            - text: Painel de Missões
+          - link "Dojô de Comando" [ref=e23] [cursor=pointer]:
+            - /url: /admin
+            - img [ref=e24]
+            - text: Dojô de Comando
+        - generic [ref=e28]:
+          - link "Equipe" [ref=e29] [cursor=pointer]:
+            - /url: /admin/team
+            - img [ref=e30]
+            - text: Equipe
+          - link "Notificações" [ref=e36] [cursor=pointer]:
+            - /url: /admin/notifications
+            - img [ref=e37]
+            - text: Notificações
+          - link "Pergaminhos de Status" [ref=e40] [cursor=pointer]:
+            - /url: /admin/checkpoints
+            - img [ref=e41]
+            - text: Pergaminhos de Status
+          - link "Log" [ref=e44] [cursor=pointer]:
+            - /url: /admin/log
+            - img [ref=e45]
+            - text: Log
+    - generic [ref=e47]:
+      - banner [ref=e48]:
+        - generic [ref=e50]:
+          - generic:
+            - img
+          - searchbox "Pesquisa global" [ref=e51]
+          - generic:
+            - generic: ⌘K
+        - button "Notificações (3 não lidas)" [ref=e185]:
+          - img [ref=e53]
+          - generic [ref=e186]: "3"
+        - button "Menu do usuário Yuki Tanaka" [ref=e56]:
+          - generic [ref=e58]: YT
+          - generic [ref=e59]: Yuki Tanaka
+      - main [ref=e60]:
+        - generic [ref=e62]:
+          - generic [ref=e63]:
+            - heading "Gerenciamento da Equipe" [level=1] [ref=e64]
+            - paragraph [ref=e65]: Gerencie funções, status e avatares para todos os membros da equipe.
+          - generic [ref=e66]:
+            - searchbox "Buscar nome ou e-mail…" [active] [ref=e67]: Ryu
+            - combobox [ref=e68]:
+              - generic: Todas as funções
+              - img [ref=e69]
+            - combobox [ref=e72]:
+              - generic: Todos os status
+              - img [ref=e73]
+          - button [ref=e76]
+          - table [ref=e79]:
+            - rowgroup [ref=e80]:
+              - row "Nome E-mail Função Apelido Última Atividade Status Avatar" [ref=e81]:
+                - columnheader [ref=e82]
+                - columnheader "Nome" [ref=e83]
+                - columnheader "E-mail" [ref=e84]
+                - columnheader "Função" [ref=e85]
+                - columnheader "Apelido" [ref=e86]
+                - columnheader "Última Atividade" [ref=e87]
+                - columnheader "Status" [ref=e88]
+                - columnheader "Avatar" [ref=e89]
+            - rowgroup [ref=e90]:
+              - row "Alisson Alisson alisson@inovarsistemas.com VengefulKunai 6 de abr. de 2026 Toggle active status for Alisson Ativo Enviar" [ref=e187]:
+                - cell "Alisson" [ref=e188]:
+                  - img "Alisson" [ref=e190]
+                - cell "Alisson" [ref=e191]
+                - cell "alisson@inovarsistemas.com" [ref=e192]
+                - cell [ref=e193]:
+                  - combobox [ref=e194]:
+                    - generic: Jōnin (Tech Lead)
+                    - img [ref=e195]
+                - cell "VengefulKunai" [ref=e197]
+                - cell "6 de abr. de 2026" [ref=e198]
+                - cell "Toggle active status for Alisson Ativo" [ref=e199]:
+                  - generic [ref=e200]:
+                    - switch "Toggle active status for Alisson" [checked] [ref=e201]
+                    - generic [ref=e202]: Ativo
+                - cell "Enviar" [ref=e203]:
+                  - button "Enviar" [ref=e204]:
+                    - img
+                    - text: Enviar
+              - row "Alisson Santos Alisson Santos alisson@inovasistemas.com SilverLotus 6 de abr. de 2026 Toggle active status for Alisson Santos Ativo Enviar" [ref=e205]:
+                - cell "Alisson Santos" [ref=e206]:
+                  - img "Alisson Santos" [ref=e208]
+                - cell "Alisson Santos" [ref=e209]
+                - cell "alisson@inovasistemas.com" [ref=e210]
+                - cell [ref=e211]:
+                  - combobox [ref=e212]:
+                    - generic: Jōnin (Tech Lead)
+                    - img [ref=e213]
+                - cell "SilverLotus" [ref=e215]
+                - cell "6 de abr. de 2026" [ref=e216]
+                - cell "Toggle active status for Alisson Santos Ativo" [ref=e217]:
+                  - generic [ref=e218]:
+                    - switch "Toggle active status for Alisson Santos" [checked] [ref=e219]
+                    - generic [ref=e220]: Ativo
+                - cell "Enviar" [ref=e221]:
+                  - button "Enviar" [ref=e222]:
+                    - img
+                    - text: Enviar
+              - row "KM Kenji Mori support@shinobiops.dev GhostFox 6 de abr. de 2026 Toggle active status for Kenji Mori Ativo Enviar" [ref=e223]:
+                - cell "KM" [ref=e224]:
+                  - generic [ref=e226]: KM
+                - cell "Kenji Mori" [ref=e227]
+                - cell "support@shinobiops.dev" [ref=e228]
+                - cell [ref=e229]:
+                  - combobox [ref=e230]:
+                    - generic: Membro de Suporte
+                    - img [ref=e231]
+                - cell "GhostFox" [ref=e233]
+                - cell "6 de abr. de 2026" [ref=e234]
+                - cell "Toggle active status for Kenji Mori Ativo" [ref=e235]:
+                  - generic [ref=e236]:
+                    - switch "Toggle active status for Kenji Mori" [checked] [ref=e237]
+                    - generic [ref=e238]: Ativo
+                - cell "Enviar" [ref=e239]:
+                  - button "Enviar" [ref=e240]:
+                    - img
+                    - text: Enviar
+              - row "ML Mei Lin supportlead@shinobiops.dev SwiftCrane 6 de abr. de 2026 Toggle active status for Mei Lin Ativo Enviar" [ref=e241]:
+                - cell "ML" [ref=e242]:
+                  - generic [ref=e244]: ML
+                - cell "Mei Lin" [ref=e245]
+                - cell "supportlead@shinobiops.dev" [ref=e246]
+                - cell [ref=e247]:
+                  - combobox [ref=e248]:
+                    - generic: Líder de Suporte
+                    - img [ref=e249]
+                - cell "SwiftCrane" [ref=e251]
+                - cell "6 de abr. de 2026" [ref=e252]
+                - cell "Toggle active status for Mei Lin Ativo" [ref=e253]:
+                  - generic [ref=e254]:
+                    - switch "Toggle active status for Mei Lin" [checked] [ref=e255]
+                    - generic [ref=e256]: Ativo
+                - cell "Enviar" [ref=e257]:
+                  - button "Enviar" [ref=e258]:
+                    - img
+                    - text: Enviar
+              - row "N Nicoli nicoli@inovarsistemas.com IronWolf 6 de abr. de 2026 Toggle active status for Nicoli Ativo Enviar" [ref=e259]:
+                - cell "N" [ref=e260]:
+                  - generic [ref=e262]: "N"
+                - cell "Nicoli" [ref=e263]
+                - cell "nicoli@inovarsistemas.com" [ref=e264]
+                - cell [ref=e265]:
+                  - combobox [ref=e266]:
+                    - generic: Ninja (Desenvolvedor)
+                    - img [ref=e267]
+                - cell "IronWolf" [ref=e269]
+                - cell "6 de abr. de 2026" [ref=e270]
+                - cell "Toggle active status for Nicoli Ativo" [ref=e271]:
+                  - generic [ref=e272]:
+                    - switch "Toggle active status for Nicoli" [checked] [ref=e273]
+                    - generic [ref=e274]: Ativo
+                - cell "Enviar" [ref=e275]:
+                  - button "Enviar" [ref=e276]:
+                    - img
+                    - text: Enviar
+              - row "RH Ryu Hayabusa developer@shinobiops.dev SilentBlade 6 de abr. de 2026 Toggle active status for Ryu Hayabusa Ativo Enviar" [ref=e277]:
+                - cell "RH" [ref=e278]:
+                  - generic [ref=e280]: RH
+                - cell "Ryu Hayabusa" [ref=e281]
+                - cell "developer@shinobiops.dev" [ref=e282]
+                - cell [ref=e283]:
+                  - combobox [ref=e284]:
+                    - generic: Ninja (Desenvolvedor)
+                    - img [ref=e285]
+                - cell "SilentBlade" [ref=e287]
+                - cell "6 de abr. de 2026" [ref=e288]
+                - cell "Toggle active status for Ryu Hayabusa Ativo" [ref=e289]:
+                  - generic [ref=e290]:
+                    - switch "Toggle active status for Ryu Hayabusa" [checked] [ref=e291]
+                    - generic [ref=e292]: Ativo
+                - cell "Enviar" [ref=e293]:
+                  - button "Enviar" [ref=e294]:
+                    - img
+                    - text: Enviar
+              - row "TE Test User E2E e2etest@shinobiops.dev E2ENinja 6 de abr. de 2026 Toggle active status for Test User E2E Ativo Enviar" [ref=e295]:
+                - cell "TE" [ref=e296]:
+                  - generic [ref=e298]: TE
+                - cell "Test User E2E" [ref=e299]
+                - cell "e2etest@shinobiops.dev" [ref=e300]
+                - cell [ref=e301]:
+                  - combobox [ref=e302]:
+                    - generic: Membro de Suporte
+                    - img [ref=e303]
+                - cell "E2ENinja" [ref=e305]
+                - cell "6 de abr. de 2026" [ref=e306]
+                - cell "Toggle active status for Test User E2E Ativo" [ref=e307]:
+                  - generic [ref=e308]:
+                    - switch "Toggle active status for Test User E2E" [checked] [ref=e309]
+                    - generic [ref=e310]: Ativo
+                - cell "Enviar" [ref=e311]:
+                  - button "Enviar" [ref=e312]:
+                    - img
+                    - text: Enviar
+              - row "T0 Teste 01 teste@mail.com ScarletHawk 6 de abr. de 2026 Toggle active status for Teste 01 Ativo Enviar" [ref=e313]:
+                - cell "T0" [ref=e314]:
+                  - generic [ref=e316]: T0
+                - cell "Teste 01" [ref=e317]
+                - cell "teste@mail.com" [ref=e318]
+                - cell [ref=e319]:
+                  - combobox [ref=e320]:
+                    - generic: Ninja (Desenvolvedor)
+                    - img [ref=e321]
+                - cell "ScarletHawk" [ref=e323]
+                - cell "6 de abr. de 2026" [ref=e324]
+                - cell "Toggle active status for Teste 01 Ativo" [ref=e325]:
+                  - generic [ref=e326]:
+                    - switch "Toggle active status for Teste 01" [checked] [ref=e327]
+                    - generic [ref=e328]: Ativo
+                - cell "Enviar" [ref=e329]:
+                  - button "Enviar" [ref=e330]:
+                    - img
+                    - text: Enviar
+              - row "YT Yuki Tanaka techlead@shinobiops.dev IronJonin 6 de abr. de 2026 Toggle active status for Yuki Tanaka Ativo Enviar" [ref=e331]:
+                - cell "YT" [ref=e332]:
+                  - generic [ref=e334]: YT
+                - cell "Yuki Tanaka" [ref=e335]
+                - cell "techlead@shinobiops.dev" [ref=e336]
+                - cell [ref=e337]:
+                  - combobox [ref=e338]:
+                    - generic: Jōnin (Tech Lead)
+                    - img [ref=e339]
+                - cell "IronJonin" [ref=e341]
+                - cell "6 de abr. de 2026" [ref=e342]
+                - cell "Toggle active status for Yuki Tanaka Ativo" [ref=e343]:
+                  - generic [ref=e344]:
+                    - switch "Toggle active status for Yuki Tanaka" [checked] [ref=e345]
+                    - generic [ref=e346]: Ativo
+                - cell "Enviar" [ref=e347]:
+                  - button "Enviar" [ref=e348]:
+                    - img
+                    - text: Enviar
+              - row "S suporte suporte@mail.com FierceShadow 6 de abr. de 2026 Toggle active status for suporte Ativo Enviar" [ref=e349]:
+                - cell "S" [ref=e350]:
+                  - generic [ref=e352]: S
+                - cell "suporte" [ref=e353]
+                - cell "suporte@mail.com" [ref=e354]
+                - cell [ref=e355]:
+                  - combobox [ref=e356]:
+                    - generic: Membro de Suporte
+                    - img [ref=e357]
+                - cell "FierceShadow" [ref=e359]
+                - cell "6 de abr. de 2026" [ref=e360]
+                - cell "Toggle active status for suporte Ativo" [ref=e361]:
+                  - generic [ref=e362]:
+                    - switch "Toggle active status for suporte" [checked] [ref=e363]
+                    - generic [ref=e364]: Ativo
+                - cell "Enviar" [ref=e365]:
+                  - button "Enviar" [ref=e366]:
+                    - img
+                    - text: Enviar
+  - button "Open Next.js Dev Tools" [ref=e181] [cursor=pointer]:
+    - img [ref=e182]
+  - alert [ref=e367]

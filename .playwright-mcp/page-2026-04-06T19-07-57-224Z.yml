@@ -1,0 +1,103 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e6]
+        - generic [ref=e9]: ShinobiOps
+      - navigation [ref=e10]:
+        - generic [ref=e11]:
+          - link "Painel Ninja" [ref=e12] [cursor=pointer]:
+            - /url: /dev
+            - img [ref=e13]
+            - text: Painel Ninja
+          - link "Painel de Missões" [ref=e18] [cursor=pointer]:
+            - /url: /dev/queue
+            - img [ref=e19]
+            - text: Painel de Missões
+    - generic [ref=e23]:
+      - banner [ref=e24]:
+        - generic [ref=e26]:
+          - generic:
+            - img
+          - searchbox "Pesquisa global" [ref=e27]
+          - generic:
+            - generic: ⌘K
+        - button "Notificações (3 não lidas)" [ref=e119]:
+          - img [ref=e29]
+          - generic [ref=e118]: "3"
+        - button "Menu do usuário Ryu Hayabusa" [ref=e32]:
+          - generic [ref=e34]: RH
+          - generic [ref=e35]: Ryu Hayabusa
+      - main [ref=e36]:
+        - generic [ref=e37]:
+          - generic [ref=e38]:
+            - heading "Quadro de Missões" [level=1] [ref=e39]
+            - paragraph [ref=e40]: Missões ativas ordenadas por prioridade. Assuma chamados e filtre por tipo, severidade ou responsável.
+          - generic [ref=e41]:
+            - status [ref=e120]: Chamado atribuído a você.
+            - generic [ref=e42]:
+              - searchbox "Buscar por ID ou título..." [ref=e43]
+              - text: 3 de 3 missões
+            - generic [ref=e44]:
+              - tablist [ref=e46]:
+                - tab "Todos" [selected] [ref=e47]
+                - tab "Chamado" [ref=e48]
+                - tab "Bug" [ref=e49]
+              - combobox [ref=e50]:
+                - generic: Todas as Severidades
+                - img [ref=e51]
+              - combobox [ref=e54]:
+                - generic: Todos os Status
+                - img [ref=e55]
+              - combobox [ref=e58]:
+                - generic: Todos os Responsáveis
+                - img [ref=e59]
+            - generic [ref=e62]:
+              - generic [ref=e63]:
+                - generic [ref=e64]:
+                  - generic [ref=e65]:
+                    - generic [ref=e66]: Crítica
+                    - button "TKT-0001" [ref=e67]
+                    - generic [ref=e68]: Chamado
+                    - generic [ref=e69]: Concluído
+                  - link "roblema com NF-e" [ref=e70] [cursor=pointer]:
+                    - /url: /ticket/TKT-0001
+                  - generic [ref=e71]:
+                    - generic [ref=e72]: Aberto por suporte
+                    - generic [ref=e73]: Prazo 5 de abr. de 2026
+                - generic [ref=e75]:
+                  - generic [ref=e77]: "N"
+                  - generic [ref=e78]: Nicoli
+              - generic [ref=e79]:
+                - generic [ref=e80]:
+                  - generic [ref=e81]:
+                    - generic [ref=e82]: Alta
+                    - button "TKT-0002" [ref=e83]
+                    - generic [ref=e84]: Chamado
+                    - generic [ref=e85]: Em Progresso
+                  - link "E2E Test Ticket - Fix login validation" [ref=e86] [cursor=pointer]:
+                    - /url: /ticket/TKT-0002
+                  - generic [ref=e87]:
+                    - generic [ref=e88]: Aberto por Kenji Mori
+                    - generic [ref=e89]: Prazo 29 de abr. de 2026
+                - generic [ref=e121]:
+                  - generic [ref=e123]: RH
+                  - generic [ref=e124]: Ryu Hayabusa
+              - generic [ref=e93]:
+                - generic [ref=e94]:
+                  - generic [ref=e95]:
+                    - generic [ref=e96]: Crítica
+                    - button "BUG-0001" [ref=e97]
+                    - generic [ref=e98]: Bug
+                    - generic [ref=e99]: Aberto
+                  - link "E2E Bug test" [ref=e100] [cursor=pointer]:
+                    - /url: /ticket/BUG-0001
+                  - generic [ref=e101]:
+                    - generic [ref=e102]: Aberto por Kenji Mori
+                    - generic [ref=e103]: Prazo 19 de abr. de 2026
+                - generic [ref=e104]:
+                  - generic [ref=e105]: Não Atribuído
+                  - button "Atribuir a mim" [ref=e106]
+  - button "Open Next.js Dev Tools" [ref=e112] [cursor=pointer]:
+    - img [ref=e113]
+  - alert [ref=e116]

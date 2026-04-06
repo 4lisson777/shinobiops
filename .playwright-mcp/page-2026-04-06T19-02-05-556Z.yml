@@ -1,0 +1,86 @@
+- generic:
+  - generic:
+    - complementary:
+      - generic:
+        - generic:
+          - img
+        - generic: ShinobiOps
+      - navigation:
+        - generic:
+          - link:
+            - /url: /support
+            - img
+            - text: Início do Suporte
+          - link:
+            - /url: /support/queue
+            - img
+            - text: Painel de Missões
+          - link:
+            - /url: /support/my-items
+            - img
+            - text: Meus Itens
+        - generic:
+          - link:
+            - /url: /support/ticket/new
+            - img
+            - text: Novo Chamado
+          - link:
+            - /url: /support/bug/new
+            - img
+            - text: Reportar Bug
+    - generic:
+      - banner:
+        - generic:
+          - generic:
+            - generic:
+              - img
+            - searchbox
+            - generic:
+              - generic: ⌘K
+        - button:
+          - img
+        - button:
+          - generic:
+            - generic: KM
+          - generic: Kenji Mori
+      - main:
+        - generic:
+          - generic:
+            - heading [level=1]: Abrir Chamado
+            - paragraph: Envie uma solicitação para o time dev — ajustes, configurações, correções de dados ou qualquer outra coisa.
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic: Título
+                  - generic: 38/120
+                - textbox:
+                  - /placeholder: Breve descrição da solicitação
+                  - text: E2E Test Ticket - Fix login validation
+              - generic:
+                - generic: Descrição
+                - textbox:
+                  - /placeholder: "Forneça o contexto completo: o que precisa ser feito, por que e quaisquer detalhes relevantes..."
+                  - text: The login form does not show proper error messages when the password field is empty. Please investigate and fix.
+              - generic:
+                - generic: Severidade
+                - combobox [expanded]:
+                  - generic: Selecione o nível de severidade
+                  - img
+                - combobox
+              - generic:
+                - generic: Prazo
+                - textbox
+              - button: Enviar Missão
+  - button "Open Next.js Dev Tools" [ref=e80] [cursor=pointer]:
+    - img [ref=e81]
+  - alert
+  - listbox [ref=e86]:
+    - option "Baixa — Faixa Branca" [active] [ref=e87]:
+      - generic [ref=e90]: Baixa — Faixa Branca
+    - option "Média — Faixa Verde" [ref=e92]:
+      - generic [ref=e95]: Média — Faixa Verde
+    - option "Alta — Faixa Vermelha" [ref=e97]:
+      - generic [ref=e100]: Alta — Faixa Vermelha
+    - option "Crítica — Faixa Preta" [ref=e102]:
+      - generic [ref=e105]: Crítica — Faixa Preta

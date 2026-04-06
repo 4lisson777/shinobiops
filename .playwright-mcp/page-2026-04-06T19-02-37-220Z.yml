@@ -1,0 +1,97 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e6]
+        - generic [ref=e9]: ShinobiOps
+      - navigation [ref=e10]:
+        - generic [ref=e11]:
+          - link "Início do Suporte" [ref=e12] [cursor=pointer]:
+            - /url: /support
+            - img [ref=e13]
+            - text: Início do Suporte
+          - link "Painel de Missões" [ref=e18] [cursor=pointer]:
+            - /url: /support/queue
+            - img [ref=e19]
+            - text: Painel de Missões
+          - link "Meus Itens" [ref=e23] [cursor=pointer]:
+            - /url: /support/my-items
+            - img [ref=e24]
+            - text: Meus Itens
+        - generic [ref=e28]:
+          - link "Novo Chamado" [ref=e29] [cursor=pointer]:
+            - /url: /support/ticket/new
+            - img [ref=e30]
+            - text: Novo Chamado
+          - link "Reportar Bug" [ref=e32] [cursor=pointer]:
+            - /url: /support/bug/new
+            - img [ref=e33]
+            - text: Reportar Bug
+    - generic [ref=e37]:
+      - banner [ref=e38]:
+        - generic [ref=e40]:
+          - generic:
+            - img
+          - searchbox "Pesquisa global" [ref=e41]
+          - generic:
+            - generic: ⌘K
+        - button "Notificações (0 não lidas)" [ref=e42]:
+          - img [ref=e43]
+        - button "Menu do usuário Kenji Mori" [ref=e46]:
+          - generic [ref=e48]: KM
+          - generic [ref=e49]: Kenji Mori
+      - main [ref=e50]:
+        - generic [ref=e51]:
+          - generic [ref=e52]:
+            - heading "Relatório de Ameaça" [level=1] [ref=e53]
+            - paragraph [ref=e54]: Reporte um defeito identificado por um cliente ao time dev. Seja o mais específico possível — isso ajuda os ninjas a responderem mais rápido.
+          - generic [ref=e56]:
+            - generic [ref=e57]:
+              - generic [ref=e58]: Título
+              - textbox "Título" [ref=e59]:
+                - /placeholder: Breve descrição do bug
+            - generic [ref=e60]:
+              - generic [ref=e61]: Módulo / Tela Afetada
+              - textbox "Módulo / Tela Afetada" [ref=e62]:
+                - /placeholder: "ex: Tela de faturas de clientes, Tela de login"
+            - generic [ref=e63]:
+              - generic [ref=e64]: Passos para Reproduzir
+              - textbox "Passos para Reproduzir" [ref=e65]:
+                - /placeholder: "1. Vá para...\n2. Clique em...\n3. Veja o erro"
+            - generic [ref=e66]:
+              - generic [ref=e67]:
+                - generic [ref=e68]: Comportamento Esperado
+                - textbox "Comportamento Esperado" [ref=e69]:
+                  - /placeholder: O que deveria ter acontecido?
+              - generic [ref=e70]:
+                - generic [ref=e71]: Comportamento Atual
+                - textbox "Comportamento Atual" [ref=e72]:
+                  - /placeholder: O que realmente aconteceu?
+            - generic [ref=e73]:
+              - generic [ref=e74]:
+                - generic [ref=e75]: Severidade
+                - combobox "Severidade" [ref=e76]:
+                  - generic: Selecione a severidade
+                  - img [ref=e77]
+                - combobox [ref=e79]
+              - generic [ref=e80]:
+                - generic [ref=e81]: Ambiente
+                - combobox "Ambiente" [ref=e82]:
+                  - generic: Selecione o ambiente
+                  - img [ref=e83]
+                - combobox [ref=e85]
+            - generic [ref=e86]:
+              - generic [ref=e87]: Prazo
+              - textbox "Prazo" [ref=e88]
+            - generic [ref=e89]:
+              - generic [ref=e90]: Nome / ID do Cliente (opcional)
+              - textbox "Nome / ID do Cliente (opcional)" [ref=e91]:
+                - /placeholder: "ex: Acme Corp ou CUST-1234"
+            - generic [ref=e93]:
+              - button "Copiar para Formato ClickUp" [disabled]:
+                - img
+                - text: Copiar para Formato ClickUp
+              - paragraph [ref=e94]: Preencha título, módulo afetado e passos para reproduzir para habilitar este botão.
+            - button "Enviar Relatório de Ameaça" [ref=e95]
+  - button "Open Next.js Dev Tools" [ref=e101] [cursor=pointer]:
+    - img [ref=e102]

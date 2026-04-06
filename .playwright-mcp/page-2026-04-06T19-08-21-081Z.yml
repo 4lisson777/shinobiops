@@ -1,0 +1,110 @@
+- generic:
+  - generic:
+    - complementary:
+      - generic:
+        - generic:
+          - img
+        - generic: ShinobiOps
+      - navigation:
+        - generic:
+          - link:
+            - /url: /dev
+            - img
+            - text: Painel Ninja
+          - link:
+            - /url: /dev/queue
+            - img
+            - text: Painel de Missões
+    - generic:
+      - banner:
+        - generic:
+          - generic:
+            - generic:
+              - img
+            - searchbox
+            - generic:
+              - generic: ⌘K
+        - button:
+          - img
+          - generic: "3"
+        - button:
+          - generic:
+            - generic: RH
+          - generic: Ryu Hayabusa
+      - main:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - button: TKT-0002
+                  - generic: Ticket
+                  - generic: Alta
+                  - generic: Em Progresso
+                - heading [level=1]: E2E Test Ticket - Fix login validation
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic: KM
+                    - generic: Aberto por Kenji Mori
+                  - generic:
+                    - generic:
+                      - generic: RH
+                    - generic: Atribuído a Ryu Hayabusa
+                  - generic: Criado em 6 de abr. de 2026
+                  - generic: Prazo 29 de abr. de 2026
+              - generic:
+                - heading [level=2]: Descrição
+                - paragraph: The login form does not show proper error messages when the password field is empty. Please investigate and fix.
+              - generic:
+                - heading [level=2]: Registro de Missões
+                - list:
+                  - listitem:
+                    - generic:
+                      - generic:
+                        - img
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic: KM
+                        - generic: Aberto por Kenji Mori
+                      - time: 5min atrás
+                  - listitem:
+                    - generic:
+                      - generic:
+                        - img
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic: RH
+                        - generic: Atribuído a alguém por Ryu Hayabusa
+                      - time: agora mesmo
+                  - listitem:
+                    - generic:
+                      - generic:
+                        - img
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic: RH
+                        - generic: Status alterado de ? para ? por Ryu Hayabusa
+                      - time: agora mesmo
+            - generic:
+              - generic:
+                - heading [level=3]: Ações
+                - generic:
+                  - generic: Status
+                  - combobox [expanded]:
+                    - generic: Em Progresso
+                    - img
+  - button "Open Next.js Dev Tools" [ref=e117] [cursor=pointer]:
+    - img [ref=e118]
+  - alert
+  - listbox [ref=e124]:
+    - option "Em Progresso" [active] [selected] [ref=e125]:
+      - img [ref=e128]
+      - generic [ref=e130]: Em Progresso
+    - option "Aguardando Info" [ref=e131]:
+      - generic [ref=e133]: Aguardando Info
+    - option "Concluído" [ref=e134]:
+      - generic [ref=e136]: Concluído

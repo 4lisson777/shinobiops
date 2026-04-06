@@ -1,0 +1,129 @@
+- generic [active] [ref=e1]:
+  - button "Open Next.js Dev Tools" [ref=e29] [cursor=pointer]:
+    - img [ref=e30]
+  - alert [ref=e33]: Painel Ninja — ShinobiOps | ShinobiOps
+  - generic [ref=e34]:
+    - complementary [ref=e35]:
+      - generic [ref=e36]:
+        - img [ref=e38]
+        - generic [ref=e41]: ShinobiOps
+      - navigation [ref=e42]:
+        - generic [ref=e43]:
+          - link "Painel Ninja" [ref=e44] [cursor=pointer]:
+            - /url: /dev
+            - img [ref=e45]
+            - text: Painel Ninja
+          - link "Painel de Missões" [ref=e50] [cursor=pointer]:
+            - /url: /dev/queue
+            - img [ref=e51]
+            - text: Painel de Missões
+    - generic [ref=e55]:
+      - banner [ref=e56]:
+        - generic [ref=e58]:
+          - generic:
+            - img
+          - searchbox "Pesquisa global" [ref=e59]
+          - generic:
+            - generic: ⌘K
+        - button "Notificações (2 não lidas)" [ref=e60]:
+          - img [ref=e61]
+          - generic [ref=e64]: "2"
+        - button "Menu do usuário Ryu Hayabusa" [ref=e65]:
+          - generic [ref=e67]: RH
+          - generic [ref=e68]: Ryu Hayabusa
+      - main [ref=e69]:
+        - generic [ref=e70]:
+          - generic [ref=e71]:
+            - generic [ref=e72]:
+              - heading "Painel Ninja" [level=1] [ref=e73]
+              - paragraph [ref=e74]: Visão geral da equipe em tempo real
+            - button "🔥 Enviar Sinal de Fumaça" [ref=e75]:
+              - generic [ref=e76]: 🔥
+              - text: Enviar Sinal de Fumaça
+          - generic [ref=e77]:
+            - generic [ref=e78]:
+              - generic [ref=e79]: "6"
+              - generic [ref=e80]: Ativos
+            - generic [ref=e81]:
+              - generic [ref=e82]: "6"
+              - generic [ref=e83]: Total
+          - generic [ref=e84]:
+            - generic [ref=e86]:
+              - generic [ref=e87]:
+                - img "Alisson" [ref=e89]
+                - generic [ref=e90]:
+                  - paragraph [ref=e91]: Alisson
+                  - paragraph [ref=e92]: VengefulKunai
+              - generic [ref=e94]: Ativo
+              - generic [ref=e95]:
+                - paragraph [ref=e96]: Tarefa Atual
+                - paragraph [ref=e97]: Sem tarefa atual
+              - generic [ref=e98]:
+                - paragraph [ref=e99]: Missão Ativa
+                - paragraph [ref=e100]: Sem missão ativa
+            - generic [ref=e102]:
+              - generic [ref=e103]:
+                - img "Alisson Santos" [ref=e105]
+                - generic [ref=e106]:
+                  - paragraph [ref=e107]: Alisson Santos
+                  - paragraph [ref=e108]: SilverLotus
+              - generic [ref=e110]: Ativo
+              - generic [ref=e111]:
+                - paragraph [ref=e112]: Tarefa Atual
+                - paragraph [ref=e113]: Sem tarefa atual
+              - generic [ref=e114]:
+                - paragraph [ref=e115]: Missão Ativa
+                - paragraph [ref=e116]: Sem missão ativa
+            - generic [ref=e118]:
+              - generic [ref=e119]:
+                - generic [ref=e121]: "N"
+                - generic [ref=e122]:
+                  - paragraph [ref=e123]: Nicoli
+                  - paragraph [ref=e124]: IronWolf
+              - generic [ref=e126]: Ativo
+              - generic [ref=e127]:
+                - paragraph [ref=e128]: Tarefa Atual
+                - paragraph [ref=e129]: Testando
+              - generic [ref=e130]:
+                - paragraph [ref=e131]: Missão Ativa
+                - paragraph [ref=e132]: Sem missão ativa
+            - generic [ref=e134]:
+              - generic [ref=e135]:
+                - generic [ref=e137]: RH
+                - generic [ref=e138]:
+                  - paragraph [ref=e139]: Ryu Hayabusa
+                  - paragraph [ref=e140]: SilentBlade
+              - button "Mudar seu status" [ref=e142] [cursor=pointer]:
+                - generic [ref=e143]: Ativo
+              - generic [ref=e144]:
+                - paragraph [ref=e145]: Tarefa Atual
+                - button "Clique para editar a tarefa atual" [ref=e146]: Sem tarefa atual
+              - generic [ref=e147]:
+                - paragraph [ref=e148]: Missão Ativa
+                - paragraph [ref=e149]: Sem missão ativa
+            - generic [ref=e151]:
+              - generic [ref=e152]:
+                - generic [ref=e154]: T0
+                - generic [ref=e155]:
+                  - paragraph [ref=e156]: Teste 01
+                  - paragraph [ref=e157]: ScarletHawk
+              - generic [ref=e159]: Ativo
+              - generic [ref=e160]:
+                - paragraph [ref=e161]: Tarefa Atual
+                - paragraph [ref=e162]: Sem tarefa atual
+              - generic [ref=e163]:
+                - paragraph [ref=e164]: Missão Ativa
+                - paragraph [ref=e165]: Sem missão ativa
+            - generic [ref=e167]:
+              - generic [ref=e168]:
+                - generic [ref=e170]: YT
+                - generic [ref=e171]:
+                  - paragraph [ref=e172]: Yuki Tanaka
+                  - paragraph [ref=e173]: IronJonin
+              - generic [ref=e175]: Ativo
+              - generic [ref=e176]:
+                - paragraph [ref=e177]: Tarefa Atual
+                - paragraph [ref=e178]: Sem tarefa atual
+              - generic [ref=e179]:
+                - paragraph [ref=e180]: Missão Ativa
+                - paragraph [ref=e181]: Sem missão ativa

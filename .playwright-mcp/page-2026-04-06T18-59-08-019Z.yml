@@ -1,0 +1,27 @@
+- generic [active] [ref=e1]:
+  - button "Open Next.js Dev Tools" [ref=e29] [cursor=pointer]:
+    - img [ref=e30]
+  - alert [ref=e33]: Entrar no Dojo — ShinobiOps | ShinobiOps
+  - generic [ref=e217]:
+    - generic [ref=e218]:
+      - img [ref=e220]
+      - heading "ShinobiOps" [level=1] [ref=e223]
+      - paragraph [ref=e224]: Inovar Sistemas — Ferramenta Interna
+    - generic [ref=e225]:
+      - generic [ref=e226]:
+        - heading "Bem-vindo de volta, Shinobi" [level=2] [ref=e227]
+        - paragraph [ref=e228]: Faça login para continuar sua missão
+      - generic [ref=e229]:
+        - generic [ref=e230]:
+          - generic [ref=e231]: Email
+          - textbox "Email" [ref=e232]:
+            - /placeholder: ninja@inovar.com
+        - generic [ref=e233]:
+          - generic [ref=e234]: Senha
+          - textbox "Senha" [ref=e235]:
+            - /placeholder: ••••••••
+        - button "Entrar no Dojo" [ref=e236]
+        - paragraph [ref=e237]:
+          - text: Novo shinobi?
+          - link "Entrar para o clã" [ref=e238] [cursor=pointer]:
+            - /url: /register

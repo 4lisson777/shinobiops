@@ -1,0 +1,99 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e6]
+        - generic [ref=e9]: ShinobiOps
+      - navigation [ref=e10]:
+        - generic [ref=e11]:
+          - link "Painel Ninja" [ref=e12] [cursor=pointer]:
+            - /url: /dev
+            - img [ref=e13]
+            - text: Painel Ninja
+          - link "Painel de Missões" [ref=e18] [cursor=pointer]:
+            - /url: /dev/queue
+            - img [ref=e19]
+            - text: Painel de Missões
+          - link "Dojô de Comando" [ref=e23] [cursor=pointer]:
+            - /url: /admin
+            - img [ref=e24]
+            - text: Dojô de Comando
+        - generic [ref=e28]:
+          - link "Equipe" [ref=e29] [cursor=pointer]:
+            - /url: /admin/team
+            - img [ref=e30]
+            - text: Equipe
+          - link "Notificações" [ref=e36] [cursor=pointer]:
+            - /url: /admin/notifications
+            - img [ref=e37]
+            - text: Notificações
+          - link "Pergaminhos de Status" [ref=e40] [cursor=pointer]:
+            - /url: /admin/checkpoints
+            - img [ref=e41]
+            - text: Pergaminhos de Status
+          - link "Log" [ref=e44] [cursor=pointer]:
+            - /url: /admin/log
+            - img [ref=e45]
+            - text: Log
+    - generic [ref=e47]:
+      - banner [ref=e48]:
+        - generic [ref=e50]:
+          - generic:
+            - img
+          - searchbox "Pesquisa global" [ref=e51]
+          - generic:
+            - generic: ⌘K
+        - button "Notificações (0 não lidas)" [ref=e52]:
+          - img [ref=e53]
+        - button "Menu do usuário Yuki Tanaka" [ref=e56]:
+          - generic [ref=e58]: YT
+          - generic [ref=e59]: Yuki Tanaka
+      - main [ref=e60]:
+        - generic [ref=e62]:
+          - generic [ref=e63]:
+            - generic [ref=e64]:
+              - heading "Dojô de Comando" [level=1] [ref=e65]
+              - paragraph [ref=e66]: Visão geral da equipe e métricas em tempo real
+            - generic [ref=e67]:
+              - generic [ref=e68]: Atualizado às 16:11
+              - button "Recarregar" [ref=e69]:
+                - img
+                - text: Recarregar
+          - generic [ref=e70]:
+            - generic [ref=e71]:
+              - heading "Tickets / Bugs Abertos" [level=3] [ref=e73]
+              - generic [ref=e75]: Nenhum item aberto
+            - generic [ref=e76]:
+              - heading "Atribuídos" [level=3] [ref=e78]
+              - generic [ref=e79]: "0"
+            - generic [ref=e80]:
+              - heading "Não Atribuídos" [level=3] [ref=e82]
+              - generic [ref=e83]: "0"
+            - generic [ref=e84]:
+              - heading "Tempo Méd. Resolução (7d)" [level=3] [ref=e86]
+              - generic [ref=e87]: Sem dados
+            - generic [ref=e88]:
+              - heading "Tempo Méd. Resolução (30d)" [level=3] [ref=e90]
+              - generic [ref=e91]: Sem dados
+          - generic [ref=e92]:
+            - heading "Carga de Trabalho por Desenvolvedor" [level=3] [ref=e94]
+            - paragraph [ref=e96]: Nenhum desenvolvedor encontrado.
+          - generic [ref=e97]:
+            - heading "Configurações do Modo TV" [level=3] [ref=e99]
+            - generic [ref=e100]:
+              - generic [ref=e101]:
+                - generic [ref=e102]:
+                  - text: Ativar Modo TV
+                  - paragraph [ref=e103]:
+                    - text: Quando desativado,
+                    - code [ref=e104]: /dev/tv
+                    - text: mostrará um erro 503.
+                - switch "Ativar Modo TV" [checked] [ref=e105]
+                - checkbox [checked]
+              - generic [ref=e106]:
+                - generic [ref=e107]: Intervalo de Atualização (segundos)
+                - paragraph [ref=e108]: "Intervalo permitido: 10 – 300"
+                - spinbutton "Intervalo de Atualização (segundos)" [ref=e109]: "30"
+              - button "Salvar Configurações da TV" [ref=e111]
+  - button "Open Next.js Dev Tools" [ref=e117] [cursor=pointer]:
+    - img [ref=e118]

@@ -1,0 +1,179 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e6]
+        - generic [ref=e9]: ShinobiOps
+      - navigation [ref=e10]:
+        - generic [ref=e11]:
+          - link "Painel Ninja" [ref=e12] [cursor=pointer]:
+            - /url: /dev
+            - img [ref=e13]
+            - text: Painel Ninja
+          - link "Painel de Missões" [ref=e18] [cursor=pointer]:
+            - /url: /dev/queue
+            - img [ref=e19]
+            - text: Painel de Missões
+          - link "Dojô de Comando" [ref=e23] [cursor=pointer]:
+            - /url: /admin
+            - img [ref=e24]
+            - text: Dojô de Comando
+        - generic [ref=e28]:
+          - link "Equipe" [ref=e29] [cursor=pointer]:
+            - /url: /admin/team
+            - img [ref=e30]
+            - text: Equipe
+          - link "Notificações" [ref=e36] [cursor=pointer]:
+            - /url: /admin/notifications
+            - img [ref=e37]
+            - text: Notificações
+          - link "Pergaminhos de Status" [ref=e40] [cursor=pointer]:
+            - /url: /admin/checkpoints
+            - img [ref=e41]
+            - text: Pergaminhos de Status
+          - link "Log" [ref=e44] [cursor=pointer]:
+            - /url: /admin/log
+            - img [ref=e45]
+            - text: Log
+    - generic [ref=e47]:
+      - banner [ref=e48]:
+        - generic [ref=e50]:
+          - generic:
+            - img
+          - searchbox "Pesquisa global" [ref=e51]
+          - generic:
+            - generic: ⌘K
+        - button "Notificações (0 não lidas)" [ref=e52]:
+          - img [ref=e53]
+        - button "Menu do usuário Yuki Tanaka" [ref=e56]:
+          - generic [ref=e58]: YT
+          - generic [ref=e59]: Yuki Tanaka
+      - main [ref=e60]:
+        - generic [ref=e62]:
+          - generic [ref=e63]:
+            - heading "Registro de Missões" [level=1] [ref=e64]
+            - paragraph [ref=e65]: Histórico completo de todos os chamados e bugs.
+          - generic [ref=e66]:
+            - searchbox "Buscar por ID ou título…" [ref=e67]
+            - combobox [ref=e68]:
+              - img [ref=e69]
+            - combobox [ref=e71]
+            - combobox [ref=e72]:
+              - img [ref=e73]
+            - combobox [ref=e75]
+            - combobox [ref=e76]:
+              - img [ref=e77]
+            - combobox [ref=e79]
+            - generic [ref=e80]:
+              - generic [ref=e81]: De
+              - textbox "De" [ref=e82]
+            - generic [ref=e83]:
+              - generic [ref=e84]: Ate
+              - textbox "Ate" [ref=e85]
+          - table [ref=e88]:
+            - rowgroup [ref=e89]:
+              - row "ID Título Tipo Severidade Status Aberto por Atribuído a Criado Resolvido" [ref=e90]:
+                - columnheader "ID" [ref=e91]
+                - columnheader "Título" [ref=e92]
+                - columnheader "Tipo" [ref=e93]
+                - columnheader "Severidade" [ref=e94]:
+                  - button "Severidade" [ref=e95]:
+                    - text: Severidade
+                    - img [ref=e96]
+                - columnheader "Status" [ref=e98]:
+                  - button "Status" [ref=e99]:
+                    - text: Status
+                    - img [ref=e100]
+                - columnheader "Aberto por" [ref=e102]
+                - columnheader "Atribuído a" [ref=e103]
+                - columnheader "Criado" [ref=e104]:
+                  - button "Criado" [ref=e105]:
+                    - text: Criado
+                    - img [ref=e106]
+                - columnheader "Resolvido" [ref=e108]:
+                  - button "Resolvido" [ref=e109]:
+                    - text: Resolvido
+                    - img [ref=e110]
+            - rowgroup [ref=e112]:
+              - row [ref=e113]:
+                - cell [ref=e114]
+                - cell [ref=e116]
+                - cell [ref=e118]
+                - cell [ref=e120]
+                - cell [ref=e122]
+                - cell [ref=e124]
+                - cell [ref=e126]
+                - cell [ref=e128]
+                - cell [ref=e130]
+              - row [ref=e132]:
+                - cell [ref=e133]
+                - cell [ref=e135]
+                - cell [ref=e137]
+                - cell [ref=e139]
+                - cell [ref=e141]
+                - cell [ref=e143]
+                - cell [ref=e145]
+                - cell [ref=e147]
+                - cell [ref=e149]
+              - row [ref=e151]:
+                - cell [ref=e152]
+                - cell [ref=e154]
+                - cell [ref=e156]
+                - cell [ref=e158]
+                - cell [ref=e160]
+                - cell [ref=e162]
+                - cell [ref=e164]
+                - cell [ref=e166]
+                - cell [ref=e168]
+              - row [ref=e170]:
+                - cell [ref=e171]
+                - cell [ref=e173]
+                - cell [ref=e175]
+                - cell [ref=e177]
+                - cell [ref=e179]
+                - cell [ref=e181]
+                - cell [ref=e183]
+                - cell [ref=e185]
+                - cell [ref=e187]
+              - row [ref=e189]:
+                - cell [ref=e190]
+                - cell [ref=e192]
+                - cell [ref=e194]
+                - cell [ref=e196]
+                - cell [ref=e198]
+                - cell [ref=e200]
+                - cell [ref=e202]
+                - cell [ref=e204]
+                - cell [ref=e206]
+              - row [ref=e208]:
+                - cell [ref=e209]
+                - cell [ref=e211]
+                - cell [ref=e213]
+                - cell [ref=e215]
+                - cell [ref=e217]
+                - cell [ref=e219]
+                - cell [ref=e221]
+                - cell [ref=e223]
+                - cell [ref=e225]
+              - row [ref=e227]:
+                - cell [ref=e228]
+                - cell [ref=e230]
+                - cell [ref=e232]
+                - cell [ref=e234]
+                - cell [ref=e236]
+                - cell [ref=e238]
+                - cell [ref=e240]
+                - cell [ref=e242]
+                - cell [ref=e244]
+              - row [ref=e246]:
+                - cell [ref=e247]
+                - cell [ref=e249]
+                - cell [ref=e251]
+                - cell [ref=e253]
+                - cell [ref=e255]
+                - cell [ref=e257]
+                - cell [ref=e259]
+                - cell [ref=e261]
+                - cell [ref=e263]
+  - button "Open Next.js Dev Tools" [ref=e270] [cursor=pointer]:
+    - img [ref=e271]

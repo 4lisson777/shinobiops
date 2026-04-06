@@ -1,0 +1,123 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e6]
+        - generic [ref=e9]: ShinobiOps
+      - navigation [ref=e10]:
+        - generic [ref=e11]:
+          - link "Painel Ninja" [ref=e12] [cursor=pointer]:
+            - /url: /dev
+            - img [ref=e13]
+            - text: Painel Ninja
+          - link "Painel de Missões" [ref=e18] [cursor=pointer]:
+            - /url: /dev/queue
+            - img [ref=e19]
+            - text: Painel de Missões
+          - link "Dojô de Comando" [ref=e23] [cursor=pointer]:
+            - /url: /admin
+            - img [ref=e24]
+            - text: Dojô de Comando
+        - generic [ref=e28]:
+          - link "Equipe" [ref=e29] [cursor=pointer]:
+            - /url: /admin/team
+            - img [ref=e30]
+            - text: Equipe
+          - link "Notificações" [ref=e36] [cursor=pointer]:
+            - /url: /admin/notifications
+            - img [ref=e37]
+            - text: Notificações
+          - link "Pergaminhos de Status" [ref=e40] [cursor=pointer]:
+            - /url: /admin/checkpoints
+            - img [ref=e41]
+            - text: Pergaminhos de Status
+          - link "Log" [ref=e44] [cursor=pointer]:
+            - /url: /admin/log
+            - img [ref=e45]
+            - text: Log
+    - generic [ref=e47]:
+      - banner [ref=e48]:
+        - generic [ref=e50]:
+          - generic:
+            - img
+          - searchbox "Pesquisa global" [ref=e51]
+          - generic:
+            - generic: ⌘K
+        - button "Notificações (0 não lidas)" [ref=e52]:
+          - img [ref=e53]
+        - button "Menu do usuário Yuki Tanaka" [ref=e56]:
+          - generic [ref=e58]: YT
+          - generic [ref=e59]: Yuki Tanaka
+      - main [ref=e60]:
+        - generic [ref=e62]:
+          - generic [ref=e63]:
+            - heading "Gerenciamento da Equipe" [level=1] [ref=e64]
+            - paragraph [ref=e65]: Gerencie funções, status e avatares para todos os membros da equipe.
+          - generic [ref=e66]:
+            - searchbox "Buscar nome ou e-mail…" [ref=e67]
+            - combobox [ref=e68]:
+              - img [ref=e69]
+            - combobox [ref=e71]
+            - combobox [ref=e72]:
+              - img [ref=e73]
+            - combobox [ref=e75]
+          - button [ref=e76]
+          - table [ref=e79]:
+            - rowgroup [ref=e80]:
+              - row "Nome E-mail Função Apelido Última Atividade Status Avatar" [ref=e81]:
+                - columnheader [ref=e82]
+                - columnheader "Nome" [ref=e83]
+                - columnheader "E-mail" [ref=e84]
+                - columnheader "Função" [ref=e85]
+                - columnheader "Apelido" [ref=e86]
+                - columnheader "Última Atividade" [ref=e87]
+                - columnheader "Status" [ref=e88]
+                - columnheader "Avatar" [ref=e89]
+            - rowgroup [ref=e90]:
+              - row [ref=e91]:
+                - cell [ref=e92]
+                - cell [ref=e94]
+                - cell [ref=e96]
+                - cell [ref=e98]
+                - cell [ref=e100]
+                - cell [ref=e102]
+                - cell [ref=e104]
+                - cell [ref=e106]
+              - row [ref=e108]:
+                - cell [ref=e109]
+                - cell [ref=e111]
+                - cell [ref=e113]
+                - cell [ref=e115]
+                - cell [ref=e117]
+                - cell [ref=e119]
+                - cell [ref=e121]
+                - cell [ref=e123]
+              - row [ref=e125]:
+                - cell [ref=e126]
+                - cell [ref=e128]
+                - cell [ref=e130]
+                - cell [ref=e132]
+                - cell [ref=e134]
+                - cell [ref=e136]
+                - cell [ref=e138]
+                - cell [ref=e140]
+              - row [ref=e142]:
+                - cell [ref=e143]
+                - cell [ref=e145]
+                - cell [ref=e147]
+                - cell [ref=e149]
+                - cell [ref=e151]
+                - cell [ref=e153]
+                - cell [ref=e155]
+                - cell [ref=e157]
+              - row [ref=e159]:
+                - cell [ref=e160]
+                - cell [ref=e162]
+                - cell [ref=e164]
+                - cell [ref=e166]
+                - cell [ref=e168]
+                - cell [ref=e170]
+                - cell [ref=e172]
+                - cell [ref=e174]
+  - button "Open Next.js Dev Tools" [ref=e181] [cursor=pointer]:
+    - img [ref=e182]

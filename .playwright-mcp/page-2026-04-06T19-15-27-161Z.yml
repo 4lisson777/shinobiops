@@ -1,0 +1,134 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e6]
+        - generic [ref=e9]: ShinobiOps
+      - navigation [ref=e10]:
+        - generic [ref=e11]:
+          - link "Painel Ninja" [ref=e12] [cursor=pointer]:
+            - /url: /dev
+            - img [ref=e13]
+            - text: Painel Ninja
+          - link "Painel de Missões" [ref=e18] [cursor=pointer]:
+            - /url: /dev/queue
+            - img [ref=e19]
+            - text: Painel de Missões
+          - link "Dojô de Comando" [ref=e23] [cursor=pointer]:
+            - /url: /admin
+            - img [ref=e24]
+            - text: Dojô de Comando
+        - generic [ref=e28]:
+          - link "Equipe" [ref=e29] [cursor=pointer]:
+            - /url: /admin/team
+            - img [ref=e30]
+            - text: Equipe
+          - link "Notificações" [ref=e36] [cursor=pointer]:
+            - /url: /admin/notifications
+            - img [ref=e37]
+            - text: Notificações
+          - link "Pergaminhos de Status" [ref=e40] [cursor=pointer]:
+            - /url: /admin/checkpoints
+            - img [ref=e41]
+            - text: Pergaminhos de Status
+          - link "Log" [ref=e44] [cursor=pointer]:
+            - /url: /admin/log
+            - img [ref=e45]
+            - text: Log
+    - generic [ref=e47]:
+      - banner [ref=e48]:
+        - generic [ref=e50]:
+          - generic:
+            - img
+          - searchbox "Pesquisa global" [ref=e51]
+          - generic:
+            - generic: ⌘K
+        - button "Notificações (0 não lidas)" [ref=e52]:
+          - img [ref=e53]
+        - button "Menu do usuário Yuki Tanaka" [ref=e56]:
+          - generic [ref=e58]: YT
+          - generic [ref=e59]: Yuki Tanaka
+      - main [ref=e60]:
+        - generic [ref=e62]:
+          - generic [ref=e63]:
+            - generic [ref=e64]:
+              - generic [ref=e65]:
+                - button "TKT-0002" [ref=e66]
+                - generic [ref=e67]: Ticket
+                - generic [ref=e68]: Alta
+                - generic [ref=e69]: Concluído
+              - heading "E2E Test Ticket - Fix login validation" [level=1] [ref=e70]
+              - generic [ref=e71]:
+                - generic [ref=e72]:
+                  - generic [ref=e74]: KM
+                  - generic [ref=e75]: Aberto por Kenji Mori
+                - generic [ref=e76]:
+                  - generic [ref=e78]: RH
+                  - generic [ref=e79]: Atribuído a Ryu Hayabusa
+                - generic [ref=e80]: Criado em 6 de abr. de 2026
+                - generic [ref=e81]: Prazo 29 de abr. de 2026
+            - generic [ref=e82]:
+              - heading "Descrição" [level=2] [ref=e83]
+              - paragraph [ref=e84]: The login form does not show proper error messages when the password field is empty. Please investigate and fix.
+            - generic [ref=e85]:
+              - heading "Registro de Missões" [level=2] [ref=e86]
+              - list [ref=e87]:
+                - listitem [ref=e88]:
+                  - img [ref=e91]
+                  - generic [ref=e95]:
+                    - generic [ref=e96]:
+                      - generic [ref=e98]: KM
+                      - generic [ref=e99]: Aberto por Kenji Mori
+                    - time [ref=e100]: 13min atrás
+                - listitem [ref=e101]:
+                  - img [ref=e104]
+                  - generic [ref=e109]:
+                    - generic [ref=e110]:
+                      - generic [ref=e112]: RH
+                      - generic [ref=e113]: Atribuído a alguém por Ryu Hayabusa
+                    - time [ref=e114]: 7min atrás
+                - listitem [ref=e115]:
+                  - img [ref=e118]
+                  - generic [ref=e122]:
+                    - generic [ref=e123]:
+                      - generic [ref=e125]: RH
+                      - generic [ref=e126]: Status alterado de ? para ? por Ryu Hayabusa
+                    - time [ref=e127]: 7min atrás
+                - listitem [ref=e128]:
+                  - img [ref=e131]
+                  - generic [ref=e135]:
+                    - generic [ref=e136]:
+                      - generic [ref=e138]: RH
+                      - generic [ref=e139]: Status alterado de ? para ? por Ryu Hayabusa
+                    - time [ref=e140]: 6min atrás
+                - listitem [ref=e141]:
+                  - img [ref=e144]
+                  - generic [ref=e147]:
+                    - generic [ref=e148]:
+                      - generic [ref=e150]: RH
+                      - generic [ref=e151]: Resolvido por Ryu Hayabusa
+                    - time [ref=e152]: 6min atrás
+          - generic [ref=e154]:
+            - heading "Ações" [level=3] [ref=e155]
+            - generic [ref=e156]:
+              - generic [ref=e157]: Status
+              - combobox [ref=e158]:
+                - img [ref=e159]
+              - combobox [ref=e161]
+            - generic [ref=e162]:
+              - generic [ref=e163]: Severidade
+              - combobox [ref=e164]:
+                - img [ref=e165]
+              - combobox [ref=e167]
+            - generic [ref=e168]:
+              - generic [ref=e169]: Prazo
+              - generic [ref=e170]:
+                - textbox "Prazo" [ref=e171]: 2026-04-30
+                - button "Salvar" [disabled]
+            - generic [ref=e172]:
+              - generic [ref=e173]: Responsável
+              - combobox [ref=e174]:
+                - img [ref=e175]
+              - combobox [ref=e177]
+  - button "Open Next.js Dev Tools" [ref=e183] [cursor=pointer]:
+    - img [ref=e184]

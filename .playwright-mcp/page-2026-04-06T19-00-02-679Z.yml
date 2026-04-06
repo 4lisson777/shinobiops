@@ -1,0 +1,48 @@
+- generic:
+  - generic:
+    - generic:
+      - generic:
+        - img
+      - heading [level=1]: ShinobiOps
+      - paragraph: Inovar Sistemas — Ferramenta Interna
+    - generic:
+      - generic:
+        - heading [level=2]: Entre para o Clã
+        - paragraph: Crie seu perfil de shinobi
+      - generic:
+        - generic:
+          - generic: Nome Completo
+          - textbox:
+            - /placeholder: Ryu Hayabusa
+        - generic:
+          - generic: Email
+          - textbox:
+            - /placeholder: ninja@inovar.com
+        - generic:
+          - generic: Senha
+          - textbox:
+            - /placeholder: Mín. 8 caracteres
+        - generic:
+          - generic: Cargo
+          - combobox [expanded]:
+            - generic: Selecione seu cargo
+            - img
+          - combobox
+        - generic:
+          - generic: Ninja Alias (opcional)
+          - textbox:
+            - /placeholder: Gerado automaticamente se vazio
+        - button: Entrar para o Clã
+        - paragraph:
+          - text: Já é shinobi?
+          - link:
+            - /url: /login
+            - text: Entrar no Dojo
+  - button "Open Next.js Dev Tools" [ref=e41] [cursor=pointer]:
+    - img [ref=e42]
+  - alert
+  - listbox [ref=e47]:
+    - option "Membro de Suporte" [active] [ref=e48]:
+      - generic [ref=e50]: Membro de Suporte
+    - option "Ninja (Desenvolvedor)" [ref=e51]:
+      - generic [ref=e53]: Ninja (Desenvolvedor)

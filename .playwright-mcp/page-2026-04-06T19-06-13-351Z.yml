@@ -1,0 +1,100 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e6]
+        - generic [ref=e9]: ShinobiOps
+      - navigation [ref=e10]:
+        - generic [ref=e11]:
+          - link "Início do Suporte" [ref=e12] [cursor=pointer]:
+            - /url: /support
+            - img [ref=e13]
+            - text: Início do Suporte
+          - link "Painel de Missões" [ref=e18] [cursor=pointer]:
+            - /url: /support/queue
+            - img [ref=e19]
+            - text: Painel de Missões
+          - link "Meus Itens" [ref=e23] [cursor=pointer]:
+            - /url: /support/my-items
+            - img [ref=e24]
+            - text: Meus Itens
+        - generic [ref=e28]:
+          - link "Novo Chamado" [ref=e29] [cursor=pointer]:
+            - /url: /support/ticket/new
+            - img [ref=e30]
+            - text: Novo Chamado
+          - link "Reportar Bug" [ref=e32] [cursor=pointer]:
+            - /url: /support/bug/new
+            - img [ref=e33]
+            - text: Reportar Bug
+    - generic [ref=e37]:
+      - banner [ref=e38]:
+        - generic [ref=e40]:
+          - generic:
+            - img
+          - searchbox "Pesquisa global" [ref=e41]
+          - generic:
+            - generic: ⌘K
+        - button "Notificações (0 não lidas)" [ref=e42]:
+          - img [ref=e43]
+        - button "Menu do usuário Kenji Mori" [ref=e46]:
+          - generic [ref=e48]: KM
+          - generic [ref=e49]: Kenji Mori
+      - main [ref=e50]:
+        - generic [ref=e51]:
+          - generic [ref=e52]:
+            - heading "Meus Itens" [level=1] [ref=e53]
+            - paragraph [ref=e54]: Todos os chamados e bugs que você abriu, agrupados por status.
+          - generic [ref=e55]:
+            - group [ref=e56]:
+              - generic "Aberto 2 itens" [ref=e57] [cursor=pointer]:
+                - img [ref=e58]
+                - generic [ref=e60]: Aberto
+                - generic [ref=e61]: 2 itens
+              - generic [ref=e62]:
+                - link "BUG-0001 E2E Bug test Bug Crítica Aberto Não Atribuído 6 de abr. de 2026" [ref=e63] [cursor=pointer]:
+                  - /url: /ticket/BUG-0001
+                  - generic [ref=e64]: BUG-0001
+                  - generic [ref=e65]: E2E Bug test
+                  - generic [ref=e66]:
+                    - generic [ref=e67]: Bug
+                    - generic [ref=e68]: Crítica
+                    - generic [ref=e69]: Aberto
+                  - generic [ref=e70]: Não Atribuído
+                  - generic [ref=e71]: 6 de abr. de 2026
+                - link "TKT-0002 E2E Test Ticket - Fix login validation Ticket Alta Aberto Não Atribuído 6 de abr. de 2026" [ref=e72] [cursor=pointer]:
+                  - /url: /ticket/TKT-0002
+                  - generic [ref=e73]: TKT-0002
+                  - generic [ref=e74]: E2E Test Ticket - Fix login validation
+                  - generic [ref=e75]:
+                    - generic [ref=e76]: Ticket
+                    - generic [ref=e77]: Alta
+                    - generic [ref=e78]: Aberto
+                  - generic [ref=e79]: Não Atribuído
+                  - generic [ref=e80]: 6 de abr. de 2026
+            - group [ref=e81]:
+              - generic "Em Progresso 0 itens" [ref=e82] [cursor=pointer]:
+                - img [ref=e83]
+                - generic [ref=e85]: Em Progresso
+                - generic [ref=e86]: 0 itens
+              - paragraph [ref=e88]: Nenhum item em progresso.
+            - group [ref=e89]:
+              - generic "Aguardando Info 0 itens" [ref=e90] [cursor=pointer]:
+                - img [ref=e91]
+                - generic [ref=e93]: Aguardando Info
+                - generic [ref=e94]: 0 itens
+              - paragraph [ref=e96]: Nenhum item aguardando info.
+            - group [ref=e97]:
+              - generic "Concluído 0 itens" [ref=e98] [cursor=pointer]:
+                - img [ref=e99]
+                - generic [ref=e101]: Concluído
+                - generic [ref=e102]: 0 itens
+              - paragraph [ref=e104]: Nenhum item concluído.
+            - group [ref=e105]:
+              - generic "Cancelado 0 itens" [ref=e106] [cursor=pointer]:
+                - img [ref=e107]
+                - generic [ref=e109]: Cancelado
+                - generic [ref=e110]: 0 itens
+  - button "Open Next.js Dev Tools" [ref=e116] [cursor=pointer]:
+    - img [ref=e117]
+  - alert [ref=e120]

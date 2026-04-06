@@ -1,0 +1,74 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e6]
+        - generic [ref=e9]: ShinobiOps
+      - navigation [ref=e10]:
+        - generic [ref=e11]:
+          - link "Início do Suporte" [ref=e12] [cursor=pointer]:
+            - /url: /support
+            - img [ref=e13]
+            - text: Início do Suporte
+          - link "Painel de Missões" [ref=e18] [cursor=pointer]:
+            - /url: /support/queue
+            - img [ref=e19]
+            - text: Painel de Missões
+          - link "Meus Itens" [ref=e23] [cursor=pointer]:
+            - /url: /support/my-items
+            - img [ref=e24]
+            - text: Meus Itens
+        - generic [ref=e28]:
+          - link "Novo Chamado" [ref=e29] [cursor=pointer]:
+            - /url: /support/ticket/new
+            - img [ref=e30]
+            - text: Novo Chamado
+          - link "Reportar Bug" [ref=e32] [cursor=pointer]:
+            - /url: /support/bug/new
+            - img [ref=e33]
+            - text: Reportar Bug
+    - generic [ref=e37]:
+      - banner [ref=e38]:
+        - generic [ref=e40]:
+          - generic:
+            - img
+          - searchbox "Pesquisa global" [ref=e41]
+          - generic:
+            - generic: ⌘K
+        - button "Notificações (0 não lidas)" [ref=e42]:
+          - img [ref=e43]
+        - button "Menu do usuário Kenji Mori" [ref=e46]:
+          - generic [ref=e48]: KM
+          - generic [ref=e49]: Kenji Mori
+      - main [ref=e50]:
+        - generic [ref=e51]:
+          - generic [ref=e52]:
+            - heading "Abrir Chamado" [level=1] [ref=e53]
+            - paragraph [ref=e54]: Envie uma solicitação para o time dev — ajustes, configurações, correções de dados ou qualquer outra coisa.
+          - generic [ref=e56]:
+            - generic [ref=e57]:
+              - generic [ref=e58]:
+                - generic [ref=e59]: Título
+                - generic [ref=e60]: 38/120
+              - textbox "Título" [ref=e61]:
+                - /placeholder: Breve descrição da solicitação
+                - text: E2E Test Ticket - Fix login validation
+            - generic [ref=e62]:
+              - generic [ref=e63]: Descrição
+              - textbox "Descrição" [ref=e64]:
+                - /placeholder: "Forneça o contexto completo: o que precisa ser feito, por que e quaisquer detalhes relevantes..."
+                - text: The login form does not show proper error messages when the password field is empty. Please investigate and fix.
+            - generic [ref=e65]:
+              - generic [ref=e66]: Severidade
+              - combobox "Severidade" [active] [ref=e67]:
+                - generic:
+                  - generic: Alta — Faixa Vermelha
+                - img [ref=e68]
+              - combobox [ref=e84]
+            - generic [ref=e71]:
+              - generic [ref=e72]: Prazo
+              - textbox "Prazo" [ref=e73]
+            - button "Enviar Missão" [ref=e74]
+  - button "Open Next.js Dev Tools" [ref=e80] [cursor=pointer]:
+    - img [ref=e81]
+  - alert [ref=e85]

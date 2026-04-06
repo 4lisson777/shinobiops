@@ -1,0 +1,98 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - img [ref=e6]
+        - generic [ref=e9]: ShinobiOps
+      - navigation [ref=e10]:
+        - generic [ref=e11]:
+          - link "Início do Suporte" [ref=e12] [cursor=pointer]:
+            - /url: /support
+            - img [ref=e13]
+            - text: Início do Suporte
+          - link "Painel de Missões" [ref=e18] [cursor=pointer]:
+            - /url: /support/queue
+            - img [ref=e19]
+            - text: Painel de Missões
+          - link "Meus Itens" [ref=e23] [cursor=pointer]:
+            - /url: /support/my-items
+            - img [ref=e24]
+            - text: Meus Itens
+        - generic [ref=e28]:
+          - link "Novo Chamado" [ref=e29] [cursor=pointer]:
+            - /url: /support/ticket/new
+            - img [ref=e30]
+            - text: Novo Chamado
+          - link "Reportar Bug" [ref=e32] [cursor=pointer]:
+            - /url: /support/bug/new
+            - img [ref=e33]
+            - text: Reportar Bug
+    - generic [ref=e37]:
+      - banner [ref=e38]:
+        - generic [ref=e40]:
+          - generic:
+            - img
+          - searchbox "Pesquisa global" [ref=e41]
+          - generic:
+            - generic: ⌘K
+        - button "Notificações (0 não lidas)" [ref=e42]:
+          - img [ref=e43]
+        - button "Menu do usuário Kenji Mori" [ref=e46]:
+          - generic [ref=e48]: KM
+          - generic [ref=e49]: Kenji Mori
+      - main [ref=e50]:
+        - generic [ref=e130]:
+          - generic [ref=e131]:
+            - generic [ref=e132]:
+              - button "BUG-0001" [ref=e133]
+              - generic [ref=e134]: Bug
+              - generic [ref=e135]: Crítica
+              - generic [ref=e136]: Aberto
+            - heading "E2E Bug test" [level=1] [ref=e137]
+            - generic [ref=e138]:
+              - generic [ref=e139]:
+                - generic [ref=e141]: KM
+                - generic [ref=e142]: Aberto por Kenji Mori
+              - generic [ref=e143]: Não Atribuído
+              - generic [ref=e144]: Criado em 6 de abr. de 2026
+              - generic [ref=e145]: Prazo 19 de abr. de 2026
+          - generic [ref=e146]:
+            - heading "Descrição" [level=2] [ref=e147]
+            - paragraph [ref=e148]: Bug description generated from bug fields
+          - generic [ref=e149]:
+            - heading "Detalhes do Bug" [level=2] [ref=e150]
+            - generic [ref=e151]:
+              - generic [ref=e152]:
+                - paragraph [ref=e153]: Módulo Afetado
+                - paragraph [ref=e154]: Test Module
+              - generic [ref=e155]:
+                - paragraph [ref=e156]: Ambiente
+                - paragraph [ref=e157]: production
+            - generic [ref=e158]:
+              - paragraph [ref=e159]: Passos para Reproduzir
+              - list [ref=e160]:
+                - listitem [ref=e161]: Step one
+                - listitem [ref=e162]: Step two
+            - generic [ref=e163]:
+              - generic [ref=e164]:
+                - paragraph [ref=e165]: Comportamento Esperado
+                - paragraph [ref=e166]: Should work
+              - generic [ref=e167]:
+                - paragraph [ref=e168]: Comportamento Atual
+                - paragraph [ref=e169]: Does not work
+            - button "Copiar para Formato ClickUp" [ref=e171]:
+              - img
+              - text: Copiar para Formato ClickUp
+          - generic [ref=e172]:
+            - heading "Registro de Missões" [level=2] [ref=e173]
+            - list [ref=e174]:
+              - listitem [ref=e175]:
+                - img [ref=e178]
+                - generic [ref=e181]:
+                  - generic [ref=e182]:
+                    - generic [ref=e184]: KM
+                    - generic [ref=e185]: Aberto por Kenji Mori
+                  - time [ref=e186]: 1min atrás
+  - button "Open Next.js Dev Tools" [ref=e123] [cursor=pointer]:
+    - img [ref=e124]
+  - alert [ref=e127]: BUG-0001 — ShinobiOps | ShinobiOps
