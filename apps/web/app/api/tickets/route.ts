@@ -109,7 +109,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
-  const { session, error } = await requireRole("SUPPORT_MEMBER", "SUPPORT_LEAD")
+  const { session, error } = await requireRole("SUPPORT_MEMBER", "SUPPORT_LEAD", "QA")
   if (error) return error
 
   let body: unknown

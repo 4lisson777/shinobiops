@@ -129,13 +129,13 @@ export function MissionBoard({
       })
       if (!res.ok) {
         const data = (await res.json()) as { error?: string }
-        showMsg(data.error ?? "Failed to assign ticket.")
+        showMsg(data.error ?? "Falha ao atribuir o chamado.")
       } else {
-        showMsg("Ticket assigned to you.")
+        showMsg("Chamado atribuído a você.")
         router.refresh()
       }
     } catch {
-      showMsg("Network error. Please try again.")
+      showMsg("Erro de rede. Verifique sua conexão.")
     } finally {
       setIsPending(false)
     }
@@ -152,14 +152,14 @@ export function MissionBoard({
       })
       if (!res.ok) {
         const data = (await res.json()) as { error?: string }
-        showMsg(data.error ?? "Failed to assign ticket.")
+        showMsg(data.error ?? "Falha ao atribuir o chamado.")
       } else {
         const dev = developers?.find((d) => d.id === devId)
-        showMsg(`Ticket assigned to ${dev?.name ?? "developer"}.`)
+        showMsg(`Chamado atribuído a ${dev?.name ?? "desenvolvedor"}.`)
         router.refresh()
       }
     } catch {
-      showMsg("Network error. Please try again.")
+      showMsg("Erro de rede. Verifique sua conexão.")
     } finally {
       setIsPending(false)
     }

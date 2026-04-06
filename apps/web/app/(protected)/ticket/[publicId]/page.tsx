@@ -26,11 +26,11 @@ export async function generateMetadata({
 }
 
 const STATUS_LABELS: Record<string, string> = {
-  OPEN: "Open",
-  IN_PROGRESS: "In Progress",
-  WAITING_FOR_INFO: "Waiting for Info",
-  DONE: "Done",
-  CANCELLED: "Cancelled",
+  OPEN: "Aberto",
+  IN_PROGRESS: "Em Progresso",
+  WAITING_FOR_INFO: "Aguardando Info",
+  DONE: "Concluído",
+  CANCELLED: "Cancelado",
 }
 
 const STATUS_VARIANT: Record<
@@ -164,7 +164,7 @@ export default async function TicketDetailPage({
                   className="size-5"
                 />
                 <span>
-                  Opened by{" "}
+                  Aberto por{" "}
                   <span className="font-medium text-foreground">
                     {ticket.openedBy.name}
                   </span>
@@ -180,19 +180,19 @@ export default async function TicketDetailPage({
                     className="size-5"
                   />
                   <span>
-                    Assigned to{" "}
+                    Atribuído a{" "}
                     <span className="font-medium text-foreground">
                       {ticket.assignedTo.name}
                     </span>
                   </span>
                 </span>
               ) : (
-                <span className="italic">Unassigned</span>
+                <span className="italic">Não Atribuído</span>
               )}
 
               <span>
-                Created{" "}
-                {ticket.createdAt.toLocaleDateString("en-US", {
+                Criado em{" "}
+                {ticket.createdAt.toLocaleDateString("pt-BR", {
                   month: "short",
                   day: "numeric",
                   year: "numeric",
@@ -200,13 +200,13 @@ export default async function TicketDetailPage({
               </span>
 
               <span className={isPastDue ? "font-medium text-destructive" : ""}>
-                Due{" "}
-                {ticket.deadline.toLocaleDateString("en-US", {
+                Prazo{" "}
+                {ticket.deadline.toLocaleDateString("pt-BR", {
                   month: "short",
                   day: "numeric",
                   year: "numeric",
                 })}
-                {isPastDue && " — OVERDUE"}
+                {isPastDue && " — ATRASADO"}
               </span>
             </div>
           </div>
@@ -216,7 +216,7 @@ export default async function TicketDetailPage({
           {/* Description */}
           <div className="flex flex-col gap-2">
             <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-              Description
+              Descrição
             </h2>
             <p className="whitespace-pre-wrap text-sm leading-relaxed">
               {ticket.description}
@@ -229,20 +229,20 @@ export default async function TicketDetailPage({
               <Separator />
               <div className="flex flex-col gap-4">
                 <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                  Bug Details
+                  Detalhes do Bug
                 </h2>
 
                 {/* Module, Environment, Customer */}
                 <div className="grid gap-3 sm:grid-cols-3">
                   <div>
                     <p className="text-xs font-medium text-muted-foreground">
-                      Affected Module
+                      Módulo Afetado
                     </p>
                     <p className="text-sm">{ticket.bugReport.affectedModule}</p>
                   </div>
                   <div>
                     <p className="text-xs font-medium text-muted-foreground">
-                      Environment
+                      Ambiente
                     </p>
                     <p className="text-sm capitalize">
                       {ticket.bugReport.environment.toLowerCase()}
@@ -251,7 +251,7 @@ export default async function TicketDetailPage({
                   {ticket.bugReport.customerId && (
                     <div>
                       <p className="text-xs font-medium text-muted-foreground">
-                        Customer
+                        Cliente
                       </p>
                       <p className="text-sm">{ticket.bugReport.customerId}</p>
                     </div>
@@ -261,7 +261,7 @@ export default async function TicketDetailPage({
                 {/* Steps to Reproduce */}
                 <div>
                   <p className="mb-1.5 text-xs font-medium text-muted-foreground">
-                    Steps to Reproduce
+                    Passos para Reproduzir
                   </p>
                   <ol className="ml-4 flex flex-col gap-1 text-sm">
                     {ticket.bugReport.stepsToReproduce
@@ -279,7 +279,7 @@ export default async function TicketDetailPage({
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="rounded-lg border border-green-500/20 bg-green-500/5 p-3">
                     <p className="mb-1 text-xs font-medium text-green-700 dark:text-green-400">
-                      Expected Behavior
+                      Comportamento Esperado
                     </p>
                     <p className="whitespace-pre-wrap text-sm">
                       {ticket.bugReport.expectedBehavior}
@@ -287,7 +287,7 @@ export default async function TicketDetailPage({
                   </div>
                   <div className="rounded-lg border border-destructive/20 bg-destructive/5 p-3">
                     <p className="mb-1 text-xs font-medium text-destructive">
-                      Actual Behavior
+                      Comportamento Atual
                     </p>
                     <p className="whitespace-pre-wrap text-sm">
                       {ticket.bugReport.actualBehavior}

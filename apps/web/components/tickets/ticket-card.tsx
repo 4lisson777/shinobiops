@@ -132,7 +132,7 @@ export function TicketCard({
             )}
           >
             Prazo{" "}
-            {new Date(ticket.deadline).toLocaleDateString("en-US", {
+            {new Date(ticket.deadline).toLocaleDateString("pt-BR", {
               month: "short",
               day: "numeric",
               year: "numeric",

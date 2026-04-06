@@ -26,7 +26,7 @@ import { UserAvatar } from "@/components/user-avatar"
 
 // ---- Types ----------------------------------------------------------------
 
-type Role = "TECH_LEAD" | "DEVELOPER" | "SUPPORT_LEAD" | "SUPPORT_MEMBER"
+type Role = "TECH_LEAD" | "DEVELOPER" | "SUPPORT_LEAD" | "SUPPORT_MEMBER" | "QA"
 
 interface User {
   id: string
@@ -46,6 +46,7 @@ const ROLE_LABELS: Record<Role, string> = {
   DEVELOPER: "Ninja (Desenvolvedor)",
   SUPPORT_LEAD: "Líder de Suporte",
   SUPPORT_MEMBER: "Membro de Suporte",
+  QA: "QA",
 }
 
 // ---- Upload icon ----------------------------------------------------------
@@ -373,7 +374,7 @@ export function TeamManagement() {
                   {/* Last active */}
                   <TableCell className="hidden lg:table-cell">
                     <span className="text-xs text-muted-foreground">
-                      {new Date(user.updatedAt).toLocaleDateString("en-US", {
+                      {new Date(user.updatedAt).toLocaleDateString("pt-BR", {
                         month: "short",
                         day: "numeric",
                         year: "numeric",

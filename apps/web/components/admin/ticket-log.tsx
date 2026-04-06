@@ -440,7 +440,7 @@ export function TicketLog() {
                   </TableCell>
                   <TableCell>
                     <span className="text-xs text-muted-foreground">
-                      {new Date(ticket.createdAt).toLocaleDateString("en-US", {
+                      {new Date(ticket.createdAt).toLocaleDateString("pt-BR", {
                         year: "numeric",
                       })}
                     </span>

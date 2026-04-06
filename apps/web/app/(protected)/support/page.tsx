@@ -12,9 +12,9 @@ export default function SupportPage() {
     <div className="flex min-h-full flex-col items-center justify-center gap-8 p-8">
       {/* Page heading */}
       <div className="text-center">
-        <h1 className="text-2xl font-bold tracking-tight">Support Home</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Início do Suporte</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          What do you need to report to the dev team?
+          O que você precisa reportar para a equipe de desenvolvimento?
         </p>
       </div>
 
@@ -40,9 +40,9 @@ export default function SupportPage() {
             </svg>
           </div>
           <div>
-            <h2 className="text-base font-semibold">Open a Ticket</h2>
+            <h2 className="text-base font-semibold">Abrir Chamado</h2>
             <p className="mt-1 text-xs text-muted-foreground">
-              Feature tweaks, configuration requests, data fixes, and other dev team tasks
+              Ajustes de funcionalidade, configurações, correções de dados e outras tarefas para o time dev
             </p>
           </div>
           <Button
@@ -50,7 +50,7 @@ export default function SupportPage() {
             asChild
             className="mt-auto bg-[oklch(0.18_0.05_265)] text-white hover:bg-[oklch(0.24_0.06_265)] dark:bg-[oklch(0.56_0.22_15)] dark:hover:bg-[oklch(0.50_0.22_15)]"
           >
-            <span>Open Ticket</span>
+            <span>Abrir Chamado</span>
           </Button>
         </Link>
 
@@ -76,9 +76,9 @@ export default function SupportPage() {
             </svg>
           </div>
           <div>
-            <h2 className="text-base font-semibold">Threat Report</h2>
+            <h2 className="text-base font-semibold">Relatório de Ameaça</h2>
             <p className="mt-1 text-xs text-muted-foreground">
-              Customer-reported errors that appear to be defects in the software
+              Erros reportados por clientes que parecem ser defeitos no software
             </p>
           </div>
           <Button
@@ -86,7 +86,7 @@ export default function SupportPage() {
             asChild
             className="mt-auto bg-[oklch(0.56_0.22_15)] text-white hover:bg-[oklch(0.50_0.22_15)]"
           >
-            <span>Report Bug</span>
+            <span>Reportar Bug</span>
           </Button>
         </Link>
       </div>

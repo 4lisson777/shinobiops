@@ -21,7 +21,7 @@ export async function POST(
   request: NextRequest,
   context: RouteContext
 ): Promise<NextResponse> {
-  const { session, error } = await requireRole("DEVELOPER", "TECH_LEAD")
+  const { session, error } = await requireRole("DEVELOPER", "TECH_LEAD", "QA")
   if (error) return error
 
   const { id } = await context.params

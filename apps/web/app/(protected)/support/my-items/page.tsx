@@ -20,11 +20,11 @@ const STATUS_ORDER = [
 type TicketStatus = (typeof STATUS_ORDER)[number]
 
 const STATUS_LABELS: Record<TicketStatus, string> = {
-  OPEN: "Open",
-  IN_PROGRESS: "In Progress",
-  WAITING_FOR_INFO: "Waiting for Info",
-  DONE: "Done",
-  CANCELLED: "Cancelled",
+  OPEN: "Aberto",
+  IN_PROGRESS: "Em Progresso",
+  WAITING_FOR_INFO: "Aguardando Info",
+  DONE: "Concluído",
+  CANCELLED: "Cancelado",
 }
 
 const STATUS_BADGE_VARIANT: Record<
@@ -76,20 +76,20 @@ export default async function MyItemsPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold tracking-tight">My Items</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Meus Itens</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          All tickets and bug reports you have opened, grouped by status.
+          Todos os chamados e bugs que você abriu, agrupados por status.
         </p>
       </div>
 
       {tickets.length === 0 && (
         <div className="rounded-lg border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
-          You have not opened any tickets or bug reports yet.{" "}
+          Você ainda não abriu nenhum chamado ou bug.{" "}
           <Link
             href="/support"
             className="font-medium underline-offset-4 hover:underline"
           >
-            Open one now
+            Abrir agora
           </Link>
         </div>
       )}
@@ -114,14 +114,14 @@ export default async function MyItemsPage() {
                 </svg>
                 <span>{STATUS_LABELS[status]}</span>
                 <span className="ml-auto text-xs font-normal text-muted-foreground">
-                  {items.length} item{items.length !== 1 ? "s" : ""}
+                  {items.length} {items.length !== 1 ? "itens" : "item"}
                 </span>
               </summary>
 
               <div className="mt-2 flex flex-col gap-1.5">
                 {items.length === 0 ? (
                   <p className="px-4 py-3 text-xs text-muted-foreground">
-                    No {STATUS_LABELS[status].toLowerCase()} items.
+                    Nenhum item {STATUS_LABELS[status].toLowerCase()}.
                   </p>
                 ) : (
                   items.map((ticket) => (
@@ -162,12 +162,12 @@ export default async function MyItemsPage() {
                       <span className="hidden text-xs text-muted-foreground sm:block">
                         {ticket.assignedTo
                           ? ticket.assignedTo.name
-                          : "Unassigned"}
+                          : "Não Atribuído"}
                       </span>
 
                       {/* Created date */}
                       <span className="hidden text-xs text-muted-foreground lg:block">
-                        {ticket.createdAt.toLocaleDateString("en-US", {
+                        {ticket.createdAt.toLocaleDateString("pt-BR", {
                           month: "short",
                           day: "numeric",
                           year: "numeric",

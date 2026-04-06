@@ -138,7 +138,6 @@ function getNavItems(role: Role): { primary: NavItem[]; secondary?: NavItem[] } 
     { label: "Painel Ninja", href: "/dev", icon: <GridIcon /> },
     { label: "Painel de Missões", href: "/dev/queue", icon: <ListIcon /> },
   ]
-
   const adminPrimary: NavItem[] = [
     { label: "Painel Ninja", href: "/dev", icon: <GridIcon /> },
     { label: "Painel de Missões", href: "/dev/queue", icon: <ListIcon /> },
@@ -150,6 +149,15 @@ function getNavItems(role: Role): { primary: NavItem[]; secondary?: NavItem[] } 
     { label: "Pergaminhos de Status", href: "/admin/checkpoints", icon: <ClockIcon /> },
     { label: "Log", href: "/admin/log", icon: <ScrollIcon /> },
   ]
+  const qaPrimary: NavItem[] = [
+    { label: "Painel Ninja", href: "/dev", icon: <GridIcon /> },
+    { label: "Painel de Missões", href: "/dev/queue", icon: <ListIcon /> },
+    { label: "Dojô de Comando", href: "/admin", icon: <ShurikenIcon /> },
+  ]
+  const qaSecondary: NavItem[] = [
+    { label: "Notificações", href: "/admin/notifications", icon: <BellIcon /> },
+    { label: "Log", href: "/admin/log", icon: <ScrollIcon /> },
+  ]
 
   switch (role) {
     case "SUPPORT_MEMBER":
@@ -159,6 +167,8 @@ function getNavItems(role: Role): { primary: NavItem[]; secondary?: NavItem[] } 
       return { primary: devPrimary }
     case "TECH_LEAD":
       return { primary: adminPrimary, secondary: adminSecondary }
+    case "QA":
+      return { primary: qaPrimary, secondary: qaSecondary }
   }
 }
 

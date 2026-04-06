@@ -18,17 +18,17 @@ import { cn } from "@workspace/ui/lib/utils"
 import { generateClickUpMarkdown } from "@/lib/clickup-export"
 
 const schema = z.object({
-  title: z.string().min(1, "Title is required"),
-  affectedModule: z.string().min(1, "Affected module is required"),
-  stepsToReproduce: z.string().min(1, "Steps to reproduce are required"),
-  expectedBehavior: z.string().min(1, "Expected behavior is required"),
-  actualBehavior: z.string().min(1, "Actual behavior is required"),
+  title: z.string().min(1, "Título é obrigatório"),
+  affectedModule: z.string().min(1, "Módulo afetado é obrigatório"),
+  stepsToReproduce: z.string().min(1, "Passos para reproduzir são obrigatórios"),
+  expectedBehavior: z.string().min(1, "Comportamento esperado é obrigatório"),
+  actualBehavior: z.string().min(1, "Comportamento atual é obrigatório"),
   severity: z.enum(["LOW", "MEDIUM", "HIGH", "CRITICAL"], {
-    required_error: "Severity is required",
+    required_error: "Severidade é obrigatória",
   }),
-  deadline: z.string().min(1, "Deadline is required"),
+  deadline: z.string().min(1, "Prazo é obrigatório"),
   environment: z.enum(["PRODUCTION", "STAGING", "OTHER"], {
-    required_error: "Environment is required",
+    required_error: "Ambiente é obrigatório",
   }),
   customerId: z.string().optional(),
 })

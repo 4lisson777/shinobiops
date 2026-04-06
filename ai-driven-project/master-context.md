@@ -1,10 +1,10 @@
 # Master Context — ShinobiOps
 
-**System Version:** 3.1.0  
-**Last Updated:** 2026-04-06 (Phase 3 nearly complete — 12/13 tasks done; Phase 5 partial: notification routing + error pages; Prisma 7 migrated to adapter-better-sqlite3)  
+**System Version:** 3.2.0  
+**Last Updated:** 2026-04-06 (Phase 5 tasks audit: 15/16 done; 5.15 pending; Translation complete (5.16); All UI fully PT-BR)  
 **Maintainer:** Alisson (Tech Lead)  
 **Project Type:** Internal Fullstack Web Application (Next.js Monorepo)  
-**Language:** PT-BR (product) / EN-US (code & docs)
+**Language:** PT-BR (product UI) / EN-US (source code & internal docs)
 
 ---
 
@@ -25,14 +25,15 @@ ShinobiOps is an internal platform for Inovar Sistemas that unites customer supp
 | CTX-FEAT-002 | Ninja Board | `features/ninja-board.md` | Feature | 2026-04-06 | Dev team overview, status cards, TV mode — Ninja Board + DeveloperCard implemented; TV mode page exists but TvBoard is a stub | CTX-CORE-002, CTX-INFRA-003 |
 | CTX-FEAT-003 | Ticket Lifecycle | `features/ticket-lifecycle.md` | Feature | 2026-04-06 | Ticket/Bug CRUD, statuses, timeline events | CTX-CORE-002 |
 | CTX-FEAT-004 | Notifications | `features/notifications.md` | Feature | 2026-04-06 | SSE push, sound alerts, notification center — fully implemented; missing: new ticket/bug banner on Ninja Board (3.13) | CTX-INFRA-003, CTX-CORE-002 |
-| CTX-FEAT-005 | Checkpoints | `features/checkpoints.md` | Feature | 2026-04-05 | Status Scroll system, configurable intervals — API + UI are stubs; schema not yet migrated | CTX-CORE-002, CTX-FEAT-004 |
-| CTX-FEAT-006 | Smoke Signals | `features/smoke-signals.md` | Feature | 2026-04-05 | Help request system between developers — API + UI are stubs; schema not yet migrated | CTX-CORE-002, CTX-FEAT-004 |
+| CTX-FEAT-005 | Checkpoints | `features/checkpoints.md` | Feature | 2026-04-06 | Status Scroll system, configurable intervals — Full UI + API implementation; schema migrated | CTX-CORE-002, CTX-FEAT-004 |
+| CTX-FEAT-006 | Smoke Signals | `features/smoke-signals.md` | Feature | 2026-04-06 | Help request system between developers — Full UI + API implementation (including sound triggers) | CTX-CORE-002, CTX-FEAT-004 |
 | CTX-INFRA-001 | Deployment | `infrastructure/deployment.md` | Infrastructure | 2026-04-05 | Docker, docker-compose, production config | CTX-INFRA-002 |
-| CTX-INFRA-002 | Database | `infrastructure/database.md` | Infrastructure | 2026-04-06 | SQLite config, WAL mode, Prisma 7 + adapter-better-sqlite3, generated client at `generated/prisma/client` | — |
+| CTX-INFRA-002 | Database | `infrastructure/database.md` | Infrastructure | 2026-04-06 | SQLite config, WAL mode, Prisma 7, Seeding (`prisma/seed.ts`) fully implemented | — |
 | CTX-INFRA-003 | Real-Time | `infrastructure/realtime.md` | Infrastructure | 2026-04-06 | SSE fully implemented — `lib/sse-emitter.ts`, `app/api/sse/route.ts`, `lib/sse-context.tsx`, `hooks/use-sse.ts` | CTX-CORE-003 |
-| CTX-UTIL-001 | UI System | `utilities/ui-system.md` | Utility | 2026-04-05 | shadcn/ui, Tailwind, theme, design tokens | CTX-CORE-001 |
-| CTX-UTIL-002 | API Patterns | `utilities/api-patterns.md` | Utility | 2026-04-06 | API route conventions, error handling, validation | CTX-CORE-003 |
+| CTX-UTIL-001 | UI System | `utilities/ui-system.md` | Utility | 2026-04-06 | shadcn/ui, Tailwind, design tokens — 100% PT-BR translated | CTX-CORE-001 |
+| CTX-UTIL-002 | API Patterns | `utilities/api-patterns.md` | Utility | 2026-04-06 | API route conventions, logging (`TicketEvent`), validation | CTX-CORE-003 |
 | CTX-UTIL-003 | Dev Tooling | `utilities/dev-tooling.md` | Utility | 2026-04-05 | Turbo, ESLint, Prettier, TypeScript config | CTX-CORE-001 |
+| CTX-UTIL-004 | Documentation | `utilities/docs.md` | Utility | 2026-04-06 | Comprehensive docs in `/docs` (Audit Logs, Roles, Seeding, Smoke Signals) | — |
 
 ---
 

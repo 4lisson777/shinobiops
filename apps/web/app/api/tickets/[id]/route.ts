@@ -75,7 +75,7 @@ export async function PATCH(
   // Status changes require DEVELOPER or TECH_LEAD.
   // Severity/deadline changes require TECH_LEAD.
   // We read the body first, then enforce role based on what's being changed.
-  const { session, error } = await requireRole("DEVELOPER", "TECH_LEAD")
+  const { session, error } = await requireRole("DEVELOPER", "TECH_LEAD", "QA")
   if (error) return error
 
   const { id } = await context.params
@@ -97,10 +97,10 @@ export async function PATCH(
 
   const { status, severity, deadline } = parsed.data
 
-  // Severity and deadline changes are TECH_LEAD only
-  if ((severity !== undefined || deadline !== undefined) && session.role !== "TECH_LEAD") {
+  // Severity and deadline changes are TECH_LEAD or QA only
+  if ((severity !== undefined || deadline !== undefined) && !["TECH_LEAD", "QA"].includes(session.role)) {
     return NextResponse.json(
-      { error: "Only TECH_LEAD can change severity or deadline" },
+      { error: "Apenas TECH_LEAD ou QA podem alterar a severidade ou o prazo" },
       { status: 403 }
     )
   }
@@ -247,7 +247,7 @@ export async function DELETE(
   _request: NextRequest,
   context: RouteContext
 ): Promise<NextResponse> {
-  const { session, error } = await requireRole("TECH_LEAD")
+  const { session, error } = await requireRole("TECH_LEAD", "QA")
   if (error) return error
 
   const { id } = await context.params
@@ -276,7 +276,7 @@ export async function DELETE(
         ticketId: id,
         eventType: "CANCELLED",
         actorId: session.userId,
-        metadata: JSON.stringify({ reason: "Excluído por TECH_LEAD" }),
+        metadata: JSON.stringify({ reason: `Excluído por ${session.role}` }),
       },
     })
 

@@ -15,7 +15,7 @@ async function getOrCreateTvConfig() {
 }
 
 export async function GET(): Promise<NextResponse> {
-  const { error } = await requireRole("TECH_LEAD")
+  const { error } = await requireRole("TECH_LEAD", "QA")
   if (error) return error
 
   const config = await getOrCreateTvConfig()
@@ -23,7 +23,7 @@ export async function GET(): Promise<NextResponse> {
 }
 
 export async function PATCH(request: NextRequest): Promise<NextResponse> {
-  const { error } = await requireRole("TECH_LEAD")
+  const { error } = await requireRole("TECH_LEAD", "QA")
   if (error) return error
 
   let body: unknown

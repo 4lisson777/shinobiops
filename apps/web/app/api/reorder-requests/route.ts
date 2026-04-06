@@ -10,7 +10,7 @@ const createSchema = z.object({
 })
 
 export async function GET(): Promise<NextResponse> {
-  const { error } = await requireRole("SUPPORT_LEAD", "TECH_LEAD")
+  const { error } = await requireRole("SUPPORT_LEAD", "TECH_LEAD", "QA")
   if (error) return error
 
   const requests = await db.reorderRequest.findMany({
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   const { session, error } = await requireAuth()
   if (error) return error
 
-  if (!["SUPPORT_MEMBER", "SUPPORT_LEAD", "TECH_LEAD"].includes(session.role)) {
+  if (!["SUPPORT_MEMBER", "SUPPORT_LEAD", "TECH_LEAD", "QA"].includes(session.role)) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 })
   }
 

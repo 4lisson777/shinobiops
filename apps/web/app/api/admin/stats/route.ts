@@ -12,7 +12,7 @@ const OPEN_STATUSES: TicketStatus[] = [
 const CLOSED_STATUSES: TicketStatus[] = [TicketStatus.DONE, TicketStatus.CANCELLED]
 
 export async function GET(): Promise<NextResponse> {
-  const { error } = await requireRole("TECH_LEAD")
+  const { error } = await requireRole("TECH_LEAD", "QA")
   if (error) return error
 
   const [

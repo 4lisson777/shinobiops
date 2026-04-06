@@ -123,7 +123,7 @@ export function ProfileForm() {
     setProfileSuccess(false)
 
     const errors: ProfileFieldErrors = {}
-    if (!name.trim()) errors.name = ["Name is required"]
+    if (!name.trim()) errors.name = ["Nome é obrigatório"]
     if (Object.keys(errors).length > 0) {
       setProfileFieldErrors(errors)
       return
@@ -195,7 +195,7 @@ export function ProfileForm() {
 
       if (!res.ok) {
         if (data.details) setPasswordFieldErrors(data.details)
-        else setPasswordError(data.error ?? "Password update failed. Please try again.")
+        else setPasswordError(data.error ?? "Falha ao atualizar a senha. Tente novamente.")
         return
       }
 

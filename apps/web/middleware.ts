@@ -26,10 +26,12 @@ const PUBLIC_API_PREFIXES = [
 // Role-based access rules: maps path prefix to allowed roles.
 // Order matters — more specific prefixes should come first.
 const ROLE_GUARDS: Array<{ prefix: string; roles: string[] }> = [
-  { prefix: "/admin", roles: ["TECH_LEAD"] },
-  { prefix: "/support", roles: ["SUPPORT_MEMBER", "SUPPORT_LEAD", "TECH_LEAD"] },
+  { prefix: "/admin/team", roles: ["TECH_LEAD"] },
+  { prefix: "/admin/checkpoints", roles: ["TECH_LEAD"] },
+  { prefix: "/admin", roles: ["TECH_LEAD", "QA"] },
+  { prefix: "/support", roles: ["SUPPORT_MEMBER", "SUPPORT_LEAD", "TECH_LEAD", "QA"] },
   // /dev/tv is already public (excluded above), other /dev routes need dev roles
-  { prefix: "/dev", roles: ["DEVELOPER", "TECH_LEAD"] },
+  { prefix: "/dev", roles: ["DEVELOPER", "TECH_LEAD", "QA"] },
 ]
 
 function isPublicPath(pathname: string): boolean {
@@ -72,6 +74,7 @@ function getRoleHome(role: string): string {
   switch (role) {
     case "TECH_LEAD":
     case "DEVELOPER":
+    case "QA":
       return "/dev"
     case "SUPPORT_LEAD":
     case "SUPPORT_MEMBER":

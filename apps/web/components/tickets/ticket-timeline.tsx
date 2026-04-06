@@ -35,31 +35,31 @@ function getEventLabel(
 ): string {
   switch (eventType) {
     case "CREATED":
-      return `Opened by ${actorName}`
+      return `Aberto por ${actorName}`
     case "STATUS_CHANGED":
-      return `Status changed from ${meta.from ?? "?"} to ${meta.to ?? "?"} by ${actorName}`
+      return `Status alterado de ${meta.from ?? "?"} para ${meta.to ?? "?"} por ${actorName}`
     case "ASSIGNED":
-      return `Assigned to ${meta.assigneeName ?? meta.assigneeId ?? "someone"} by ${actorName}`
+      return `Atribuído a ${meta.assigneeName ?? meta.assigneeId ?? "alguém"} por ${actorName}`
     case "REASSIGNED":
-      return `Reassigned from ${meta.fromName ?? meta.fromId ?? "?"} to ${meta.toName ?? meta.toId ?? "?"} by ${actorName}`
+      return `Reatribuído de ${meta.fromName ?? meta.fromId ?? "?"} para ${meta.toName ?? meta.toId ?? "?"} por ${actorName}`
     case "SEVERITY_CHANGED":
-      return `Severity changed from ${meta.from ?? "?"} to ${meta.to ?? "?"} by ${actorName}`
+      return `Severidade alterada de ${meta.from ?? "?"} para ${meta.to ?? "?"} por ${actorName}`
     case "DEADLINE_CHANGED":
-      return `Deadline updated by ${actorName}`
+      return `Prazo atualizado por ${actorName}`
     case "PRIORITY_REORDERED":
-      return `Priority reordered by ${actorName}`
+      return `Prioridade reordenada por ${actorName}`
     case "REORDER_REQUESTED":
-      return `Priority reorder requested by ${actorName}`
+      return `Reordenação de prioridade solicitada por ${actorName}`
     case "REORDER_APPROVED":
-      return `Reorder request approved by ${actorName}`
+      return `Solicitação de reordenação aprovada por ${actorName}`
     case "REORDER_DECLINED":
-      return `Reorder request declined by ${actorName}`
+      return `Solicitação de reordenação recusada por ${actorName}`
     case "DONE":
-      return `Resolved by ${actorName}`
+      return `Resolvido por ${actorName}`
     case "CANCELLED":
-      return `Cancelled by ${actorName}`
+      return `Cancelado por ${actorName}`
     default:
-      return `${eventType.replace(/_/g, " ")} by ${actorName}`
+      return `${eventType.replace(/_/g, " ")} por ${actorName}`
   }
 }
 
@@ -142,18 +142,18 @@ function RelativeTime({ date }: { date: string | Date }) {
   const diffDays = Math.floor(diffHours / 24)
 
   let relative: string
-  if (diffMins < 1) relative = "just now"
-  else if (diffMins < 60) relative = `${diffMins}m ago`
-  else if (diffHours < 24) relative = `${diffHours}h ago`
-  else if (diffDays < 7) relative = `${diffDays}d ago`
+  if (diffMins < 1) relative = "agora mesmo"
+  else if (diffMins < 60) relative = `${diffMins}min atrás`
+  else if (diffHours < 24) relative = `${diffHours}h atrás`
+  else if (diffDays < 7) relative = `${diffDays}d atrás`
   else
-    relative = d.toLocaleDateString("en-US", {
+    relative = d.toLocaleDateString("pt-BR", {
       month: "short",
       day: "numeric",
       year: "numeric",
     })
 
-  const absolute = d.toLocaleString("en-US", {
+  const absolute = d.toLocaleString("pt-BR", {
     month: "short",
     day: "numeric",
     year: "numeric",

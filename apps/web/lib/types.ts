@@ -6,6 +6,7 @@ export const Role = {
   DEVELOPER: "DEVELOPER",
   SUPPORT_LEAD: "SUPPORT_LEAD",
   SUPPORT_MEMBER: "SUPPORT_MEMBER",
+  QA: "QA",
 } as const
 
 export type Role = (typeof Role)[keyof typeof Role]
@@ -15,6 +16,7 @@ export const ALL_ROLES: Role[] = [
   Role.DEVELOPER,
   Role.SUPPORT_LEAD,
   Role.SUPPORT_MEMBER,
+  Role.QA,
 ]
 
 export const DevStatus = {

@@ -12,6 +12,7 @@ enum Role {
   DEVELOPER
   SUPPORT_LEAD
   SUPPORT_MEMBER
+  QA
 }
 
 enum TicketType {

@@ -42,9 +42,10 @@ function BellIcon({ className }: { className?: string }) {
 }
 
 // Maps notification type to a sound tone
-function getToneForType(type: string): "A" | "B" | "E" | null {
+function getToneForType(type: string): "A" | "B" | "C" | "E" | null {
   if (type === "TICKET_CREATED") return "A"
   if (type === "BUG_CREATED") return "B"
+  if (type === "HELP_REQUEST_NEW") return "C"
   if (type === "TICKET_DONE" || type === "TICKET_CANCELLED") return "E"
   return null
 }

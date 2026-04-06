@@ -12,7 +12,7 @@ const statusSchema = z.object({
 })
 
 export async function PATCH(request: NextRequest): Promise<NextResponse> {
-  const { session, error } = await requireRole("DEVELOPER", "TECH_LEAD")
+  const { session, error } = await requireRole("DEVELOPER", "TECH_LEAD", "QA")
   if (error) return error
 
   let body: unknown

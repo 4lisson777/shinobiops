@@ -32,7 +32,7 @@ export async function GET(): Promise<NextResponse> {
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
-  const { session, error } = await requireRole("DEVELOPER", "TECH_LEAD")
+  const { session, error } = await requireRole("DEVELOPER", "TECH_LEAD", "QA")
   if (error) return error
 
   const body: unknown = await request.json()

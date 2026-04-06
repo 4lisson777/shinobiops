@@ -54,9 +54,9 @@ export default async function DevQueuePage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold tracking-tight">Mission Board</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Quadro de Missões</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Active missions ordered by priority. Claim tickets, filter by type, severity, or assignee.
+          Missões ativas ordenadas por prioridade. Assuma chamados e filtre por tipo, severidade ou responsável.
         </p>
       </div>
       <MissionBoard

@@ -17,12 +17,12 @@ import {
 import { cn } from "@workspace/ui/lib/utils"
 
 const schema = z.object({
-  title: z.string().min(1, "Title is required").max(120, "Title must be at most 120 characters"),
-  description: z.string().min(1, "Description is required"),
+  title: z.string().min(1, "Título é obrigatório").max(120, "O título deve ter no máximo 120 caracteres"),
+  description: z.string().min(1, "Descrição é obrigatória"),
   severity: z.enum(["LOW", "MEDIUM", "HIGH", "CRITICAL"], {
-    required_error: "Severity is required",
+    required_error: "Severidade é obrigatória",
   }),
-  deadline: z.string().min(1, "Deadline is required"),
+  deadline: z.string().min(1, "Prazo é obrigatório"),
 })
 
 type FormData = z.infer<typeof schema>

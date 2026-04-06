@@ -12,7 +12,7 @@ export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse> {
-  const { session, error } = await requireRole("SUPPORT_LEAD", "TECH_LEAD")
+  const { session, error } = await requireRole("SUPPORT_LEAD", "TECH_LEAD", "QA")
   if (error) return error
 
   const { id } = await params

@@ -81,13 +81,13 @@ export function ReorderRequestDialog({
       })
       if (!res.ok) {
         const data = await res.json() as { error?: string }
-        setError(data.error ?? "Failed to submit request.")
+        setError(data.error ?? "Falha ao enviar a solicitação.")
         return
       }
       onSuccess?.()
       onClose()
     } catch {
-      setError("Network error. Please try again.")
+      setError("Erro de rede. Verifique sua conexão.")
     } finally {
       setIsSubmitting(false)
     }
@@ -107,13 +107,13 @@ export function ReorderRequestDialog({
       })
       if (!res.ok) {
         const data = await res.json() as { error?: string }
-        setError(data.error ?? "Failed to reorder ticket.")
+        setError(data.error ?? "Falha ao reordenar o chamado.")
         return
       }
       onSuccess?.()
       onClose()
     } catch {
-      setError("Network error. Please try again.")
+      setError("Erro de rede. Verifique sua conexão.")
     } finally {
       setIsSubmitting(false)
     }
@@ -134,11 +134,11 @@ export function ReorderRequestDialog({
         return
       }
       setPendingRequests((prev) => prev.filter((r) => r.id !== requestId))
-      setSuccessMsg(action === "approve" ? "Request approved." : "Request declined.")
+      setSuccessMsg(action === "approve" ? "Solicitação aprovada." : "Solicitação recusada.")
       setTimeout(() => setSuccessMsg(null), 3000)
       if (action === "approve") onSuccess?.()
     } catch {
-      setError("Network error. Please try again.")
+      setError("Erro de rede. Verifique sua conexão.")
     } finally {
       setActionPending(null)
     }

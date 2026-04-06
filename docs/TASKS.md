@@ -87,32 +87,32 @@
 
 > Step file: `docs/steps-5.md`
 
-- [ ] 5.1 Admin dashboard -- Command Dojo (`/admin`) with stats overview
-- [ ] 5.2 Team management page (`/admin/team`) -- user table, role change, deactivate, avatar
+- [x] 5.1 Admin dashboard -- Command Dojo (`/admin`) with stats overview
+- [x] 5.2 Team management page (`/admin/team`) -- user table, role change, deactivate, avatar
 - [x] 5.3 Notification routing page (`/admin/notifications`) -- per-dev ticket/bug toggles
-- [ ] 5.4 Checkpoint configuration page (`/admin/checkpoints`) -- config form + response history
-- [ ] 5.5 Ticket and bug log page (`/admin/log`) -- full history with search, filter, sort, pagination
-- [ ] 5.6 TV Mode -- Ninja Board display (`/dev/tv`) -- read-only, full-screen, auto-refresh
-- [ ] 5.7 TV Mode admin settings (enable/disable toggle, refresh interval)
-- [ ] 5.8 Global search (header search bar, publicId direct nav, title search dropdown, Ctrl+K)
-- [ ] 5.9 Ninja theme polish (terminology, icons, colors, badges, consistency review)
-- [ ] 5.10 Avatar system (upload, resize, initials fallback, reusable UserAvatar component)
-- [ ] 5.11 Docker setup (multi-stage Dockerfile, docker-compose.yml, entrypoint with migrate)
-- [ ] 5.12 Environment and production hardening (env validation, secure cookies, rate limiting, CORS)
+- [x] 5.4 Checkpoint configuration page (`/admin/checkpoints`) -- config form + response history
+- [x] 5.5 Ticket and bug log page (`/admin/log`) -- full history with search, filter, sort, pagination
+- [x] 5.6 TV Mode -- Ninja Board display (`/dev/tv`) -- read-only, full-screen, auto-refresh
+- [x] 5.7 TV Mode admin settings (enable/disable toggle, refresh interval)
+- [x] 5.8 Global search (header search bar, publicId direct nav, title search dropdown, Ctrl+K)
+- [x] 5.9 Ninja theme polish (terminology, icons, colors, badges, consistency review)
+- [x] 5.10 Avatar system (upload, resize, initials fallback, reusable UserAvatar component)
+- [x] 5.11 Docker setup (multi-stage Dockerfile, docker-compose.yml, entrypoint with migrate)
+- [x] 5.12 Environment and production hardening (env validation, secure cookies, rate limiting, CORS)
 - [x] 5.13 Error pages (custom 404, error boundary, consistent API error format)
-- [ ] 5.14 Loading states (skeletons for boards, detail pages, dashboard)
+- [x] 5.14 Loading states (skeletons for boards, detail pages, dashboard)
 - [ ] 5.15 Final integration testing (end-to-end manual test across all roles and flows)
-- [ ] 5.16 Translate to portuguese -> /home/alisson/.claude/plans/kind-napping-melody.md
+- [x] 5.16 Translate to portuguese -> /home/alisson/.claude/plans/kind-napping-melody.md
 
 ---
 
 ## Summary
 
-| Phase | Tasks | Done | Status |
-|-------|-------|------|--------|
-| Phase 1 -- Auth and Navigation | 14 | 14 | Complete |
-| Phase 2 -- Tickets and Queue | 12 | 12 | Complete |
-| Phase 3 -- Real-Time and Ninja Board | 13 | 13 | Complete |
-| Phase 4 -- Collaboration Features | 12 | 12 | Complete |
-| Phase 5 -- Admin, TV, Polish, Docker | 15 | 2 | In Progress (13 remaining) |
-| **Total** | **66** | **65** | |
+| Phase                                | Tasks  | Done   | Status                          |
+| ------------------------------------ | ------ | ------ | ------------------------------- |
+| Phase 1 -- Auth and Navigation       | 14     | 14     | Complete                        |
+| Phase 2 -- Tickets and Queue         | 12     | 12     | Complete                        |
+| Phase 3 -- Real-Time and Ninja Board | 13     | 13     | Complete                        |
+| Phase 4 -- Collaboration Features    | 12     | 12     | Complete                        |
+| Phase 5 -- Admin, TV, Polish, Docker | 16     | 15     | In Progress (1 remaining: 5.15) |
+| **Total**                            | **67** | **66** |                                 |
