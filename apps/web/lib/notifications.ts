@@ -132,21 +132,13 @@ export async function createAndEmitNotifications({
 }: CreateNotificationsParams): Promise<void> {
   if (targetUserIds.length === 0) return
 
-  await db.notification.createMany({
-    data: targetUserIds.map((userId) => ({
-      userId,
-      type,
-      title,
-      body,
-      ticketId: ticketId ?? null,
-      requiresAck,
-    })),
-  })
-
   for (const userId of targetUserIds) {
+    const notification = await db.notification.create({
+      data: { userId, type, title, body, ticketId: ticketId ?? null, requiresAck },
+    })
     emitShinobiEvent({
       type: "notification:new",
-      payload: { userId, type, title, body, ticketId: ticketId ?? null, requiresAck },
+      payload: { id: notification.id, userId, type, title, body, ticketId: ticketId ?? null, requiresAck },
     })
   }
 }

@@ -95,13 +95,14 @@ export function TicketActions({
 
   const isTechLead = currentUserRole === "TECH_LEAD"
   const isDeveloper = currentUserRole === "DEVELOPER"
+  const isQA = currentUserRole === "QA"
   const isOwnTicket = ticket.assignedToId === currentUserId
   const isUnassigned = !ticket.assignedToId
 
   // Developers can only act on tickets assigned to them (or unassigned — assign-to-me)
   const canActAsdev = isDeveloper && (isOwnTicket || isUnassigned)
 
-  if (!isTechLead && !canActAsdev) {
+  if (!isTechLead && !canActAsdev && !isQA) {
     return null
   }
 
@@ -207,6 +208,38 @@ export function TicketActions({
         >
           Atribuir a mim
         </Button>
+      )}
+
+      {/* QA: assignment dropdown only — no status, severity, or deadline controls */}
+      {isQA && (
+        <div className="flex flex-col gap-1.5">
+          <Label className="text-xs">Responsável</Label>
+          <Select
+            value={assigneeValue}
+            onValueChange={(v) => {
+              setAssigneeValue(v)
+              void handleReassign(v)
+            }}
+            disabled={isPending}
+          >
+            <SelectTrigger className="h-8 text-xs">
+              <SelectValue placeholder="Não Atribuído" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="UNASSIGNED">Não Atribuído</SelectItem>
+              {(developers ?? []).map((dev) => (
+                <SelectItem key={dev.id} value={dev.id}>
+                  {dev.name}
+                  {dev.ninjaAlias !== dev.name && (
+                    <span className="ml-1 text-muted-foreground">
+                      ({dev.ninjaAlias})
+                    </span>
+                  )}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       )}
 
       {/* Status dropdown */}

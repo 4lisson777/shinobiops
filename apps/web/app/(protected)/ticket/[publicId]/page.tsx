@@ -95,11 +95,11 @@ export default async function TicketDetailPage({
     notFound()
   }
 
-  // Fetch developers for Tech Lead actions
+  // Fetch developers for Tech Lead and QA assignment actions
   const developers =
-    session.role === "TECH_LEAD"
+    session.role === "TECH_LEAD" || session.role === "QA"
       ? await db.user.findMany({
-          where: { role: "DEVELOPER", isActive: true },
+          where: { role: { in: ["DEVELOPER", "TECH_LEAD"] }, isActive: true },
           select: { id: true, name: true, ninjaAlias: true },
           orderBy: { name: "asc" },
         })

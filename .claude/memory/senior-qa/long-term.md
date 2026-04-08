@@ -25,7 +25,34 @@
 - `apps/web/lib/rate-limit.ts:21` — NODE_ENV turbo env var (new in Phase 5, after eslint-disable fix)
 - `packages/ui/src/hooks/use-local-storage.ts:4` — 2 unused-vars warnings
 
+## Prisma + SQLite createMany Limitation
+`db.notification.createMany()` does NOT return the created record IDs in Prisma with SQLite (SQLite limitation — no `RETURNING` clause support in older versions). Any code that needs the IDs of bulk-inserted rows must use a loop of individual `create()` calls or a `$transaction`. This matters whenever an SSE payload needs to carry the DB id of the just-created record.
+
+## Seed User Credentials (Confirmed Working 2026-04-08)
+| Role | Email | Password |
+|------|-------|----------|
+| TECH_LEAD | alisson.lima@shinobiops.dev | Password123! |
+| DEVELOPER | matheus@shinobiops.dev | Password123! |
+| SUPPORT_MEMBER | bruno@shinobiops.dev | Password123! |
+| QA | nicoli@shinobiops.dev | Password123! |
+| SUPPORT_LEAD | alisson.rosa@shinobiops.dev | Password123! |
+
+Note: Sequential logins with 300ms gaps are required to avoid SQLite contention (bcrypt is CPU-heavy).
+
+## Important Fetch Testing Gotcha
+Node's `fetch()` with `redirect: "follow"` (default) follows 307 redirects to `/login`, which returns 200 HTML.
+Always use `redirect: "manual"` when asserting that an endpoint returns a 307/302 auth redirect.
+
 ## Phase-Specific Findings
+
+### QA Role — Ticket Assign Permission (2026-04-08)
+**Feature verified:** QA users can now assign tickets via `POST /api/tickets/:id/assign`.
+- `requireRole("DEVELOPER", "TECH_LEAD", "QA")` in assign route — confirmed QA passes role guard
+- `ticket-actions.tsx` — `isQA` boolean + early-return guard updated to include `!isQA`
+- QA sees ONLY the Responsável dropdown (not status/severity/deadline)
+- `page.tsx` fetches developer list when `session.role === "TECH_LEAD" || session.role === "QA"`
+- All regression checks passed: TECH_LEAD full panel intact, DEVELOPER self-assign guard intact
+- Test file: `apps/web/tests/ticket-notification-flow/api.test.mjs` (39 tests, all PASS)
 
 ### Phase 3 (2026-04-06)
 **Bugs fixed:**
@@ -38,6 +65,13 @@
 1. `apps/web/lib/rate-limit.ts:14` — Unused `eslint-disable-next-line no-var` comment. Removed. Same pattern as sse-emitter.ts — the no-var rule does not apply to TypeScript `declare global {}` ambient declarations.
 2. `apps/web/components/layout/header.tsx:203` — Unused `e` parameter in `handleBlur()` (GlobalSearch). Removed parameter entirely (not needed, function doesn't use the event).
 3. **CRITICAL: `apps/web/middleware.ts`** — `/api/tv/` was not in `PUBLIC_API_PREFIXES`. Unauthenticated requests to `/api/tv/data` (the TV board's polling endpoint) were being redirected to `/login` by middleware, breaking TV mode entirely for office displays without sessions. Fixed by adding `/api/tv/` to `PUBLIC_API_PREFIXES`.
+
+### Persistent Notifications / Sound Alerts (2026-04-08)
+**Critical bug found and FIXED (verified 2026-04-08):**
+1. `apps/web/lib/notifications.ts:135–151` — `createMany()` was replaced with individual `db.notification.create()` in a `for...of` loop. Each `emitShinobiEvent` call now includes `id: notification.id` in the payload. Suite 11 now PASSES. All 42 tests PASS.
+
+**Minor issue FIXED (verified 2026-04-08):**
+2. `apps/web/public/message_24.mp3` — deleted. Confirmed absent.
 
 ## Recurring Pattern: declare global + eslint-disable-next-line no-var
 Files that use `declare global { var X }` for HMR singleton pattern should NOT have `// eslint-disable-next-line no-var` because the `no-var` rule doesn't fire on TypeScript ambient declarations. This has been fixed in: sse-emitter.ts (Phase 3), rate-limit.ts (Phase 5).

@@ -1,30 +1,18 @@
 # Short-Term Memory — Senior QA
 
 ## Last Task
-- **Task:** Phase 5 QA — Admin, TV Mode, Polish, Docker
-- **Plan path:** `.claude/communication/phase5-admin-tv-polish-docker.md`
-- **Date:** 2026-04-06
+- **Task:** QA — Ticket Notification Flow (QA role assign permission + notification regression)
+- **Plan path:** No plan file — feature description provided directly in prompt
+- **Date:** 2026-04-08
 
-## Test Files Created
-None (all checks were static code review + typecheck/lint/build — no E2E test infrastructure installed yet)
+## Test Files Run
+- `apps/web/tests/ticket-notification-flow/api.test.mjs` — 39 tests, all PASS (EXIT 0)
 
-## Results
-- `npm run typecheck`: PASS (0 errors)
-- `npm run lint`: PASS (0 errors, warnings are pre-existing or fixed)
-- `npm run build`: PASS (all 44 routes built successfully)
+## Verification Results
+- `npm run typecheck --force`: 0 errors (cache miss confirmed fresh compile)
+- All 9 test suites PASS
+- No implementation bugs found — both initial failures were test issues (slice size + fetch redirect mode)
 
-## Fixes Applied
-1. `apps/web/lib/rate-limit.ts` line 14 — removed unused `eslint-disable-next-line no-var` comment (same pattern as Phase 3 sse-emitter fix)
-2. `apps/web/components/layout/header.tsx` line 203 — removed unused `e` parameter from `handleBlur()` function (GlobalSearch component)
-3. `apps/web/middleware.ts` — CRITICAL BUG FIX: added `/api/tv/` to `PUBLIC_API_PREFIXES` so unauthenticated TV boards can reach `/api/tv/data` without being redirected to `/login`
-
-## Pass/Fail Summary (all code review checks)
-- Admin stats endpoint shape: PASS (matches spec exactly)
-- TvBoard polling from server refreshInterval: PASS (dynamic interval update on each fetch)
-- UserAvatar null avatarUrl: PASS (conditional render + fallback initials)
-- GlobalSearch debounce + Ctrl+K: PASS
-- Rate limiting logic (5/min/IP): PASS
-- Ticket log filters/sort: PASS
-- TV mode /dev/tv in (public) route group: PASS
-- Loading skeleton files: PASS (all 4 present)
-- /api/tv/data public access via middleware: FAIL -> FIXED
+## Initial Failures (Both Were Test Issues, Not Bugs)
+1. Suite 1 — TECH_LEAD Responsável static check: `slice(idx, idx + 1500)` was too small; `isTechLead` JSX block is >1500 chars. Fixed to 3000.
+2. Suite 3 — Unauthenticated auth guard: `fetch` default `redirect: "follow"` follows the 307 to `/login` (200 HTML). Fixed to `redirect: "manual"` to capture the raw 307.
