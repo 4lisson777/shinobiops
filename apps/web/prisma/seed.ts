@@ -93,6 +93,20 @@ const SEED_USERS: SeedUser[] = [
   },
 ]
 
+interface RoleNotificationDefault {
+  role: "TECH_LEAD" | "DEVELOPER" | "QA" | "SUPPORT_LEAD" | "SUPPORT_MEMBER"
+  notifyOnCreation: boolean
+  notifyOnAssignment: boolean
+}
+
+const ROLE_NOTIFICATION_DEFAULTS: RoleNotificationDefault[] = [
+  { role: "TECH_LEAD", notifyOnCreation: true, notifyOnAssignment: true },
+  { role: "DEVELOPER", notifyOnCreation: true, notifyOnAssignment: true },
+  { role: "QA", notifyOnCreation: true, notifyOnAssignment: false },
+  { role: "SUPPORT_LEAD", notifyOnCreation: false, notifyOnAssignment: false },
+  { role: "SUPPORT_MEMBER", notifyOnCreation: false, notifyOnAssignment: false },
+]
+
 async function main(): Promise<void> {
   console.log("Applying SQLite pragmas...")
   await applyPragmas()
@@ -115,6 +129,24 @@ async function main(): Promise<void> {
     })
 
     console.log(`  Created/found user: ${user.name} (${user.role}) — ${user.email}`)
+  }
+
+  console.log("Seeding role notification configs...")
+
+  for (const defaults of ROLE_NOTIFICATION_DEFAULTS) {
+    await prisma.roleNotificationConfig.upsert({
+      where: { role: defaults.role },
+      update: {},
+      create: {
+        role: defaults.role,
+        notifyOnCreation: defaults.notifyOnCreation,
+        notifyOnAssignment: defaults.notifyOnAssignment,
+      },
+    })
+
+    console.log(
+      `  Upserted role config: ${defaults.role} (creation=${defaults.notifyOnCreation}, assignment=${defaults.notifyOnAssignment})`
+    )
   }
 
   console.log("Seeding complete.")

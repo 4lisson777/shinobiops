@@ -100,7 +100,9 @@
 - `AppShell` updated to mount PersistentNotificationManager inside SSEProvider
 - `DeveloperCard` + `DevCardData` type — `apps/web/components/dev/developer-card.tsx`
 - `NinjaBoard` — `apps/web/components/dev/ninja-board.tsx`
-- `NotificationRouting` — `apps/web/components/admin/notification-routing.tsx`
+- `NotificationRouting` — `apps/web/components/admin/notification-routing.tsx` (updated: accepts `eligibleRoles: RoleKey[] | null` prop; fetches multi-role users in parallel; shows role Badge per member)
+- `RoleNotificationConfig` — `apps/web/components/admin/role-notification-config.tsx` (role-level notification gates: notifyOnCreation + notifyOnAssignment toggles; onConfigChange callback)
+- `AdminNotificationsContent` — `apps/web/components/admin/admin-notifications-content.tsx` (orchestrator: manages eligibleRoles state shared between RoleNotificationConfig and NotificationRouting)
 - `Popover/PopoverContent/PopoverTrigger` — `packages/ui/src/components/popover.tsx`
 - `Table/TableHeader/TableBody/TableRow/TableHead/TableCell` — `packages/ui/src/components/table.tsx`
 - `Skeleton` — `packages/ui/src/components/skeleton.tsx`
@@ -121,6 +123,10 @@
 - `TicketActions` + `TicketForActions` type — `apps/web/components/tickets/ticket-actions.tsx`
 - `CopyIdButton` — `apps/web/components/tickets/copy-id-button.tsx`
 - `ClickUpCopyButton` — `apps/web/components/tickets/clickup-copy-button.tsx`
+
+### API Endpoints (Role Notification Config) — Called by frontend
+- GET /api/admin/role-notification-config — returns { configs: [{ role, notifyOnCreation, notifyOnAssignment }] } ordered by role alphabetically; auto-provisions missing rows
+- PATCH /api/admin/role-notification-config — body: { configs: [{ role, notifyOnCreation?, notifyOnAssignment? }] }; partial update; returns full updated list
 
 ### API Endpoints (Phase 5) — Called by frontend
 - GET /api/admin/stats — Command Dojo stats (ticketsByStatus/ticketsBySeverity as arrays)

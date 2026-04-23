@@ -1,25 +1,46 @@
 # Frontend Specialist — Short-Term Memory
 
 ## Last Task
-QA Ticket Assignment UI — Enable QA role to assign tickets to developers
+Role-Based Notification Configuration UI — Add RoleNotificationConfig table and update NotificationRouting to filter by eligible roles
 
 ## Plan Path
-`/home/alisson/web/personal/shinobiops/ai-driven-project/prompt-engineering/20260408_ticket-notification-flow/task-request-frontend.md`
+`/home/alisson/web/personal/shinobiops/ai-driven-project/prompt-engineering/20260423_role-notification-config/task-request-frontend.md`
+
+## Files Created
+- `apps/web/components/admin/role-notification-config.tsx`
+  - "use client" component
+  - Fetches GET /api/admin/role-notification-config on mount
+  - Table with 5 roles (fixed display order: TECH_LEAD, DEVELOPER, QA, SUPPORT_LEAD, SUPPORT_MEMBER)
+  - Columns: Papel | Notificar ao Criar | Notificar ao Atribuir
+  - Optimistic update + rollback pattern on toggle
+  - Partial PATCH — sends only the changed config entry
+  - PATCH response replaces full state in one round trip
+  - Calls `onConfigChange(configs)` prop after every successful load/update
+  
+- `apps/web/components/admin/admin-notifications-content.tsx`
+  - "use client" orchestrator component
+  - Manages `eligibleRoles: RoleKey[] | null` state
+  - `null` = role configs still loading (prevents per-user table from fetching prematurely)
+  - `handleConfigChange` extracts roles with `notifyOnCreation=true` from configs
+  - Renders RoleNotificationConfig (section 1) + NotificationRouting (section 2) with clear headings
 
 ## Files Modified
+- `apps/web/components/admin/notification-routing.tsx`
+  - Accepts `eligibleRoles: RoleKey[] | null` prop (replaces hardcoded `role=DEVELOPER`)
+  - When `null`: shows skeleton (still loading)
+  - When `[]`: shows informational message (no roles enabled)
+  - When populated: fetches users for all eligible roles in parallel, merges lists
+  - Adds role Badge next to each user's name (secondary variant)
+  - Column header renamed from "Desenvolvedor" to "Membro"
+  - Re-fetches when eligibleRoles changes (via JSON.stringify dep in useEffect)
 
-- `apps/web/app/(protected)/ticket/[publicId]/page.tsx`
-  - Extended developer fetch from `role === "TECH_LEAD"` to `role === "TECH_LEAD" || role === "QA"`
-  - Expanded `where` clause to include both `DEVELOPER` and `TECH_LEAD` roles as valid assignment targets
-
-- `apps/web/components/tickets/ticket-actions.tsx`
-  - Added `isQA` boolean derived from `currentUserRole === "QA"`
-  - Updated early-return guard: `if (!isTechLead && !canActAsdev && !isQA) return null`
-  - Added QA-specific JSX block rendering only the "Responsavel" Select (no status, severity, or deadline controls)
-  - QA assignment calls the existing `handleReassign` function — no logic duplication
+- `apps/web/app/(protected)/admin/notifications/page.tsx`
+  - Now renders `<AdminNotificationsContent />` instead of direct components
+  - Kept as Server Component (just a thin wrapper with metadata)
 
 ## Integration Status
-Phase 2 — INTEGRATED (no new API calls; reuses existing POST /api/tickets/[id]/assign via handleReassign)
+Phase 2 — INTEGRATED (connected to real backend APIs)
 
 ## Checks Run
-- `npm run typecheck` — 0 errors (2 tasks, 1 cached)
+- `npm run typecheck` — 0 errors
+- `npm run lint` — 0 new errors or warnings from my files

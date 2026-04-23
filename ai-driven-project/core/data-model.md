@@ -2,7 +2,7 @@
 
 **ID**: CTX-CORE-002  
 **Category**: Core  
-**Last Updated**: 2026-04-05  
+**Last Updated**: 2026-04-23  
 **Dependencies**: CTX-INFRA-002
 
 <!-- @context-meta
@@ -59,7 +59,10 @@ Developer status updates. Fields: `id`, `userId` → User, `currentTask`, `isBlo
 Single global configuration record. Fields: `id`, `intervalMinutes` (30–480), `activeHoursStart`, `activeHoursEnd`, `isEnabled`.
 
 #### Notification
-User notifications. Fields: `id`, `userId` → User, `type`, `referenceId` (polymorphic), `message`, `isRead`, `createdAt`.
+User notifications. Fields: `id`, `userId` → User, `type`, `title`, `body`, `ticketId?`, `isRead`, `requiresAck`, `acknowledgedAt?`, `createdAt`.
+
+#### RoleNotificationConfig
+Per-role notification gate. One row per role. Fields: `id`, `role` (unique), `notifyOnCreation`, `notifyOnAssignment`, `updatedAt`. Table: `role_notification_configs`.
 
 #### TicketEvent (Immutable Timeline)
 Every state change on a ticket. Fields: `id`, `ticketId` → Ticket, `eventType`, `actorId` → User, `metadata` (JSON: old/new values), `createdAt` (immutable — never updated).
@@ -108,3 +111,4 @@ IDs are permanent and never reused.
 |------|--------|--------|
 | 2026-04-05 | Initial context creation | AI Agent |
 | 2026-04-05 | Phase 2: Added Ticket, BugReport, TicketEvent, ReorderRequest models and enums to schema; added utility libs | Senior Backend Agent |
+| 2026-04-23 | Added RoleNotificationConfig model; updated Notification fields to reflect actual schema (requiresAck, acknowledgedAt) | Senior Backend Agent |

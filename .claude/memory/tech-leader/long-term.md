@@ -42,6 +42,13 @@ Admin component stubs exist returning null: command-dojo-overview, team-manageme
 - Backend assign endpoint allows QA role, but frontend TicketActions component historically excluded QA from assignment UI
 - When adding new role capabilities to UI, check BOTH the component role guards AND the server component data fetching (e.g., developer list)
 
+## Notification Config Architecture
+- Notification preferences have two layers: role-level gate (RoleNotificationConfig) and user-level toggle (User.notifyTickets / notifyBugs)
+- Role config controls: notifyOnCreation (gate for TICKET_CREATED/BUG_CREATED targeting) and notifyOnAssignment (gate for TICKET_ASSIGNED targeting)
+- Both layers must be enabled for creation notifications; assignment only checks role layer
+- Admin UI at /admin/notifications has two sections: role config table + per-user routing table
+- Per-user routing table should dynamically show users from roles where notifyOnCreation is enabled
+
 ## Context System
 - Master context at ai-driven-project/master-context.md
 - Context files follow strict format with IDs (CTX-CATEGORY-NNN)

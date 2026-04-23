@@ -2,7 +2,7 @@
 
 **ID**: CTX-FEAT-004  
 **Category**: Feature  
-**Last Updated**: 2026-04-05  
+**Last Updated**: 2026-04-23  
 **Dependencies**: CTX-INFRA-003, CTX-CORE-002
 
 <!-- @context-meta
@@ -46,10 +46,24 @@ ShinobiOps has a multi-channel notification system: in-app notification center (
 
 ### Notification Routing (Admin-Configured)
 
-The Tech Lead configures per-developer:
-- **Ticket notifications**: toggle on/off
-- **Bug notifications**: toggle on/off
-- **Help request notifications**: Always sent to all devs (not configurable in v1.0)
+Two-layer notification gating:
+
+1. **Role-level gate** (`RoleNotificationConfig` model): TECH_LEAD can enable/disable creation and assignment notifications per role via `/api/admin/role-notification-config`. If a role's gate is off, no user of that role receives that notification type.
+
+2. **User-level toggle** (`notifyTickets` / `notifyBugs` on User): individual opt-in/out for users within roles that have the gate enabled. Configured per-developer:
+   - **Ticket notifications**: toggle on/off
+   - **Bug notifications**: toggle on/off
+   - **Help request notifications**: Always sent to all devs (not configurable in v1.0)
+
+Default role gates:
+
+| Role | notifyOnCreation | notifyOnAssignment |
+|------|------------------|--------------------|
+| TECH_LEAD | true | true |
+| DEVELOPER | true | true |
+| QA | true | false |
+| SUPPORT_LEAD | false | false |
+| SUPPORT_MEMBER | false | false |
 
 ### Notification Events by Role
 
@@ -78,7 +92,10 @@ All real-time delivery via SSE (see CTX-INFRA-003). Notifications are also persi
 - `apps/web/hooks/use-sse.ts` — SSE connection for real-time delivery
 - `apps/web/app/api/notifications/route.ts` — Notification CRUD (list, create)
 - `apps/web/app/api/notifications/[id]/read/route.ts` — Mark notification as read
+- `apps/web/app/api/notifications/[id]/acknowledge/route.ts` — PATCH to ack persistent notifications
+- `apps/web/app/api/notifications/pending/route.ts` — GET pending persistent notifications
 - `apps/web/app/api/users/[id]/notifications/route.ts` — Per-user notification config
+- `apps/web/app/api/admin/role-notification-config/route.ts` — GET + PATCH role-level notification gates (TECH_LEAD only)
 - `apps/web/components/admin/notification-routing.tsx` — Admin notification config UI
 - `apps/web/app/(protected)/admin/notifications/page.tsx` — Admin notifications page
 
@@ -94,3 +111,4 @@ All real-time delivery via SSE (see CTX-INFRA-003). Notifications are also persi
 | Date | Change | Author |
 |------|--------|--------|
 | 2026-04-05 | Initial context creation | AI Agent |
+| 2026-04-23 | Added RoleNotificationConfig model, GET+PATCH /api/admin/role-notification-config, updated getNotificationTargets to consult role gates | Senior Backend Agent |

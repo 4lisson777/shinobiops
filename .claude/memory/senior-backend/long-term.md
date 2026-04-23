@@ -166,6 +166,26 @@ Entrypoint: runs `prisma migrate deploy` before starting the server (safe to run
 `lib/env.ts` throws immediately if `SESSION_SECRET` or `DATABASE_URL` are missing.
 Imported as a side-effect in `app/layout.tsx` via `import "@/lib/env"`.
 
+### Role Notification Config Pattern (feature: 20260423_role-notification-config)
+
+#### RoleNotificationConfig as a primary notification gate
+`RoleNotificationConfig` has one row per role (5 rows). `notifyOnCreation` gates TICKET_CREATED/BUG_CREATED; `notifyOnAssignment` gates TICKET_ASSIGNED.
+For creation notifications: both the role gate AND the user's personal flag (`notifyTickets`/`notifyBugs`) must be true.
+For assignment notifications: only the role gate is checked (no per-user override).
+Fail-closed: if a role config row is missing, treat both flags as false.
+
+#### ensureDefaultConfigsExist utility
+`GET /api/admin/role-notification-config` calls `ensureDefaultConfigsExist()` which queries existing roles and inserts missing ones with `createMany`. This auto-provisions new roles added to the enum without requiring a re-seed.
+
+#### getRoleConfigMap helper in notifications.ts
+Loads all `RoleNotificationConfig` rows in a single query and returns a `Map<Role, {...}>`.
+Used inside `getNotificationTargets()`. Avoids N+1 — one DB call for all 5 config rows.
+
+#### PATCH pattern for multi-row config updates
+The PATCH endpoint accepts an array of `{ role, notifyOnCreation?, notifyOnAssignment? }` entries.
+Uses `Promise.all` + `upsert` per entry — no transaction needed since each row is independent (unique on `role`).
+Returns the full list after update so the frontend can refresh in one round trip.
+
 ### Persistent Notifications Pattern (feature: 20260407_persistent-notifications)
 
 #### `getNotificationTargets` returns `{ normalUserIds, persistentUserIds }` (not a flat array)

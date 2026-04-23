@@ -7,7 +7,7 @@ import { requireAuth } from "@/lib/auth"
 const DEV_ROLES: Role[] = ["DEVELOPER", "TECH_LEAD"]
 
 const usersFilterSchema = z.object({
-  role: z.enum(["TECH_LEAD", "DEVELOPER", "SUPPORT_LEAD", "SUPPORT_MEMBER"]).optional(),
+  role: z.enum(["TECH_LEAD", "DEVELOPER", "QA", "SUPPORT_LEAD", "SUPPORT_MEMBER"]).optional(),
   isActive: z
     .enum(["true", "false"])
     .transform((v) => v === "true")

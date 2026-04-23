@@ -262,3 +262,13 @@ model TvConfig {
 
   @@map("tv_config")
 }
+
+model RoleNotificationConfig {
+  id                  String   @id @default(cuid())
+  role                Role     @unique
+  notifyOnCreation    Boolean  @default(false)
+  notifyOnAssignment  Boolean  @default(false)
+  updatedAt           DateTime @updatedAt
+
+  @@map("role_notification_configs")
+}

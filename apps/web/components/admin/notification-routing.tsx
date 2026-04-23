@@ -11,14 +11,25 @@ import {
 } from "@workspace/ui/components/table"
 import { Switch } from "@workspace/ui/components/switch"
 import { Avatar, AvatarFallback, AvatarImage } from "@workspace/ui/components/avatar"
+import { Badge } from "@workspace/ui/components/badge"
 import { Skeleton } from "@workspace/ui/components/skeleton"
 
-interface DevWithPrefs {
+type RoleKey = "TECH_LEAD" | "DEVELOPER" | "QA" | "SUPPORT_LEAD" | "SUPPORT_MEMBER"
+
+const ROLE_LABELS: Record<RoleKey, string> = {
+  TECH_LEAD: "Lider Tecnico",
+  DEVELOPER: "Desenvolvedor",
+  QA: "QA",
+  SUPPORT_LEAD: "Lider de Suporte",
+  SUPPORT_MEMBER: "Membro de Suporte",
+}
+
+interface MemberWithPrefs {
   id: string
   name: string
   ninjaAlias: string
   avatarUrl: string | null
-  role: string
+  role: RoleKey
   notifyTickets: boolean
   notifyBugs: boolean
 }
@@ -32,37 +43,68 @@ function getInitials(name: string): string {
     .toUpperCase()
 }
 
-export function NotificationRouting() {
-  const [devs, setDevs] = React.useState<DevWithPrefs[]>([])
+interface NotificationRoutingProps {
+  /**
+   * Roles that have notifyOnCreation = true at the role level.
+   * When provided, only users belonging to these roles are shown.
+   * When null (still loading role configs), falls back to showing DEVELOPER only.
+   * When empty array, shows an informational message instead of a user list.
+   */
+  eligibleRoles: RoleKey[] | null
+}
+
+export function NotificationRouting({ eligibleRoles }: NotificationRoutingProps) {
+  const [members, setMembers] = React.useState<MemberWithPrefs[]>([])
   const [isLoading, setIsLoading] = React.useState(true)
   const [error, setError] = React.useState<string | null>(null)
   // Track in-flight toggles to prevent double-submissions
   const [pending, setPending] = React.useState<Set<string>>(new Set())
 
+  // Re-fetch whenever the eligible roles list changes (parent config toggled)
   React.useEffect(() => {
-    void loadDevs()
-  }, [])
+    void loadMembers()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(eligibleRoles)])
 
-  async function loadDevs() {
+  async function loadMembers() {
+    // While the role config is still loading, wait — don't fetch with stale roles
+    if (eligibleRoles === null) return
+
     try {
       setIsLoading(true)
       setError(null)
 
-      const res = await fetch("/api/users?role=DEVELOPER&isActive=true")
-      if (!res.ok) throw new Error("Failed to load developers")
-      const data = await res.json() as {
-        users: Array<{
-          id: string
-          name: string
-          ninjaAlias: string
-          avatarUrl: string | null
-          role: string
-        }>
+      if (eligibleRoles.length === 0) {
+        // No roles have creation notifications enabled — nothing to show
+        setMembers([])
+        setIsLoading(false)
+        return
       }
 
-      // Fetch notification prefs for all devs in parallel
+      // Fetch users for all eligible roles in parallel
+      const roleResponses = await Promise.all(
+        eligibleRoles.map((role) =>
+          fetch(`/api/users?role=${role}&isActive=true`).then((r) => {
+            if (!r.ok) throw new Error(`Falha ao carregar usuarios para o papel ${role}`)
+            return r.json() as Promise<{
+              users: Array<{
+                id: string
+                name: string
+                ninjaAlias: string
+                avatarUrl: string | null
+                role: RoleKey
+              }>
+            }>
+          })
+        )
+      )
+
+      // Flatten into a single list; each user carries their role for the badge
+      const allUsers = roleResponses.flatMap((res) => res.users)
+
+      // Fetch notification prefs for all users in parallel
       const prefsResults = await Promise.all(
-        data.users.map(async (user) => {
+        allUsers.map(async (user) => {
           try {
             const r = await fetch(`/api/users/${user.id}/notifications`)
             if (!r.ok) return { notifyTickets: true, notifyBugs: true }
@@ -73,8 +115,8 @@ export function NotificationRouting() {
         })
       )
 
-      setDevs(
-        data.users.map((user, i) => {
+      setMembers(
+        allUsers.map((user, i) => {
           const prefs = prefsResults[i] ?? { notifyTickets: true, notifyBugs: true }
           return {
             ...user,
@@ -84,7 +126,7 @@ export function NotificationRouting() {
         })
       )
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred")
+      setError(err instanceof Error ? err.message : "Ocorreu um erro")
     } finally {
       setIsLoading(false)
     }
@@ -99,8 +141,8 @@ export function NotificationRouting() {
     if (pending.has(key)) return
 
     // Optimistic update
-    setDevs((prev) =>
-      prev.map((d) => (d.id === userId ? { ...d, [field]: value } : d))
+    setMembers((prev) =>
+      prev.map((m) => (m.id === userId ? { ...m, [field]: value } : m))
     )
     setPending((prev) => new Set(prev).add(key))
 
@@ -112,14 +154,14 @@ export function NotificationRouting() {
       })
       if (!res.ok) {
         // Revert on failure
-        setDevs((prev) =>
-          prev.map((d) => (d.id === userId ? { ...d, [field]: !value } : d))
+        setMembers((prev) =>
+          prev.map((m) => (m.id === userId ? { ...m, [field]: !value } : m))
         )
       }
     } catch {
       // Revert on error
-      setDevs((prev) =>
-        prev.map((d) => (d.id === userId ? { ...d, [field]: !value } : d))
+      setMembers((prev) =>
+        prev.map((m) => (m.id === userId ? { ...m, [field]: !value } : m))
       )
     } finally {
       setPending((prev) => {
@@ -130,7 +172,7 @@ export function NotificationRouting() {
     }
   }
 
-  if (isLoading) {
+  if (isLoading || eligibleRoles === null) {
     return (
       <div className="flex flex-col gap-3">
         {Array.from({ length: 4 }).map((_, i) => (
@@ -151,9 +193,17 @@ export function NotificationRouting() {
     )
   }
 
-  if (devs.length === 0) {
+  if (eligibleRoles.length === 0) {
     return (
-      <p className="text-sm text-muted-foreground">Nenhum desenvolvedor ativo encontrado.</p>
+      <p className="text-sm text-muted-foreground">
+        Nenhum papel esta habilitado para receber notificacoes de criacao. Ative ao menos um papel na secao acima para configurar o roteamento individual.
+      </p>
+    )
+  }
+
+  if (members.length === 0) {
+    return (
+      <p className="text-sm text-muted-foreground">Nenhum membro ativo encontrado nos papeis habilitados.</p>
     )
   }
 
@@ -162,50 +212,55 @@ export function NotificationRouting() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[200px]">Desenvolvedor</TableHead>
-            <TableHead className="text-center">Notificações de Chamados</TableHead>
-            <TableHead className="text-center">Notificações de Bugs</TableHead>
+            <TableHead className="w-[260px]">Membro</TableHead>
+            <TableHead className="text-center">Notificacoes de Chamados</TableHead>
+            <TableHead className="text-center">Notificacoes de Bugs</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {devs.map((dev) => (
-            <TableRow key={dev.id}>
+          {members.map((member) => (
+            <TableRow key={member.id}>
               <TableCell>
                 <div className="flex items-center gap-3">
                   <Avatar className="size-8">
-                    {dev.avatarUrl && (
-                      <AvatarImage src={dev.avatarUrl} alt={dev.name} />
+                    {member.avatarUrl && (
+                      <AvatarImage src={member.avatarUrl} alt={member.name} />
                     )}
                     <AvatarFallback className="bg-[oklch(0.56_0.22_15)] text-white text-xs">
-                      {getInitials(dev.name)}
+                      {getInitials(member.name)}
                     </AvatarFallback>
                   </Avatar>
                   <div>
-                    <p className="font-medium">{dev.name}</p>
+                    <div className="flex items-center gap-2">
+                      <p className="font-medium">{member.name}</p>
+                      <Badge variant="secondary" className="text-xs">
+                        {ROLE_LABELS[member.role]}
+                      </Badge>
+                    </div>
                     <p className="text-xs text-muted-foreground">
-                      {dev.ninjaAlias}
+                      {member.ninjaAlias}
                     </p>
                   </div>
                 </div>
               </TableCell>
               <TableCell className="text-center">
                 <Switch
-                  checked={dev.notifyTickets}
-                  disabled={pending.has(`${dev.id}:notifyTickets`)}
+                  checked={member.notifyTickets}
+                  disabled={pending.has(`${member.id}:notifyTickets`)}
                   onCheckedChange={(checked) =>
-                    void handleToggle(dev.id, "notifyTickets", checked)
+                    void handleToggle(member.id, "notifyTickets", checked)
                   }
-                  aria-label={`Toggle ticket notifications for ${dev.name}`}
+                  aria-label={`Ativar notificacoes de chamados para ${member.name}`}
                 />
               </TableCell>
               <TableCell className="text-center">
                 <Switch
-                  checked={dev.notifyBugs}
-                  disabled={pending.has(`${dev.id}:notifyBugs`)}
+                  checked={member.notifyBugs}
+                  disabled={pending.has(`${member.id}:notifyBugs`)}
                   onCheckedChange={(checked) =>
-                    void handleToggle(dev.id, "notifyBugs", checked)
+                    void handleToggle(member.id, "notifyBugs", checked)
                   }
-                  aria-label={`Toggle bug notifications for ${dev.name}`}
+                  aria-label={`Ativar notificacoes de bugs para ${member.name}`}
                 />
               </TableCell>
             </TableRow>

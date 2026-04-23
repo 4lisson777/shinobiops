@@ -1,6 +1,26 @@
-import { NotificationType } from "@/generated/prisma/client"
+import { NotificationType, Role } from "@/generated/prisma/client"
 import { db } from "@/lib/db"
 import { emitShinobiEvent } from "@/lib/sse-emitter"
+
+/**
+ * Loads role configs from DB as a Map<Role, { notifyOnCreation, notifyOnAssignment }>.
+ * If a role is missing from the DB (fail-closed), defaults to both flags false.
+ */
+async function getRoleConfigMap(): Promise<
+  Map<Role, { notifyOnCreation: boolean; notifyOnAssignment: boolean }>
+> {
+  const rows = await db.roleNotificationConfig.findMany({
+    select: { role: true, notifyOnCreation: true, notifyOnAssignment: true },
+  })
+  const map = new Map<Role, { notifyOnCreation: boolean; notifyOnAssignment: boolean }>()
+  for (const row of rows) {
+    map.set(row.role, {
+      notifyOnCreation: row.notifyOnCreation,
+      notifyOnAssignment: row.notifyOnAssignment,
+    })
+  }
+  return map
+}
 
 /**
  * Segments notification recipients into two groups:
@@ -9,9 +29,12 @@ import { emitShinobiEvent } from "@/lib/sse-emitter"
  *
  * Targeting rules:
  * - TICKET_CREATED / BUG_CREATED:
- *     * QA + TECH_LEAD with the relevant notify flag → persistent
- *     * DEVELOPER with the relevant notify flag → normal
- * - TICKET_ASSIGNED: assigned developer → persistent
+ *     * Role must have `notifyOnCreation = true` in RoleNotificationConfig (primary gate).
+ *     * User must also have the personal flag (notifyTickets / notifyBugs) set to true.
+ *     * QA + TECH_LEAD → persistent; DEVELOPER → normal.
+ * - TICKET_ASSIGNED:
+ *     * Assignee's role must have `notifyOnAssignment = true` in RoleNotificationConfig.
+ *     * If yes → assignee gets a persistent notification.
  * - TICKET_DONE / TICKET_CANCELLED / TICKET_STATUS_CHANGED: ticket opener → normal
  * - HELP_REQUEST_NEW: all active DEVs/TECH_LEADs except requester → normal
  * - HELP_REQUEST_RESPONDED / CHECKPOINT_PROMPT: targeted user → normal
@@ -23,14 +46,27 @@ export async function getNotificationTargets(
 ): Promise<{ normalUserIds: string[]; persistentUserIds: string[] }> {
   switch (type) {
     case "TICKET_CREATED": {
+      // Load role config map to determine which roles have creation notifications enabled
+      const roleConfigMap = await getRoleConfigMap()
+
+      // Collect roles with notifyOnCreation = true
+      const eligibleRoles = (["DEVELOPER", "TECH_LEAD", "QA"] as Role[]).filter(
+        (role) => roleConfigMap.get(role)?.notifyOnCreation === true
+      )
+
+      if (eligibleRoles.length === 0) {
+        return { normalUserIds: [], persistentUserIds: [] }
+      }
+
       const users = await db.user.findMany({
         where: {
-          role: { in: ["DEVELOPER", "TECH_LEAD", "QA"] },
+          role: { in: eligibleRoles },
           notifyTickets: true,
           isActive: true,
         },
         select: { id: true, role: true },
       })
+
       const normalUserIds: string[] = []
       const persistentUserIds: string[] = []
       for (const u of users) {
@@ -44,14 +80,25 @@ export async function getNotificationTargets(
     }
 
     case "BUG_CREATED": {
+      const roleConfigMap = await getRoleConfigMap()
+
+      const eligibleRoles = (["DEVELOPER", "TECH_LEAD", "QA"] as Role[]).filter(
+        (role) => roleConfigMap.get(role)?.notifyOnCreation === true
+      )
+
+      if (eligibleRoles.length === 0) {
+        return { normalUserIds: [], persistentUserIds: [] }
+      }
+
       const users = await db.user.findMany({
         where: {
-          role: { in: ["DEVELOPER", "TECH_LEAD", "QA"] },
+          role: { in: eligibleRoles },
           notifyBugs: true,
           isActive: true,
         },
         select: { id: true, role: true },
       })
+
       const normalUserIds: string[] = []
       const persistentUserIds: string[] = []
       for (const u of users) {
@@ -72,12 +119,30 @@ export async function getNotificationTargets(
         persistentUserIds: [],
       }
 
-    case "TICKET_ASSIGNED":
-      // Assigned developer always gets a persistent notification
+    case "TICKET_ASSIGNED": {
+      if (!assignedToId) {
+        return { normalUserIds: [], persistentUserIds: [] }
+      }
+
+      // Check whether the assignee's role has notifyOnAssignment enabled
+      const assignee = await db.user.findUnique({
+        where: { id: assignedToId },
+        select: { role: true },
+      })
+
+      if (!assignee) {
+        return { normalUserIds: [], persistentUserIds: [] }
+      }
+
+      const roleConfigMap = await getRoleConfigMap()
+      const config = roleConfigMap.get(assignee.role)
+      const notifyOnAssignment = config?.notifyOnAssignment ?? false
+
       return {
         normalUserIds: [],
-        persistentUserIds: assignedToId ? [assignedToId] : [],
+        persistentUserIds: notifyOnAssignment ? [assignedToId] : [],
       }
+    }
 
     case "HELP_REQUEST_RESPONDED":
     case "CHECKPOINT_PROMPT":

@@ -76,6 +76,19 @@ Always use `redirect: "manual"` when asserting that an endpoint returns a 307/30
 ## Recurring Pattern: declare global + eslint-disable-next-line no-var
 Files that use `declare global { var X }` for HMR singleton pattern should NOT have `// eslint-disable-next-line no-var` because the `no-var` rule doesn't fire on TypeScript ambient declarations. This has been fixed in: sse-emitter.ts (Phase 3), rate-limit.ts (Phase 5).
 
+## Role-Based Notification Config QA (2026-04-23)
+**Feature verified:** Role-level notification gates via RoleNotificationConfig table.
+- `GET/PATCH /api/admin/role-notification-config` — TECH_LEAD only, all 76 tests PASS
+- `getNotificationTargets()` correctly gates TICKET_CREATED, BUG_CREATED, TICKET_ASSIGNED on role config
+- `RoleNotificationConfig` component: partial PATCH, optimistic revert, aria-labels, PT-BR labels
+- `AdminNotificationsContent` + `NotificationRouting` orchestration verified
+- Test file: `apps/web/tests/role-notification-config/api.test.mjs` (76 tests, all PASS)
+
+**Critical Bug Found (not yet fixed):**
+- `apps/web/app/api/users/route.ts:10` — Zod enum for `role` filter is missing `"QA"`.
+  Symptoms: `GET /api/users?role=QA&isActive=true` returns 400, breaking the per-user routing table in the notifications admin UI whenever QA has `notifyOnCreation=true` (which is the default).
+  Fix: add `"QA"` to `usersFilterSchema.role` enum.
+
 ## API Shapes Verified (Phase 5)
 - `GET /api/admin/stats` returns correct shape: ticketsByStatus, ticketsBySeverity, assignedCount, unassignedCount, avgResolutionTime7d/30d, developerWorkload
 - `GET /api/admin/users` returns `{ users: [...] }` with all required fields
