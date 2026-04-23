@@ -276,7 +276,7 @@ function GlobalSearch() {
                           className={cn(
                             "text-xs",
                             result.type === "BUG"
-                              ? "border-[oklch(0.56_0.22_15)] bg-[oklch(0.56_0.22_15)]/10 text-[oklch(0.56_0.22_15)]"
+                              ? "border-[oklch(0.68_0.22_320)] bg-[oklch(0.68_0.22_320)]/10 text-[oklch(0.68_0.22_320)]"
                               : ""
                           )}
                         >
@@ -373,7 +373,7 @@ export function Header({ session, avatarUrl, organizationName, onMenuClick }: He
         <ImpersonationBanner organizationName={organizationName} />
       )}
 
-      <header className="flex h-14 shrink-0 items-center gap-3 border-b border-border bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+      <header className="flex h-[54px] shrink-0 items-center gap-3 border-b border-border bg-card px-4">
         {/* Hamburger — only on small screens */}
         <button
           type="button"

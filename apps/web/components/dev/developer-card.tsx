@@ -35,35 +35,55 @@ interface DeveloperCardProps {
   onTaskChange: (task: string) => Promise<void>
 }
 
-// Status display configuration
+// Status display configuration — uses VectorOps carrier status tokens
 const STATUS_CONFIG: Record<
   string,
-  { label: string; className: string }
+  { label: string; dot: string; style: React.CSSProperties }
 > = {
   ACTIVE: {
     label: "Ativo",
-    className:
-      "bg-green-500/10 text-green-600 border-green-500/20 dark:text-green-400",
+    dot: "bg-[var(--st-coupled)]",
+    style: {
+      backgroundColor: "var(--st-coupled-bg)",
+      color: "var(--st-coupled)",
+      borderColor: "color-mix(in oklab, var(--st-coupled) 30%, transparent)",
+    },
   },
   IN_CHECKPOINT: {
-    label: "Status Scroll",
-    className:
-      "bg-amber-500/10 text-amber-600 border-amber-500/20 dark:text-amber-400",
+    label: "Em Atualização",
+    dot: "bg-[var(--st-sampling)]",
+    style: {
+      backgroundColor: "var(--st-sampling-bg)",
+      color: "var(--st-sampling)",
+      borderColor: "color-mix(in oklab, var(--st-sampling) 30%, transparent)",
+    },
   },
   BLOCKED: {
     label: "Bloqueado",
-    className:
-      "bg-red-500/10 text-red-600 border-red-500/20 dark:text-red-400",
+    dot: "bg-[var(--st-blocked)]",
+    style: {
+      backgroundColor: "var(--st-blocked-bg)",
+      color: "var(--st-blocked)",
+      borderColor: "color-mix(in oklab, var(--st-blocked) 30%, transparent)",
+    },
   },
   HELPING: {
     label: "Ajudando",
-    className:
-      "bg-blue-500/10 text-blue-600 border-blue-500/20 dark:text-blue-400",
+    dot: "bg-[var(--st-resonating)]",
+    style: {
+      backgroundColor: "var(--st-resonating-bg)",
+      color: "var(--st-resonating)",
+      borderColor: "color-mix(in oklab, var(--st-resonating) 30%, transparent)",
+    },
   },
   AWAY: {
     label: "Ausente",
-    className:
-      "bg-gray-500/10 text-gray-600 border-gray-500/20 dark:text-gray-400",
+    dot: "bg-[var(--st-offline)]",
+    style: {
+      backgroundColor: "var(--st-offline-bg)",
+      color: "var(--st-offline)",
+      borderColor: "color-mix(in oklab, var(--st-offline) 30%, transparent)",
+    },
   },
 }
 
@@ -81,11 +101,18 @@ function StatusBadge({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium",
-        config.className,
+        "inline-flex items-center gap-1.5 rounded border px-2 py-0.5 text-xs font-medium",
         className
       )}
+      style={config.style}
     >
+      <span
+        className={cn("size-1.5 rounded-full shrink-0", config.dot)}
+        style={{
+          backgroundColor: "currentColor",
+          ...(key === "HELPING" ? { boxShadow: "0 0 0 3px color-mix(in oklab, currentColor 25%, transparent)" } : {})
+        }}
+      />
       {config.label}
     </span>
   )
@@ -149,13 +176,21 @@ export function DeveloperCard({
   }
 
   return (
-    <Card className="flex flex-col gap-4 p-5">
+    <Card
+      className={cn("flex flex-col gap-4 p-5", isCurrentUser && "ring-1 ring-ring")}
+      style={isCurrentUser ? { boxShadow: "var(--shadow-plasma)" } : undefined}
+    >
       <CardContent className="flex flex-col gap-4 p-0">
         {/* Avatar + name + alias */}
         <div className="flex items-center gap-3">
           <UserAvatar name={dev.name} avatarUrl={dev.avatarUrl} size="md" />
           <div className="min-w-0">
-            <p className="truncate text-sm font-semibold">{dev.name}</p>
+            <p className="truncate text-sm font-semibold">
+              {dev.name}
+              {isCurrentUser && (
+                <span style={{ fontSize: 10, color: "var(--flux)", marginLeft: 4 }}>(você)</span>
+              )}
+            </p>
             <p className="truncate text-xs text-muted-foreground">
               {dev.ninjaAlias}
             </p>
@@ -164,8 +199,15 @@ export function DeveloperCard({
 
         {/* 4.9 — No-response indicator */}
         {isAwaitingCheckpoint && (
-          <div className="rounded-md border border-orange-500/40 bg-orange-500/10 px-2 py-1 text-xs font-medium text-orange-700 dark:text-orange-400">
-            ⚠ Sem resposta ao checkpoint
+          <div
+            className="rounded border px-2 py-1 text-xs font-medium"
+            style={{
+              backgroundColor: "var(--st-sampling-bg)",
+              color: "var(--st-sampling)",
+              borderColor: "color-mix(in oklab, var(--st-sampling) 30%, transparent)",
+            }}
+          >
+            Sem resposta à atualização de status
           </div>
         )}
 
@@ -191,14 +233,7 @@ export function DeveloperCard({
                     className="gap-2"
                   >
                     <span
-                      className={cn(
-                        "size-2 rounded-full",
-                        s === "ACTIVE" && "bg-green-500",
-                        s === "IN_CHECKPOINT" && "bg-amber-500",
-                        s === "BLOCKED" && "bg-red-500",
-                        s === "HELPING" && "bg-blue-500",
-                        s === "AWAY" && "bg-gray-400"
-                      )}
+                      className={cn("size-2 rounded-full", STATUS_CONFIG[s]?.dot)}
                     />
                     {STATUS_CONFIG[s]?.label}
                   </DropdownMenuItem>
@@ -232,55 +267,43 @@ export function DeveloperCard({
                 type="button"
                 onClick={handleEditStart}
                 disabled={isSavingTask}
-                className="w-full rounded px-2 py-1 text-left text-xs hover:bg-muted/60"
+                className="w-full text-left"
                 aria-label="Clique para editar a tarefa atual"
               >
-                {dev.currentTask ? (
-                  <span className="text-foreground">{dev.currentTask}</span>
-                ) : (
-                  <span className="italic text-muted-foreground">
-                    Sem tarefa atual
-                  </span>
-                )}
+                <div className="rounded px-2.5 py-2 text-xs leading-[1.45] min-h-[36px] font-sans" style={{ background: "var(--muted)", color: "var(--muted-foreground)" }}>
+                  {dev.currentTask ?? <span className="italic">Sem tarefa atual</span>}
+                </div>
               </button>
             )
           ) : (
-            <p className="px-2 text-xs">
-              {dev.currentTask ? (
-                dev.currentTask
-              ) : (
-                <span className="italic text-muted-foreground">
-                  Sem tarefa atual
-                </span>
-              )}
-            </p>
+            <div className="rounded px-2.5 py-2 text-xs leading-[1.45] min-h-[36px] font-sans" style={{ background: "var(--muted)", color: "var(--muted-foreground)" }}>
+              {dev.currentTask ?? <span className="italic">Sem tarefa atual</span>}
+            </div>
           )}
         </div>
 
         {/* Assigned ticket */}
         <div>
           <p className="mb-1 text-xs font-medium text-muted-foreground">
-            Missão Ativa
+            Ticket Atribuído
           </p>
           {dev.assignedTicket ? (
-            <div className="flex flex-col gap-1 rounded-md border border-border bg-muted/30 px-3 py-2">
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-xs font-medium text-foreground">
-                  {dev.assignedTicket.publicId}
-                </span>
-                <SeverityBadge
-                  severity={
-                    dev.assignedTicket.severity as
-                      | "LOW"
-                      | "MEDIUM"
-                      | "HIGH"
-                      | "CRITICAL"
-                  }
-                />
-              </div>
-              <p className="line-clamp-2 text-xs text-muted-foreground">
+            <div className="flex items-center gap-2 border-t border-dashed border-border pt-2 min-w-0">
+              <SeverityBadge
+                severity={
+                  dev.assignedTicket.severity as
+                    | "LOW"
+                    | "MEDIUM"
+                    | "HIGH"
+                    | "CRITICAL"
+                }
+              />
+              <span className="font-mono text-xs font-medium text-foreground shrink-0">
+                {dev.assignedTicket.publicId}
+              </span>
+              <span className="truncate text-xs text-muted-foreground min-w-0">
                 {dev.assignedTicket.title}
-              </p>
+              </span>
             </div>
           ) : (
             <p className="px-2 text-xs italic text-muted-foreground">
