@@ -1,0 +1,48 @@
+---
+title: Novo Bug
+description: Como reportar um bug no VectorOps e exportar para o ClickUp.
+---
+
+# Novo Bug
+
+Use esta opção para reportar comportamentos incorretos no sistema que precisam ser corrigidos pela equipe de desenvolvimento.
+
+## Como reportar um bug
+
+1. Na área de suporte, clique em **Novo Bug**.
+2. Preencha o formulário estruturado:
+
+| Campo | Obrigatório | Descrição |
+|-------|-------------|-----------|
+| **Título** | Sim | Resumo curto do comportamento incorreto |
+| **Módulo afetado** | Sim | Qual parte do sistema apresenta o problema |
+| **Passos para reproduzir** | Sim | Lista numerada de como reproduzir o bug |
+| **Comportamento esperado** | Sim | O que deveria acontecer |
+| **Comportamento atual** | Sim | O que está acontecendo de errado |
+| **Ambiente** | Sim | Navegador, versão, OS do usuário afetado |
+| **Prioridade** | Sim | Baixa, Média, Alta ou Crítica |
+| **Prazo** | Não | Data limite para resolução |
+
+3. Clique em **Reportar bug**.
+
+O bug é criado com identificador no formato `DST-XXXX` e entra na fila de atendimento.
+
+## Qualidade do relato
+
+Um bom relato de bug permite que o desenvolvedor reproduza o problema sem fazer perguntas adicionais. Seja específico:
+
+**Ruim:** "O botão não funciona"
+
+**Bom:** "Ao clicar em Salvar no formulário de novo ticket com o campo Prazo preenchido, o botão fica em estado de carregamento indefinidamente e nenhuma mensagem de erro é exibida."
+
+## Exportar para o ClickUp
+
+Após criar o bug, você pode exportá-lo diretamente para o ClickUp:
+
+1. Abra a página de detalhes do bug clicando no código (ex: `DST-0007`).
+2. Na barra lateral direita, clique em **Exportar para ClickUp**.
+3. O bug é enviado automaticamente para o projeto configurado pelo Tech Lead.
+
+<Callout type="info">
+  A exportação para o ClickUp está disponível apenas para bugs, não para tickets.
+</Callout>

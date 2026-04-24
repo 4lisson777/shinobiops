@@ -1,0 +1,59 @@
+---
+title: Painel
+description: Como ler e usar o painel em tempo real da equipe de desenvolvimento.
+---
+
+# Painel
+
+O **Painel** é a tela principal da equipe de desenvolvimento. Ele mostra, em tempo real, o status de cada membro e o ticket que está sendo trabalhado.
+
+## Acesso
+
+Após o login, desenvolvedores e Tech Leads são redirecionados diretamente para o Painel. Você também pode acessá-lo pelo menu lateral em **Painel**.
+
+## Cards de desenvolvedor
+
+Cada membro da equipe aparece em um card com:
+
+- **Avatar e nome** — identificação do desenvolvedor
+- **Status** — estado atual de trabalho (veja abaixo)
+- **Tarefa atual** — descrição do que o dev está fazendo no momento
+- **Ticket atribuído** — código e título do ticket em execução (se houver)
+
+## Status de desenvolvedor
+
+| Status | Significado |
+|--------|-------------|
+| **Ativo** | Trabalhando normalmente |
+| **Em Atualização** | Respondendo ao checkpoint de status |
+| **Bloqueado** | Impedido de prosseguir, aguardando desbloqueio |
+| **Ajudando** | Auxiliando outro membro da equipe |
+| **Ausente** | Fora do horário de trabalho ou indisponível |
+
+## Alterando seu status
+
+Clique no badge de status no seu próprio card para abrir o seletor. Escolha o status que reflete sua situação atual.
+
+Para atualizar também sua **tarefa atual**, clique na área cinza abaixo do status e edite o texto diretamente. Pressione **Enter** para salvar ou **Esc** para cancelar.
+
+## Indicadores em tempo real
+
+O Painel se atualiza automaticamente sem necessidade de recarregar a página:
+
+- **Banner âmbar** — quando um novo ticket ou bug chega na fila
+- **Banner ciano** — quando um colega solicita ajuda
+- **Indicador "Sem resposta"** — quando um dev não respondeu ao checkpoint nos últimos 10 minutos
+
+## Barra de estatísticas
+
+No topo do Painel há uma barra com contadores rápidos:
+
+- **Ativos** — devs trabalhando normalmente
+- **Bloqueados** — devs impedidos de progredir
+- **Em Atualização** — devs respondendo checkpoint
+- **Ajudando** — devs auxiliando colegas
+- **Total** — total de membros visíveis no painel
+
+## Modo TV
+
+Em `/dev/tv`, o Painel funciona em modo somente leitura, ideal para exibição em monitores da sala da equipe. Nenhum login é necessário para acessar este modo.

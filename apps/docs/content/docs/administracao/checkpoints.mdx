@@ -1,0 +1,54 @@
+---
+title: Checkpoints de Status
+description: Como configurar os checkpoints automáticos de atualização de status da equipe.
+---
+
+# Checkpoints de Status
+
+Os **checkpoints** são lembretes automáticos que pedem para desenvolvedores informarem no que estão trabalhando. Eles aparecem como um modal na tela do dev em intervalos configuráveis.
+
+## Acessando a configuração
+
+No menu lateral, vá em **Administração → Checkpoints**.
+
+## Configurações disponíveis
+
+| Campo | Descrição |
+|-------|-----------|
+| **Ativar checkpoints** | Liga ou desliga o sistema inteiro |
+| **Intervalo** | Frequência dos prompts (ex: a cada 30, 60 ou 90 minutos) |
+| **Início do horário ativo** | Hora em que os checkpoints começam (ex: 09:00) |
+| **Fim do horário ativo** | Hora em que os checkpoints param (ex: 18:00) |
+
+Clique em **Salvar configuração** após ajustar os valores.
+
+## Como funciona
+
+1. No intervalo configurado, **dentro do horário ativo**, o sistema envia um prompt para cada desenvolvedor logado.
+2. O modal de atualização abre automaticamente na tela do dev.
+3. O dev preenche a tarefa atual, informa se está bloqueado e adiciona notas opcionais.
+4. O status do dev é atualizado:
+   - **Bloqueado** se o toggle de bloqueio foi ativado
+   - **Ativo** se o toggle estava desligado
+
+### Falta de resposta
+
+Se um desenvolvedor não responder em **10 minutos**, um indicador de aviso aparece no card dele no Painel. O aviso some assim que o dev responde ao checkpoint.
+
+## Quando desativar
+
+Considere desativar os checkpoints quando:
+
+- A equipe estiver em uma fase de trabalho intenso que não se beneficia de interrupções
+- Durante reuniões longas ou apresentações
+- Em dias de feriado ou ponto facultativo
+
+## Histórico de checkpoints
+
+Tech Leads podem consultar o histórico de atualizações enviadas pelos devs em **Administração → Checkpoints → Histórico**. O histórico mostra:
+
+- Quem enviou
+- Data e hora
+- Tarefa informada
+- Se estava bloqueado
+- Notas adicionais

@@ -1,0 +1,53 @@
+---
+title: Novo Ticket
+description: Como abrir um chamado de suporte no VectorOps.
+---
+
+# Novo Ticket
+
+Use esta opção para registrar solicitações de clientes que precisam de atenção da equipe de desenvolvimento.
+
+## Como abrir um ticket
+
+1. Na área de suporte, clique em **Novo Ticket**.
+2. Preencha o formulário:
+
+| Campo | Obrigatório | Descrição |
+|-------|-------------|-----------|
+| **Título** | Sim | Resumo do problema em até 120 caracteres |
+| **Descrição** | Sim | Detalhes completos do que foi reportado |
+| **Prioridade** | Sim | Baixa, Média, Alta ou Crítica |
+| **Prazo** | Não | Data limite para resolução |
+
+3. Clique em **Criar ticket**.
+
+O ticket é criado com um identificador único no formato `VEC-XXXX` e entra automaticamente na fila de atendimento.
+
+## Prioridades
+
+A prioridade define a urgência e visibilidade do ticket na fila:
+
+| Prioridade | Quando usar |
+|------------|-------------|
+| **Baixa** | Dúvidas, melhorias, sem impacto operacional |
+| **Média** | Problemas que afetam alguns usuários, com alternativa disponível |
+| **Alta** | Problemas sem alternativa, impacto significativo |
+| **Crítica** | Sistema fora do ar, perda de dados, impacto total no cliente |
+
+<Callout type="warn">
+  Reserve a prioridade **Crítica** para situações que realmente impedem o cliente de operar. O uso excessivo reduz a efetividade da triagem.
+</Callout>
+
+## Após a criação
+
+- O ticket aparece na **Fila** com status **Aberto**
+- O Tech Lead ou Líder de Suporte pode reordenar e atribuir a um desenvolvedor
+- Você receberá notificações sobre atualizações do ticket em **Meus Itens**
+
+## Acompanhando um ticket
+
+Clique no código do ticket (ex: `VEC-0042`) em qualquer lista para abrir a página de detalhes. Lá você vê:
+
+- **Timeline** — histórico completo de eventos e comentários
+- **Responsável** — desenvolvedor atribuído
+- **Status** — estado atual (Aberto, Em andamento, Concluído, Descartado)

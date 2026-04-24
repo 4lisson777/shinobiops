@@ -1,0 +1,4 @@
+{
+  "title": "Suporte",
+  "pages": ["index", "novo-ticket", "novo-bug", "fila", "meus-itens"]
+}
