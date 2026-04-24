@@ -305,6 +305,17 @@ export function NinjaBoard({
     }
   }
 
+  // Blocked devs float to the front — they need immediate attention
+  const sortedDevs = React.useMemo(
+    () =>
+      [...devs].sort((a, b) => {
+        const aBlocked = a.devStatus === "BLOCKED" ? 0 : 1
+        const bBlocked = b.devStatus === "BLOCKED" ? 0 : 1
+        return aBlocked - bBlocked
+      }),
+    [devs]
+  )
+
   // Stats
   const activeCount = devs.filter((d) => d.devStatus === "ACTIVE" || !d.devStatus).length
   const blockedCount = devs.filter((d) => d.devStatus === "BLOCKED").length
@@ -439,7 +450,7 @@ export function NinjaBoard({
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {devs.map((dev) => (
+          {sortedDevs.map((dev) => (
             <DeveloperCard
               key={dev.id}
               dev={dev}
