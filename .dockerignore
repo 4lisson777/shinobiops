@@ -6,28 +6,32 @@ node_modules
 .git
 .gitignore
 
-# Next.js build output
+# Next.js build output (rebuilt during build)
 **/.next
 **/out
 
 # Prisma generated client (regenerated during build)
 **/generated
 
-# Persisted data
+# Persisted data (never send to build context)
 data
 **/*.db
 **/*.db-wal
 **/*.db-shm
 
-# Environment files (injected at runtime)
+# Environment files (injected at runtime via docker-compose)
 **/.env
 **/.env.*
+!**/.env.example
 
 # Dev / editor files
 .DS_Store
 *.log
 .vscode
 .idea
+
+# Backups
+backups
 
 # Test / CI artifacts
 coverage
@@ -36,3 +40,30 @@ coverage
 **/*.spec.ts
 playwright-report
 test-results
+
+# Docker files (avoid recursive context)
+Dockerfile
+docker-compose.yml
+docker-compose.*.yml
+
+# Turbo cache
+.turbo
+**/.turbo
+
+# TypeScript build info
+**/*.tsbuildinfo
+
+# Claude / AI tooling files (not needed in image)
+.claude
+ai-driven-project
+
+# Documentation (not needed in image)
+docs
+*.md
+!**/README.md
+
+# Source maps (not needed in production image)
+**/*.map
+
+# Scripts (host-only utilities)
+scripts

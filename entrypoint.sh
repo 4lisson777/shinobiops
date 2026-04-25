@@ -4,7 +4,7 @@ set -e
 echo "Running database migrations..."
 cd /app/apps/web
 mkdir -p prisma/data
-node /app/node_modules/prisma/build/index.js migrate deploy
+NODE_PATH=/prisma-cli/node_modules node /prisma-cli/node_modules/prisma/build/index.js migrate deploy
 
 if [ -n "$SEED_ADMIN_EMAIL" ]; then
   echo "Running production seed..."

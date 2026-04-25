@@ -187,6 +187,9 @@ model Ticket {
   reorderRequests ReorderRequest[]
   notifications   Notification[]
 
+  @@index([organizationId])
+  @@index([openedById])
+  @@index([assignedToId])
   @@map("tickets")
 }
 
@@ -216,6 +219,7 @@ model TicketEvent {
   ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
   actor  User   @relation("ActorEvents", fields: [actorId], references: [id])
 
+  @@index([ticketId])
   @@map("ticket_events")
 }
 
@@ -270,6 +274,8 @@ model HelpRequest {
   requestedBy  User         @relation("RequestedHelp", fields: [requestedById], references: [id])
   responses    HelpRequestResponse[]
 
+  @@index([organizationId])
+  @@index([requestedById])
   @@map("help_requests")
 }
 
@@ -299,13 +305,14 @@ model Checkpoint {
   organization Organization @relation(fields: [organizationId], references: [id])
   user         User         @relation(fields: [userId], references: [id])
 
+  @@index([organizationId])
   @@index([userId, createdAt])
   @@map("checkpoints")
 }
 
 model CheckpointConfig {
   id               String  @id @default(cuid())
-  organizationId   String
+  organizationId   String  @unique
   intervalMinutes  Int     @default(60)
   activeHoursStart String  @default("09:00")
   activeHoursEnd   String  @default("18:00")
@@ -318,7 +325,7 @@ model CheckpointConfig {
 
 model TvConfig {
   id              String  @id @default(cuid())
-  organizationId  String
+  organizationId  String  @unique
   isEnabled       Boolean @default(true)
   refreshInterval Int     @default(30)
 

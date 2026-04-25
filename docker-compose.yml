@@ -1,5 +1,9 @@
 services:
   web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: web-runner
     env_file:
       - apps/web/.env
     environment:
@@ -9,27 +13,24 @@ services:
       # SEED_ADMIN_NAME: "Your Name"
       # SEED_ADMIN_EMAIL: "admin@yourcompany.com"
       # SEED_ADMIN_PASSWORD: "ChangeMe123!"
-    build:
-      context: .
-      dockerfile: Dockerfile
     ports:
       - "3005:3000"
     volumes:
-      # Named volume so Docker manages directory ownership (avoids permission errors
-      # that occur when a bind-mount directory is created as root on the host while
-      # the container runs as the non-root "node" user).
+      # Named volume so Docker manages directory ownership (avoids permission
+      # errors that occur when a bind-mount is created as root on the host
+      # while the container runs as the non-root "node" user).
       - vectorops-data:/app/apps/web/prisma/data
+    init: true
     restart: unless-stopped
-    healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          'node -e "fetch(''http://localhost:3000/api/health'').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"',
-        ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          memory: 512m
 
 volumes:
   vectorops-data:

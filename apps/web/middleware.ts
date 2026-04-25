@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { unsealData } from "iron-session"
+import { sessionPassword } from "./lib/session"
 
 const COOKIE_NAME = "shinobiops_session"
 
@@ -63,10 +64,7 @@ async function readSessionFromRequest(
   if (!cookieValue) return null
 
   try {
-    const password =
-      process.env.SESSION_SECRET ?? "fallback-dev-secret-min-32-chars!!"
-
-    const data = await unsealData<SessionPayload>(cookieValue, { password })
+    const data = await unsealData<SessionPayload>(cookieValue, { password: sessionPassword })
     return data
   } catch {
     // Corrupted or tampered cookie — treat as unauthenticated

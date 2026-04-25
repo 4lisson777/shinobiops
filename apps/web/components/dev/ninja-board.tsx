@@ -181,7 +181,7 @@ export function NinjaBoard({
 
       // War room started — show overlay and play alarm
       if (event.type === "war_room:started") {
-        const payload = event.payload as WarRoomData
+        const payload = event.payload as unknown as WarRoomData
         setWarRoom(payload)
         setWarRoomDismissed(false)
         void playWarRoomAlarm()

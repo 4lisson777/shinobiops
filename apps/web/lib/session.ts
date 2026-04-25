@@ -17,15 +17,17 @@ const SESSION_MAX_AGE = 60 * 60 * 24 * 7
 
 const isProduction = process.env.NODE_ENV === "production"
 
+export const sessionPassword: string = (() => {
+  const secret = process.env.SESSION_SECRET
+  if (!secret && process.env.NODE_ENV === "production" && process.env.SKIP_ENV_VALIDATION !== "true") {
+    throw new Error("SESSION_SECRET environment variable is required in production")
+  }
+  return secret ?? "fallback-dev-secret-min-32-chars!!"
+})()
+
 export const sessionOptions: SessionOptions = {
   cookieName: "shinobiops_session",
-  password: (() => {
-    const secret = process.env.SESSION_SECRET
-    if (!secret && process.env.NODE_ENV === "production") {
-      throw new Error("SESSION_SECRET environment variable is required in production")
-    }
-    return secret ?? "fallback-dev-secret-min-32-chars!!"
-  })(),
+  password: sessionPassword,
   cookieOptions: {
     httpOnly: true,
     // Use Secure + SameSite=Strict in production for maximum protection

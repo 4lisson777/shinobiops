@@ -1,8 +1,6 @@
-import { loader } from "fumadocs-core/source"
-import { createMDXSource } from "fumadocs-mdx"
 import { docs } from "@/.source"
+import { loader } from "fumadocs-core/source"
 
-export const source = loader({
+export const source = loader(docs, {
   baseUrl: "/docs",
-  source: createMDXSource(docs),
 })

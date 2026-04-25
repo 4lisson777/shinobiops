@@ -142,14 +142,8 @@ async function seedOrganizationUsers(
   for (const seedUser of users) {
     const passwordHash = await bcrypt.hash(seedUser.password, 12)
 
-    // Upsert by (organizationId, email) compound unique — use findFirst + id for the where clause.
-    // On update: only overwrite isSuperAdmin if the seed definition sets it to true,
-    // to avoid inadvertently demoting an existing super-admin on re-seed.
-    const existingUser = await prisma.user.findFirst({
-      where: { organizationId: orgId, email: seedUser.email },
-    })
     const user = await prisma.user.upsert({
-      where: { id: existingUser?.id ?? "" },
+      where: { organizationId_email: { organizationId: orgId, email: seedUser.email } },
       update: seedUser.isSuperAdmin ? { isSuperAdmin: true } : {},
       create: {
         organizationId: orgId,
@@ -170,12 +164,8 @@ async function seedOrganizationUsers(
 }
 
 async function seedOrgConfigs(orgId: string): Promise<void> {
-  // CheckpointConfig — one per org
-  const existingCheckpointConfig = await prisma.checkpointConfig.findFirst({
-    where: { organizationId: orgId },
-  })
   await prisma.checkpointConfig.upsert({
-    where: { id: existingCheckpointConfig?.id ?? "" },
+    where: { organizationId: orgId },
     update: {},
     create: {
       organizationId: orgId,
@@ -187,12 +177,8 @@ async function seedOrgConfigs(orgId: string): Promise<void> {
   })
   console.log("    Upserted CheckpointConfig")
 
-  // TvConfig — one per org
-  const existingTvConfig = await prisma.tvConfig.findFirst({
-    where: { organizationId: orgId },
-  })
   await prisma.tvConfig.upsert({
-    where: { id: existingTvConfig?.id ?? "" },
+    where: { organizationId: orgId },
     update: {},
     create: {
       organizationId: orgId,

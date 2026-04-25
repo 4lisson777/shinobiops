@@ -1,10 +1,15 @@
 # Tech Leader -- Short-Term Memory
 
 ## Current Task
-- **Name:** Docker Seed dotenv Fix
-- **Plan folder:** `ai-driven-project/prompt-engineering/20260424_docker-seed-dotenv-fix/`
-- **Scope:** Backend-only (bug fix)
-- **Status:** PLANNED -- awaiting backend engineer execution
+- **Name:** Docker Architecture Audit and Optimization
+- **Plan folder:** `ai-driven-project/prompt-engineering/20260425_docker-architecture-audit/`
+- **Scope:** Infrastructure (Dockerfile, docker-compose.yml, .dockerignore, entrypoint.sh)
+- **Status:** COMPLETED -- all 10 focus areas addressed
+- **Result:** Image 556MB virtual / 119MB compressed (down from 1.32GB / 264MB). 55% compressed size reduction.
+
+## Previous Task
+- **Name:** Docker Best-Practice Optimizations
+- **Status:** COMPLETED (superseded by this audit)
 
 ## Previous Task (paused)
 - **Name:** Multitenancy Refactor
@@ -12,34 +17,20 @@
 - **Scope:** Full-stack (multi-phase)
 - **Status:** PLANNED -- awaiting backend Phase MT-1 execution first
 
-## Key Decisions
+## Key Docker Decisions
+- Turbo prune for minimal workspace (only web deps installed)
+- Isolated Prisma CLI in /prisma-cli (not full node_modules)
+- NODE_PATH for prisma config resolution in entrypoint
+- Standalone Next.js output as sole runtime source
+- esbuild banner with createRequire for CJS->ESM compatibility (bcryptjs crypto)
+- Prisma version extracted dynamically from installed package
+- Healthcheck single source of truth in Dockerfile (removed from compose)
+- init:true, log rotation, memory limits in compose
+- Docs service removed from compose (commented out build in Dockerfile too)
+
+## Multitenancy Architecture Notes (still relevant)
 - Row-level tenant isolation with organizationId FK on all tenant-scoped models
 - Keep SQLite (no DB engine change in this phase)
-- Super admin is a boolean flag on User (`isSuperAdmin`), not a Role enum value
+- Super admin is a boolean flag on User, not a Role enum value
 - Session-implicit tenancy (no subdomains, no URL path prefixes)
-- Invite-based org joining (TECH_LEAD generates codes, users join via code)
-- Prisma Client Extension + AsyncLocalStorage for auto-scoping queries
-- Public IDs remain globally unique (no per-tenant sequences)
-- Email uniqueness changes from global to per-organization
-- Two-step migration: nullable columns -> data backfill -> non-nullable columns
-- TV route gains `?org=slug` parameter for public access
-
-## Architecture Notes
-- New models: Organization (tenant entity), Invite (join codes)
-- User gains: organizationId (FK), isSuperAdmin (boolean)
-- Session gains: organizationId, isSuperAdmin
 - All ~40 API routes need to switch from raw `db` to `getTenantDb()`
-- SSE events must include organizationId for cross-tenant filtering
-- Notification targeting must be org-scoped
-- BugReport, TicketEvent, ReorderRequest inherit org scope through parent Ticket (no direct organizationId)
-- CheckpointConfig, TvConfig become per-org (no longer singleton)
-- RoleNotificationConfig unique constraint changes from (role) to (organizationId, role)
-
-## Phase Execution Order
-1. MT-1: Schema & Data Layer (backend) -- MUST go first
-2. MT-5: Migration & Seed (backend) -- immediately after MT-1
-3. MT-2: Auth & Session (backend) -- depends on MT-1
-4. MT-3: API Route Updates (backend) -- depends on MT-1, MT-2
-5. MT-4: Middleware & Super Admin (backend) -- depends on MT-2, MT-3
-6. Frontend: all UI changes -- depends on all backend phases
-7. QA: full testing -- depends on everything

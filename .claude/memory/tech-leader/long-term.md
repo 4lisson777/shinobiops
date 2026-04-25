@@ -62,8 +62,19 @@ Admin component stubs exist returning null: command-dojo-overview, team-manageme
 
 ## Docker / Build Pitfalls
 - PITFALL: `--packages=external` in esbuild keeps all imports as runtime requires. If a dependency is pruned (npm prune --omit=dev), the bundled CJS file fails at runtime.
+- PITFALL: esbuild ESM output doesn't define `require()`. CJS modules bundled into ESM that use `require("crypto")` fail silently. Fix: add banner `import { createRequire } from 'node:module'; const require = createRequire(import.meta.url);`
+- PITFALL: Next.js standalone output includes its own minimal node_modules (~79MB). Copying the full workspace node_modules (~835MB) on top wastes 750MB. Use standalone node_modules for runtime, isolate additional tools (e.g., Prisma CLI) in separate directories.
+- PITFALL: Prisma CLI has deep transitive deps (~82 packages). Cherry-picking is fragile. Better to npm install in an isolated /prisma-cli directory.
 - Production seed scripts should NOT import `dotenv/config` -- Docker provides env vars via docker-compose. `dotenv` is a dev convenience only.
-- The Dockerfile uses a 3-stage build: deps (npm ci) -> builder (build + esbuild + prune) -> runner (standalone output). Only production deps survive into the runner.
+- The Dockerfile uses a 4-stage build: pruner (turbo prune) -> deps (npm ci) -> builder (build + esbuild + prisma-cli install) -> runner (standalone output + isolated prisma CLI).
+- `turbo prune web --docker` produces /json (manifests only, for dep caching) and /full (source files). This ensures only web's transitive deps are installed.
+- Alpine (node:20-alpine) works well with better-sqlite3; needs `apk add python3 make g++` in deps stage only.
+- No `openssl` package needed on Alpine -- Node.js Alpine images include built-in OpenSSL.
+- Docs (fumadocs-mdx) app build currently broken in Docker -- `.source` generation fails. Build only `--filter=web` until fixed.
+- TypeScript appears in pruned node_modules because Prisma and valibot declare it as a peer dependency. Not a devDep leak.
+- HEALTHCHECK directive in Dockerfile provides default health checks; docker-compose healthcheck overrides it when using compose. Avoid duplicating in both files.
+- NODE_PATH=/prisma-cli/node_modules is needed when running prisma migrate deploy so prisma.config.ts can resolve `import from "prisma/config"`.
+- Prisma CLI version in /prisma-cli is dynamically extracted from the installed package to stay in sync with package.json.
 
 ## Context System
 - Master context at ai-driven-project/master-context.md
