@@ -1,0 +1,56 @@
+---
+title: Configuração de Notificações
+description: Como definir quais eventos geram notificações para cada cargo.
+---
+
+# Configuração de Notificações
+
+O sistema de notificações informa automaticamente os membros sobre eventos relevantes. Como Tech Lead, você define quais cargos recebem quais tipos de notificação.
+
+## Acessando a configuração
+
+No menu lateral, vá em **Administração → Notificações**.
+
+## Tipos de notificação
+
+| Evento | Descrição |
+|--------|-----------|
+| **Novo chamado/bug** | Quando um ticket ou bug é criado na organização |
+| **Atribuição** | Quando um ticket é atribuído a alguém |
+
+## Configurando por cargo
+
+Para cada cargo, você pode ativar ou desativar cada tipo de notificação:
+
+1. Na página de configuração, localize o cargo desejado.
+2. Use os toggles para ativar ou desativar cada evento.
+3. Clique em **Salvar**.
+
+**Exemplo de configuração comum:**
+
+| Cargo | Novo chamado/bug | Atribuição |
+|-------|:-:|:-:|
+| Tech Lead | ✓ | ✓ |
+| Desenvolvedor | ✓ | ✓ |
+| QA | ✓ | — |
+| Líder de Suporte | ✓ | — |
+| Membro de Suporte | — | — |
+
+## Notificações persistentes
+
+Algumas notificações são **persistentes** — elas exigem confirmação explícita antes de serem descartadas. São elas:
+
+- Novo ticket ou bug criado (para Tech Leads e Devs)
+- Ticket atribuído a você
+
+Notificações persistentes aparecem com um indicador especial e precisam ser **confirmadas** clicando em **Entendido** ou abrindo o item.
+
+## Onde as notificações aparecem
+
+- **Ícone do sino** na barra superior — mostra o número de não lidas
+- **Lista de notificações** — clique no sino para ver todas
+- **Banner em tempo real** — para notificações urgentes, um banner aparece diretamente na tela
+
+## Ajustes individuais
+
+Cada membro pode complementar as configurações do cargo com ajustes próprios na página de **Perfil**. Eles podem desativar tipos específicos que o cargo receberia, mas não podem ativar tipos que não foram habilitados para o seu cargo.

@@ -1,0 +1,64 @@
+---
+title: Convites
+description: Como criar e gerenciar links de convite para novos membros da equipe.
+---
+
+# Convites
+
+O acesso ao VectorOps é controlado por convites. Somente Tech Leads podem criar convites. Cada link gerado permite que exatamente uma pessoa crie sua conta.
+
+## Criando um convite
+
+Na página **Equipe** (`/admin/team`), role até o card **Convites Ativos** e clique em **+ Novo Convite**.
+
+No formulário:
+
+| Campo | Obrigatório | Descrição |
+|-------|-------------|-----------|
+| **Cargo** | Sim | Perfil que o novo membro receberá ao se cadastrar |
+| **Email** | Não | Restringe o convite a um email específico. Deixe vazio para aceitar qualquer email |
+| **Validade** | Sim | 24 h, 48 h, 72 h ou 7 dias |
+
+Clique em **Criar convite**. O sistema exibe:
+- O **código** do convite (ex: `FXKQ7R3M`)
+- O **link completo** para compartilhar (ex: `https://vectorops.inovar.com/register?invite=FXKQ7R3M`)
+
+Copie o link e envie diretamente para a pessoa convidada.
+
+## Compartilhando um convite
+
+Envie o link de convite por email, Slack ou qualquer canal interno. O destinatário clica no link e é levado diretamente à tela de cadastro com o cargo e a organização já pré-configurados.
+
+## Convites ativos
+
+O card exibe todos os convites não utilizados e ainda dentro do prazo. Para cada convite você vê:
+
+- **Código** — identificador do convite
+- **Cargo** que será atribuído
+- **Email restrito** (se houver)
+- **Validade** — data e hora de expiração (destacado em âmbar se expira em menos de 24h)
+- **Criado por** — qual Tech Lead gerou o convite
+
+### Copiando o link novamente
+
+Clique em **Copiar Link** na linha do convite para copiar o link de registro para a área de transferência.
+
+## Revogando um convite
+
+Para invalidar um convite antes que seja usado:
+
+1. Clique em **Revogar** na linha do convite.
+2. Confirme a ação.
+
+O convite é desativado imediatamente. O link não funcionará mais. Um convite já utilizado não pode ser revogado.
+
+<Callout type="info">
+  Convites expirados são removidos automaticamente da lista. Eles não aparecem na tabela de convites ativos, mas seu uso fica registrado no histórico de auditoria.
+</Callout>
+
+## Boas práticas
+
+- **Use restrição de email** sempre que possível para evitar que o link seja usado por uma pessoa errada.
+- **Defina validades curtas** (24h ou 48h) para convites de acesso crítico.
+- **Revogue imediatamente** convites que foram enviados para o endereço errado.
+- Cada link é de uso único — gere um novo se a pessoa precisar de uma segunda tentativa.
