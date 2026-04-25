@@ -15,6 +15,7 @@ import {
 } from "@/components/tickets/ticket-actions"
 import { CopyIdButton } from "@/components/tickets/copy-id-button"
 import { ClickUpCopyButton } from "@/components/tickets/clickup-copy-button"
+import { formatDeadline, isPastDeadline } from "@/lib/format-date"
 
 export async function generateMetadata({
   params,
@@ -108,7 +109,7 @@ export default async function TicketDetailPage({
   const isPastDue =
     ticket.status !== "DONE" &&
     ticket.status !== "CANCELLED" &&
-    ticket.deadline < new Date()
+    isPastDeadline(ticket.deadline)
 
   // Serialize for client components
   const ticketForActions: TicketForActions = {
@@ -201,11 +202,7 @@ export default async function TicketDetailPage({
 
               <span className={isPastDue ? "font-medium text-destructive" : ""}>
                 Prazo{" "}
-                {ticket.deadline.toLocaleDateString("pt-BR", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                })}
+                {formatDeadline(ticket.deadline)}
                 {isPastDue && " — ATRASADO"}
               </span>
             </div>

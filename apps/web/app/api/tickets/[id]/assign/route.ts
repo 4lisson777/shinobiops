@@ -7,6 +7,7 @@ import {
   getNotificationTargets,
 } from "@/lib/notifications"
 import { emitShinobiEvent } from "@/lib/sse-emitter"
+import { logger } from "@/lib/logger"
 
 const userSelect = {
   id: true,
@@ -148,7 +149,7 @@ export async function POST(
           persistentUserIds,
         })
       )
-      .catch(console.error)
+      .catch((err: unknown) => logger.error("Assign notification failed", { error: String(err) }))
 
     return NextResponse.json({ ticket })
   })

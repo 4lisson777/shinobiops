@@ -11,6 +11,7 @@ import {
   getNotificationTargets,
 } from "@/lib/notifications"
 import { emitShinobiEvent } from "@/lib/sse-emitter"
+import { logger } from "@/lib/logger"
 
 type BugCreateData = z.infer<typeof bugCreateSchema>
 
@@ -204,7 +205,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           persistentUserIds,
         })
       )
-      .catch(console.error)
+      .catch((err: unknown) => logger.error("Bug notification failed", { error: String(err) }))
 
     return NextResponse.json({ bug }, { status: 201 })
   })

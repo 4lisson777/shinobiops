@@ -26,6 +26,13 @@ const PUBLIC_API_PREFIXES = [
   "/api/invites/",
 ]
 
+// Role → permitted top-level sections:
+//   TECH_LEAD      — /admin (full), /dev, /support
+//   QA             — /admin (read-only stats), /dev (board + queue), /support (read)
+//   DEVELOPER      — /dev
+//   SUPPORT_LEAD   — /support (full)
+//   SUPPORT_MEMBER — /support (create tickets/bugs, my-items)
+
 // Role-based access rules: maps path prefix to allowed roles.
 // Order matters — more specific prefixes should come first.
 const ROLE_GUARDS: Array<{ prefix: string; roles: string[] }> = [
@@ -90,6 +97,13 @@ function getRoleHome(role: string): string {
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
   const { pathname } = request.nextUrl
+
+  // Log all matched requests in development for debugging
+  if (process.env.NODE_ENV !== "production") {
+    // lightweight inline log — do NOT import logger here (middleware runs at edge runtime)
+    // Edge runtime cannot use process.stdout.write; use console.log which works in both
+    console.log(JSON.stringify({ level: "info", time: new Date().toISOString(), msg: "request", method: request.method, path: pathname }))
+  }
 
   if (isPublicPath(pathname)) {
     return NextResponse.next()

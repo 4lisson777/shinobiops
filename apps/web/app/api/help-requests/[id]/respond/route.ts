@@ -3,6 +3,7 @@ import { getTenantDb } from "@/lib/tenant-db"
 import { requireTenantRole } from "@/lib/auth"
 import { emitShinobiEvent } from "@/lib/sse-emitter"
 import { createAndEmitNotifications } from "@/lib/notifications"
+import { logger } from "@/lib/logger"
 
 export async function POST(
   _request: NextRequest,
@@ -90,7 +91,7 @@ export async function POST(
       title: `${responder.ninjaAlias} pode te ajudar`,
       body: `${responder.name} pode te ajudar com seu pedido.`,
       targetUserIds: [helpRequest.requestedById],
-    }).catch(console.error)
+    }).catch((err: unknown) => logger.error("Help response notification failed", { error: String(err) }))
 
     return NextResponse.json({ response }, { status: 201 })
   })

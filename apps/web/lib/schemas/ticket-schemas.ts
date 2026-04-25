@@ -1,8 +1,8 @@
 import { z } from "zod"
 
 export const ticketCreateSchema = z.object({
-  title: z.string().min(1, "Title is required").max(120),
-  description: z.string().min(1, "Description is required"),
+  title: z.string().min(1, "Title is required").max(200),
+  description: z.string().min(1, "Description is required").max(5000),
   severity: z.enum(["LOW", "MEDIUM", "HIGH", "CRITICAL"]),
   deadline: z
     .string()
@@ -11,12 +11,12 @@ export const ticketCreateSchema = z.object({
 })
 
 export const bugCreateSchema = ticketCreateSchema.extend({
-  affectedModule: z.string().min(1, "Affected module is required"),
-  stepsToReproduce: z.string().min(1, "Steps to reproduce are required"),
-  expectedBehavior: z.string().min(1, "Expected behavior is required"),
-  actualBehavior: z.string().min(1, "Actual behavior is required"),
+  affectedModule: z.string().min(1, "Affected module is required").max(200),
+  stepsToReproduce: z.string().min(1, "Steps to reproduce are required").max(5000),
+  expectedBehavior: z.string().min(1, "Expected behavior is required").max(2000),
+  actualBehavior: z.string().min(1, "Actual behavior is required").max(2000),
   environment: z.enum(["PRODUCTION", "STAGING", "OTHER"]),
-  customerId: z.string().optional(),
+  customerId: z.string().max(100).optional(),
 })
 
 export const ticketUpdateSchema = z

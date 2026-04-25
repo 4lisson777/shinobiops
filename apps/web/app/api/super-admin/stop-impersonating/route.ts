@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { requireSuperAdmin } from "@/lib/auth"
 import { getSession } from "@/lib/session"
+import { logger } from "@/lib/logger"
 
 /**
  * POST /api/super-admin/stop-impersonating
@@ -21,9 +22,11 @@ export async function POST(_request: NextRequest): Promise<NextResponse> {
     )
   }
 
-  console.warn(
-    `[SUPER_ADMIN_STOP_IMPERSONATE] userId=${authSession.userId} restoring orgId=${session.originalOrganizationId} (was=${session.organizationId})`
-  )
+  logger.warn("Super admin impersonation stopped", {
+    userId: authSession.userId,
+    restoredOrgId: session.originalOrganizationId,
+    wasOrgId: session.organizationId,
+  })
 
   session.organizationId = session.originalOrganizationId
   // Clear the stored original so subsequent calls don't re-trigger

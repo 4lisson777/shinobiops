@@ -4,6 +4,7 @@ import { getTenantDb } from "@/lib/tenant-db"
 import { requireTenantRole } from "@/lib/auth"
 import { emitShinobiEvent } from "@/lib/sse-emitter"
 import { createAndEmitNotifications } from "@/lib/notifications"
+import { logger } from "@/lib/logger"
 
 const createSchema = z.object({
   contextMessage: z.string().min(1).max(280),
@@ -87,7 +88,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         body: helpRequest.contextMessage,
         targetUserIds: targets.map((u) => u.id),
       })
-    })().catch(console.error)
+    })().catch((err: unknown) => logger.error("Help request notification failed", { error: String(err) }))
 
     return NextResponse.json({ helpRequest }, { status: 201 })
   })

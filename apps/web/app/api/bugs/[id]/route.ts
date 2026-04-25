@@ -8,6 +8,7 @@ import {
   getNotificationTargets,
 } from "@/lib/notifications"
 import { emitShinobiEvent } from "@/lib/sse-emitter"
+import { logger } from "@/lib/logger"
 
 // Fields included for user references in detail responses
 const userSelect = {
@@ -249,7 +250,7 @@ export async function PATCH(
             persistentUserIds,
           })
         )
-        .catch(console.error)
+        .catch((err: unknown) => logger.error("Bug notification failed", { error: String(err) }))
     }
 
     return NextResponse.json({ bug })

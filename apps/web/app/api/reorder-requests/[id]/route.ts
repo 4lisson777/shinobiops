@@ -3,6 +3,7 @@ import { z } from "zod"
 import { getTenantDb } from "@/lib/tenant-db"
 import { requireTenantRole } from "@/lib/auth"
 import { createAndEmitNotifications } from "@/lib/notifications"
+import { logger } from "@/lib/logger"
 
 const actionSchema = z.object({
   action: z.enum(["approve", "decline"]),
@@ -69,7 +70,7 @@ export async function PATCH(
         body: `Seu pedido de reordenação para ${reorderRequest.ticket.publicId} foi recusado.`,
         ticketId: reorderRequest.ticketId,
         targetUserIds: [reorderRequest.requestedById],
-      }).catch(console.error)
+      }).catch((err: unknown) => logger.error("Reorder notification failed", { error: String(err) }))
 
       return NextResponse.json({ reorderRequest: updated })
     }
@@ -118,7 +119,7 @@ export async function PATCH(
       body: `Seu pedido de reordenação para ${reorderRequest.ticket.publicId} foi aprovado. Agora está na posição ${targetPosition}.`,
       ticketId: reorderRequest.ticketId,
       targetUserIds: [reorderRequest.requestedById],
-    }).catch(console.error)
+    }).catch((err: unknown) => logger.error("Reorder notification failed", { error: String(err) }))
 
     return NextResponse.json({ reorderRequest: updated.req, ticket: updated.ticket })
   })

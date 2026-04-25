@@ -3,6 +3,7 @@ import { db } from "@/lib/db"
 import { requireSuperAdmin } from "@/lib/auth"
 import { getSession } from "@/lib/session"
 import { ImpersonateSchema } from "@/lib/schemas/organization-schemas"
+import { logger } from "@/lib/logger"
 
 /**
  * POST /api/super-admin/impersonate
@@ -46,9 +47,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   }
 
   // Audit log — full audit trail can be persisted in a future phase
-  console.warn(
-    `[SUPER_ADMIN_IMPERSONATE] userId=${authSession.userId} switching from orgId=${authSession.organizationId} to orgId=${organizationId} (${targetOrg.name})`
-  )
+  logger.warn("Super admin impersonation started", {
+    userId: authSession.userId,
+    fromOrgId: authSession.organizationId,
+    targetOrgId: organizationId,
+    targetOrg: targetOrg.name,
+  })
 
   const session = await getSession()
 

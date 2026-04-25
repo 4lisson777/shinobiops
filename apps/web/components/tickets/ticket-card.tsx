@@ -14,6 +14,7 @@ import { Button } from "@workspace/ui/components/button"
 import { cn } from "@workspace/ui/lib/utils"
 import { UserAvatar } from "@/components/user-avatar"
 import type { TicketWithRelations } from "@/components/tickets/mission-board"
+import { formatDeadline, isPastDeadline } from "@/lib/format-date"
 
 const STATUS_LABELS: Record<string, string> = {
   OPEN: "Aberto",
@@ -60,7 +61,7 @@ export function TicketCard({
   const isPastDue =
     ticket.status !== "DONE" &&
     ticket.status !== "CANCELLED" &&
-    new Date(ticket.deadline) < new Date()
+    isPastDeadline(ticket.deadline)
 
   function handleCopyId() {
     navigator.clipboard.writeText(ticket.publicId).then(() => {
@@ -132,11 +133,7 @@ export function TicketCard({
             )}
           >
             Prazo{" "}
-            {new Date(ticket.deadline).toLocaleDateString("pt-BR", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })}
+            {formatDeadline(ticket.deadline)}
             {isPastDue && " — ATRASADO"}
           </span>
         </div>
