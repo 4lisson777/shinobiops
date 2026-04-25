@@ -16,9 +16,6 @@ services:
     ports:
       - "3005:3000"
     volumes:
-      # Named volume so Docker manages directory ownership (avoids permission
-      # errors that occur when a bind-mount is created as root on the host
-      # while the container runs as the non-root "node" user).
       - vectorops-data:/app/apps/web/prisma/data
     init: true
     restart: unless-stopped
@@ -31,6 +28,25 @@ services:
       resources:
         limits:
           memory: 512m
+
+  docs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: docs-runner
+    ports:
+      - "3006:3000"
+    init: true
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          memory: 256m
 
 volumes:
   vectorops-data:

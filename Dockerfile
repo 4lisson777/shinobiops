@@ -6,12 +6,13 @@
 # This avoids installing unnecessary dependencies (e.g., docs packages when
 # building web) and produces a tighter lockfile for faster npm ci.
 # ---------------------------------------------------------------------------
-FROM node:20-alpine AS pruner
+FROM node:22-alpine AS pruner
 WORKDIR /app
 
 RUN npm install -g turbo@^2
 COPY . .
-RUN turbo prune web --docker
+RUN turbo prune web --docker --out-dir=out/web
+RUN turbo prune docs --docker --out-dir=out/docs
 
 # ---------------------------------------------------------------------------
 # Stage 1 — Install Dependencies
@@ -19,7 +20,7 @@ RUN turbo prune web --docker
 # installed. BuildKit cache mount keeps npm's download cache across builds,
 # avoiding redundant network fetches on rebuilds.
 # ---------------------------------------------------------------------------
-FROM node:20-alpine AS deps
+FROM node:22-alpine AS deps
 WORKDIR /app
 
 # python3, make, g++ — required by native addons (better-sqlite3)
@@ -27,7 +28,7 @@ RUN apk add --no-cache python3 make g++
 
 # Copy only the pruned package manifests and lockfile (from turbo prune /json).
 # This layer is cached as long as dependencies don't change.
-COPY --from=pruner /app/out/json/ ./
+COPY --from=pruner /app/out/web/json/ ./
 
 # Deterministic install from pruned lockfile.
 # --mount=type=cache keeps npm's HTTP cache between builds for faster rebuilds.
@@ -35,18 +36,18 @@ RUN --mount=type=cache,target=/root/.npm \
     npm ci
 
 # ---------------------------------------------------------------------------
-# Stage 2 — Build
+# Stage 2 — Build (web)
 # Copies only the source files needed by web (from turbo prune /full), builds
 # the Next.js app, compiles the production seed script. Also installs the
 # Prisma CLI into an isolated directory for runtime migrations.
 # ---------------------------------------------------------------------------
-FROM node:20-alpine AS builder
+FROM node:22-alpine AS builder
 WORKDIR /app
 
 # Bring in installed node_modules from deps stage
 COPY --from=deps /app ./
 # Overlay only the source files turbo prune identified as necessary
-COPY --from=pruner /app/out/full/ ./
+COPY --from=pruner /app/out/web/full/ ./
 
 # Generate Prisma client before building
 RUN cd apps/web && npx prisma generate
@@ -101,7 +102,7 @@ RUN --mount=type=cache,target=/root/.npm \
 #   Total:                              ~287MB
 #   vs. old approach:                   ~910MB
 # ---------------------------------------------------------------------------
-FROM node:20-alpine AS web-runner
+FROM node:22-alpine AS web-runner
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -143,3 +144,65 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
   CMD node -e "fetch('http://localhost:3000/api/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
 
 ENTRYPOINT ["/app/entrypoint.sh"]
+
+# ===========================================================================
+# DOCS APP
+# ===========================================================================
+
+# ---------------------------------------------------------------------------
+# Stage 4 — Install Dependencies (docs)
+# No native addons needed — fumadocs is pure JS.
+# ---------------------------------------------------------------------------
+FROM node:22-alpine AS docs-deps
+WORKDIR /app
+
+COPY --from=pruner /app/out/docs/json/ ./
+
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci
+# npm hoists esbuild to root node_modules/ but leaves a broken stub in
+# apps/docs/node_modules/esbuild/ (README only, no lib/). The ESM resolver
+# finds the stub first and fails. Remove it so resolution falls through to root.
+RUN rm -rf apps/docs/node_modules/esbuild
+
+# ---------------------------------------------------------------------------
+# Stage 5 — Build (docs)
+# ---------------------------------------------------------------------------
+FROM node:22-alpine AS docs-builder
+WORKDIR /app
+
+COPY --from=docs-deps /app ./
+COPY --from=pruner /app/out/docs/full/ ./
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Remove broken esbuild stub before building (see docs-deps comment for context)
+RUN rm -rf apps/docs/node_modules/esbuild
+
+RUN --mount=type=cache,target=/app/.turbo \
+    npx turbo build --filter=docs
+
+# ---------------------------------------------------------------------------
+# Stage 6 — Production Runner (docs)
+# Pure static docs site — no database, no entrypoint script.
+# ---------------------------------------------------------------------------
+FROM node:22-alpine AS docs-runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+
+COPY --from=docs-builder --chown=node:node /app/apps/docs/.next/standalone ./
+COPY --from=docs-builder --chown=node:node /app/apps/docs/.next/static ./apps/docs/.next/static
+
+USER node
+
+EXPOSE 3000
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
+  CMD node -e "fetch('http://localhost:3000/').then(r => process.exit(r.ok || r.status === 307 ? 0 : 1)).catch(() => process.exit(1))"
+
+CMD ["node", "apps/docs/server.js"]
