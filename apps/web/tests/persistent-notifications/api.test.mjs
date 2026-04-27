@@ -573,14 +573,14 @@ async function testSSEPayloadIncludesId() {
     content.includes("id:")
 
   // The SSE payload emitted after createMany does NOT include the notification DB id
-  // because createMany does not return created records in Prisma (SQLite limitation)
+  // because createMany does not return created records in Prisma
   const payloadLine = content.match(/payload:\s*\{[^}]+\}/s)?.[0] ?? ""
   const payloadIncludesId = /payload:\s*\{[^}]*\bid\b[^}]*\}/.test(content)
 
   if (usesCreateMany && !payloadIncludesId) {
     fail(
       "SSE notification:new payload includes notification DB id",
-      "CRITICAL BUG: createMany() is used but does not return IDs (Prisma/SQLite limitation). " +
+      "CRITICAL BUG: createMany() is used but does not return IDs (Prisma limitation). " +
         "The SSE payload emitted in createAndEmitNotifications() does NOT include the notification id. " +
         "When a persistent notification arrives via SSE (not from /api/notifications/pending on mount), " +
         "the frontend assigns a fake 'pending-{timestamp}' id. Clicking 'Entendido' sends PATCH to " +
@@ -640,7 +640,7 @@ async function main() {
 
   // Credentials from prisma/seed.ts + manually created QA user
   // Roles needed: SUPPORT_MEMBER, QA, TECH_LEAD, DEVELOPER
-  // Sequential logins to avoid concurrent bcrypt + SQLite contention on the dev server
+  // Sequential logins to avoid concurrent bcrypt contention on the dev server
   const supportCookie = await login("support@vectorops.dev", "Password123!")
   const qaCookie = await login("qa@vectorops.dev", "Password123!")
   const techLeadCookie = await login("techlead@vectorops.dev", "Password123!")

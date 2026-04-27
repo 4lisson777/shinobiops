@@ -1202,7 +1202,7 @@ async function main() {
   console.log("  Role-Based Notification Configuration — Integration Tests")
   console.log("=".repeat(70))
 
-  // Login all required roles (300ms gaps to avoid SQLite contention from bcrypt)
+  // Login all required roles (300ms gaps to avoid contention from bcrypt)
   console.log("\nLogging in test users...")
   const techLeadCookie = await login("alisson.lima@vectorops.dev", "Password123!")
   await sleep(300)

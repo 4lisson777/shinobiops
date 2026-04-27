@@ -149,10 +149,10 @@ export async function PATCH(
             ticketId: id,
             eventType: "STATUS_CHANGED",
             actorId: session.userId,
-            metadata: JSON.stringify({
+            metadata: {
               oldStatus: existing.status,
               newStatus: status,
-            }),
+            },
           },
         })
 
@@ -163,7 +163,7 @@ export async function PATCH(
               ticketId: id,
               eventType: "DONE",
               actorId: session.userId,
-              metadata: JSON.stringify({}),
+              metadata: {},
             },
           })
         } else if (status === "CANCELLED") {
@@ -172,7 +172,7 @@ export async function PATCH(
               ticketId: id,
               eventType: "CANCELLED",
               actorId: session.userId,
-              metadata: JSON.stringify({}),
+              metadata: {},
             },
           })
         }
@@ -184,10 +184,10 @@ export async function PATCH(
             ticketId: id,
             eventType: "SEVERITY_CHANGED",
             actorId: session.userId,
-            metadata: JSON.stringify({
+            metadata: {
               oldSeverity: existing.severity,
               newSeverity: severity,
-            }),
+            },
           },
         })
       }
@@ -198,10 +198,10 @@ export async function PATCH(
             ticketId: id,
             eventType: "DEADLINE_CHANGED",
             actorId: session.userId,
-            metadata: JSON.stringify({
+            metadata: {
               oldDeadline: existing.deadline.toISOString(),
               newDeadline: new Date(deadline).toISOString(),
-            }),
+            },
           },
         })
       }
@@ -277,7 +277,7 @@ export async function DELETE(
           ticketId: id,
           eventType: "CANCELLED",
           actorId: session.userId,
-          metadata: JSON.stringify({ reason: `Excluído por ${session.role}` }),
+          metadata: { reason: `Excluído por ${session.role}` },
         },
       })
 

@@ -30,7 +30,7 @@ ShinobiOps is a **full-stack TypeScript application** built with modern, proven 
 - **Type Safety:** 100% TypeScript
 - **Monorepo:** Turbo-managed workspaces for scalable organization
 - **Framework:** Next.js 14+ (App Router)
-- **Deployment Model:** Docker + Docker Compose with persistent SQLite volume
+- **Deployment Model:** Docker + Docker Compose with MySQL service
 
 ---
 
@@ -83,25 +83,20 @@ ShinobiOps is a **full-stack TypeScript application** built with modern, proven 
 
 | Technology | Version | Purpose |
 |-----------|---------|---------|
-| **SQLite** | 3 | Lightweight, file-based SQL database |
-| **Prisma** | Latest | Type-safe ORM and database toolkit |
+| **MySQL** | 8.4 | Production-grade relational database with native Docker support |
+| **Prisma** | Latest | Type-safe ORM and database toolkit (with `@prisma/adapter-mariadb`) |
 
-### SQLite Configuration
+### MySQL Configuration
 
-**Recommended Pragmas:**
-
-```sql
-PRAGMA journal_mode = WAL;       -- Concurrent reads with writes (Write-Ahead Logging)
-PRAGMA foreign_keys = ON;        -- Enforce relational integrity
-PRAGMA synchronous = NORMAL;     -- Safe performance balance
-PRAGMA busy_timeout = 5000;      -- Prevent SQLITE_BUSY under concurrency
-```
+- Runs as a Docker service via `docker-compose.yml`
+- Default credentials: `vectorops:vectorops` on database `vectorops`
+- Healthcheck via `mysqladmin ping` ensures readiness before app startup
 
 ### Data Persistence
 
-- SQLite database file stored on **Docker named volume** at `/app/prisma/data`
+- MySQL data stored on **Docker named volume** `mysql-data` at `/var/lib/mysql`
 - Survives container restarts and upgrades
-- No external database dependency — fully self-contained
+- Backup via `scripts/backup-db.sh` (uses `mysqldump`)
 
 ### Prisma Features
 
@@ -221,7 +216,7 @@ PRAGMA busy_timeout = 5000;      -- Prevent SQLITE_BUSY under concurrency
 |-----------|---------|
 | **Docker** | Containerization and isolated runtime |
 | **Docker Compose** | Multi-container orchestration |
-| **Named Volume** | Persistent SQLite data storage |
+| **Named Volume** | Persistent MySQL data storage |
 
 ### Docker Configuration
 
@@ -361,7 +356,7 @@ volumes:
 |---------|----------|-----|
 | **Type Safety** | TypeScript 100% | Catch errors at dev time; better IDE support |
 | **Framework** | Next.js 14+ | SSR, API routes, built-in optimization, large ecosystem |
-| **Database** | SQLite + Prisma | Self-contained, no external dependency, type-safe ORM |
+| **Database** | MySQL + Prisma | Production-grade, concurrent writes, type-safe ORM |
 | **Real-Time** | SSE | Simple, no extra infrastructure, works over standard HTTP |
 | **UI Components** | shadcn/ui + Tailwind | Accessible, customizable, zero runtime overhead for base styles |
 | **Icons** | HugeIcons | Free, modern, large library, React-native |
@@ -385,7 +380,7 @@ volumes:
 - ✅ Passwords hashed with bcrypt (cost ≥ 12)
 - ✅ Session cookies are HTTP-only and Secure
 - ✅ Role-based access checks on every API route
-- ✅ SQLite file not exposed outside Docker container
+- ✅ MySQL only accessible within Docker network (not exposed to host in production)
 - ✅ No external API calls — fully internal network
 - ✅ HTTPS recommended for production (behind reverse proxy)
 

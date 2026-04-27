@@ -1,18 +1,10 @@
 import "dotenv/config"
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3"
+import { PrismaMariaDb } from "@prisma/adapter-mariadb"
 import { PrismaClient } from "../generated/prisma/client"
 import bcrypt from "bcryptjs"
 
-const adapter = new PrismaBetterSqlite3({ url: process.env.DATABASE_URL! })
+const adapter = new PrismaMariaDb(process.env.DATABASE_URL!)
 const prisma = new PrismaClient({ adapter })
-
-// Apply SQLite pragmas before any seeding operations
-async function applyPragmas(): Promise<void> {
-  await prisma.$executeRawUnsafe("PRAGMA journal_mode = WAL;")
-  await prisma.$executeRawUnsafe("PRAGMA foreign_keys = ON;")
-  await prisma.$executeRawUnsafe("PRAGMA synchronous = NORMAL;")
-  await prisma.$executeRawUnsafe("PRAGMA busy_timeout = 5000;")
-}
 
 interface SeedUser {
   name: string
@@ -207,9 +199,6 @@ async function seedOrgConfigs(orgId: string): Promise<void> {
 }
 
 async function main(): Promise<void> {
-  console.log("Applying SQLite pragmas...")
-  await applyPragmas()
-
   // ── Organization 1: VectorOps (default / dev org) ────────────────────────
   console.log('\nSeeding organization: "VectorOps"...')
   const vectoropsOrg = await prisma.organization.upsert({

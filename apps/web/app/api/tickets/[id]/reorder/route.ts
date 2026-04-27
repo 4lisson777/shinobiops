@@ -63,10 +63,10 @@ export async function PATCH(
           ticketId: id,
           eventType: "PRIORITY_REORDERED",
           actorId: session.userId,
-          metadata: JSON.stringify({
+          metadata: {
             newPosition: targetPosition,
             reorderedByLead: true,
-          }),
+          },
         },
       })
 

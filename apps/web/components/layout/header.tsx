@@ -409,12 +409,12 @@ export function Header({ session, avatarUrl, organizationName, onMenuClick }: He
               className="flex items-center gap-2 rounded-md p-1 hover:bg-muted"
             >
               <UserAvatar
-                name={session.name}
+                name={session.name ?? ""}
                 avatarUrl={avatarUrl}
                 size="sm"
               />
               <span className="hidden text-sm font-medium sm:inline">
-                {session.name}
+                {session.name ?? ""}
               </span>
             </button>
           </DropdownMenuTrigger>

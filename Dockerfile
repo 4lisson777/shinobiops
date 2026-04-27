@@ -23,9 +23,6 @@ RUN turbo prune docs --docker --out-dir=out/docs
 FROM node:22-alpine AS deps
 WORKDIR /app
 
-# python3, make, g++ — required by native addons (better-sqlite3)
-RUN apk add --no-cache python3 make g++
-
 # Copy only the pruned package manifests and lockfile (from turbo prune /json).
 # This layer is cached as long as dependencies don't change.
 COPY --from=pruner /app/out/web/json/ ./
@@ -49,9 +46,6 @@ COPY --from=deps /app ./
 # Overlay only the source files turbo prune identified as necessary
 COPY --from=pruner /app/out/web/full/ ./
 
-# Generate Prisma client before building
-RUN cd apps/web && npx prisma generate
-
 ENV SKIP_ENV_VALIDATION=true
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
@@ -66,7 +60,7 @@ RUN --mount=type=cache,target=/app/.turbo \
 # - ESM format: required because the generated Prisma client uses import.meta.url
 #   (import.meta.url is natively supported in ESM output, unlike CJS)
 # - bcryptjs + generated Prisma client: bundled inline (pure JS / TS types stripped)
-# - better-sqlite3 + @prisma/*: kept external (native modules, resolved at runtime)
+# - @prisma/* + mariadb: kept external (resolved from standalone node_modules at runtime)
 # Banner creates `require` for CJS modules (like bcryptjs) that need it in ESM.
 # Without this, bcryptjs can't access Node's crypto module for salt generation.
 RUN node_modules/.bin/esbuild apps/web/prisma/seed.prod.ts \
@@ -74,9 +68,9 @@ RUN node_modules/.bin/esbuild apps/web/prisma/seed.prod.ts \
   --platform=node \
   --format=esm \
   --banner:js="import { createRequire } from 'node:module'; const require = createRequire(import.meta.url);" \
-  --external:better-sqlite3 \
-  --external:@prisma/adapter-better-sqlite3 \
   --external:@prisma/client \
+  --external:@prisma/adapter-mariadb \
+  --external:mariadb \
   --outfile=apps/web/prisma/seed.prod.mjs
 
 # Install Prisma CLI into an isolated directory for runtime migrations.
@@ -109,7 +103,7 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
-ENV DATABASE_URL="file:./prisma/data/vectorops.db"
+ENV DATABASE_URL="mysql://vectorops:vectorops@mysql:3306/vectorops"
 
 # --- Next.js standalone output (includes server.js + minimal node_modules) ---
 COPY --from=builder --chown=node:node /app/apps/web/.next/standalone ./
@@ -124,10 +118,6 @@ COPY --from=builder --chown=node:node /app/apps/web/generated ./apps/web/generat
 # --- Prisma CLI for `prisma migrate deploy` at container startup ---
 # Isolated in /prisma-cli to avoid polluting the standalone node_modules.
 COPY --from=builder --chown=node:node /prisma-cli/node_modules /prisma-cli/node_modules
-
-# Ensure the data directory exists with node ownership so Docker initialises
-# the named volume with the correct permissions (container runs as node user).
-RUN mkdir -p /app/apps/web/prisma/data && chown node:node /app/apps/web/prisma/data
 
 # Copy entrypoint
 COPY --chown=node:node entrypoint.sh /app/entrypoint.sh

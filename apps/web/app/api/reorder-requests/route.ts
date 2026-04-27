@@ -74,7 +74,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           ticketId: parsed.data.ticketId,
           eventType: "REORDER_REQUESTED",
           actorId: session.userId,
-          metadata: JSON.stringify({ requestedPosition: parsed.data.requestedPosition }),
+          metadata: { requestedPosition: parsed.data.requestedPosition },
         },
       })
       return [req]

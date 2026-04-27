@@ -148,8 +148,8 @@ This places the component in `packages/ui/src/components/` and updates aliases.
 ## Database & API (Planned)
 
 Per the PRD and TECH-STACK.md:
-- **ORM**: Prisma (not yet integrated)
-- **Database**: SQLite 3 with WAL mode
+- **ORM**: Prisma with `@prisma/adapter-mariadb`
+- **Database**: MySQL 8.4 (Docker)
 - **Auth**: Session-based (HTTP-only cookies), bcrypt for passwords
 - **Real-Time**: Server-Sent Events (SSE) for push notifications
 
@@ -274,7 +274,7 @@ The PRD does not mandate tests in v1.0, but when adding tests:
 ## Deployment
 
 - **Docker**: Single `Dockerfile` with multi-stage build (planned)
-- **Docker Compose**: Orchestrates app + SQLite volume (planned)
+- **Docker Compose**: Orchestrates app + MySQL service
 - **Production build**: `npm run build && npm start -w web`
 
 ---

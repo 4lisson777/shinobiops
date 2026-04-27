@@ -196,7 +196,7 @@ async function login(email, password, organizationSlug) {
   return { status: res.status, cookie, body: resBody }
 }
 
-// Wait between auth operations to avoid SQLite bcrypt contention
+// Wait between auth operations to avoid bcrypt contention
 function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms))
 }

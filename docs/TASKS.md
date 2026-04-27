@@ -8,7 +8,7 @@
 
 > Step file: `docs/steps-1.md`
 
-- [x] 1.1 Database and Prisma setup (schema, User model, migration, singleton client, SQLite pragmas)
+- [x] 1.1 Database and Prisma setup (schema, User model, migration, singleton client, MySQL via Docker)
 - [x] 1.2 Authentication -- iron-session setup (session config, helpers: getSession, requireAuth, requireRole)
 - [x] 1.3 Registration page (`/register`) -- form with all fields, Zod validation, ninja alias auto-gen
 - [x] 1.4 Registration API (`POST /api/auth/register`) -- validation, bcrypt hash, email uniqueness, alias gen

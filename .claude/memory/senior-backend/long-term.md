@@ -364,6 +364,37 @@ Declaring the web manifest via `icons.other: [{ rel: "manifest", url: "..." }]` 
 #### Prisma interactive transaction tx does not inherit Client Extensions
 `getTenantDb().$transaction(async (tx) => ...)` — the `tx` argument is a plain `PrismaClient` transaction, not the extended client. Extension query hooks (e.g., auto-inject `organizationId`) do NOT run on `tx`. Always inject `organizationId: session.organizationId` explicitly in `tx.model.create()` data inside interactive transactions.
 
+### Docker Build + Prisma Generate Pattern
+
+#### prisma.config.ts must not use Prisma's env() helper
+Prisma's `env("VAR")` throws at config-load time when the variable is unset — even for `prisma generate` which never reads the DB URL. Use `process.env.VAR ?? "placeholder"` instead so codegen works in any environment. The placeholder should be a clearly invalid URL so accidental real use fails loudly.
+
+#### DB_URL must NOT be a Docker build ARG
+`prisma generate` does not need `DB_URL`. Never pass `DB_URL` as a Docker build ARG — it bakes credentials (or broken empty values) into the image layer. The real `DB_URL` should only enter the container at runtime via `env_file`.
+
+#### Single source of truth for runtime DB env: apps/web/.env
+`docker-compose.yml` should inject env into the running container exclusively via `env_file: apps/web/.env`. Do not duplicate vars in `environment:` blocks — compose-time interpolation (`${DB_USER}`) only reads from the shell env or the root `.env`, NOT from service-level `env_file`, so the two mechanisms get out of sync.
+
+#### entrypoint.sh TCP probe: use DB_HOST/DB_PORT, not DB_URL regex
+`lib/db.ts` uses `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` separately (via PrismaMariaDb adapter). The entrypoint wait-for-mysql probe should do the same — parse `DB_HOST`/`DB_PORT` directly instead of regex-extracting the host from `DB_URL`.
+
+### MySQL Migration Baseline Pattern
+
+#### Generating MySQL DDL with Prisma migrate diff
+The correct flag in Prisma CLI >= 6.x is `--to-schema` (not `--to-schema-datamodel` which was removed):
+`npx prisma migrate diff --from-empty --to-schema prisma/schema.prisma --script`
+Run from `apps/web/` directory. Outputs ready-to-use MySQL DDL to stdout.
+
+#### migration_lock.toml must declare provider = "mysql"
+When switching from SQLite to MySQL, delete the old `migration_lock.toml` and create a new one with `provider = "mysql"`.
+The old SQLite migrations are incompatible — create a single new baseline migration with the full MySQL DDL.
+
+#### next.config.mjs serverExternalPackages for MySQL driver
+`serverExternalPackages: ["@prisma/adapter-mariadb", "mariadb"]` must be present in `next.config.mjs` so Next.js standalone output bundles the MySQL driver instead of stale SQLite packages.
+
+#### Pool timeout errors during `next build` are expected
+During static page generation, Next.js tries to connect to the DB (for RSC pages that call Prisma). These fail with "pool timeout" if no DB is running at build time. This does NOT fail the build — it just means those pages fall back to dynamic rendering. Normal and expected in CI/CD environments.
+
 ### Gotchas
 - The monorepo uses `"type": "module"` in `apps/web/package.json` — imports use ESM
 - SQLite enums are stored as TEXT in the DB (SQLite has no native enum type)

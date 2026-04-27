@@ -180,12 +180,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           ticketId: created.id,
           eventType: "CREATED",
           actorId: session.userId,
-          metadata: JSON.stringify({
+          metadata: {
             title: created.title,
             type: ticketType,
             severity: created.severity,
             deadline: created.deadline.toISOString(),
-          }),
+          },
         },
       })
 

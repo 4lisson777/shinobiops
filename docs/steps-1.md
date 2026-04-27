@@ -10,9 +10,9 @@ Establish the foundational layer: users can register, log in, see role-appropria
 
 ### 1.1 Database and Prisma Setup
 
-- Initialize Prisma in `apps/web/` with SQLite provider
+- Initialize Prisma in `apps/web/` with MySQL provider
 - Create `prisma/schema.prisma` with the **User** model (all fields from PRD section 9)
-- Configure SQLite pragmas (WAL, foreign_keys, synchronous, busy_timeout) via a Prisma client extension or seed script
+- MySQL runs as a Docker service via `docker-compose.yml`
 - Create the initial migration (`prisma migrate dev`)
 - Add a singleton Prisma client utility at `apps/web/lib/prisma.ts` (avoid multiple instances in dev mode)
 - Add `prisma generate` and `prisma migrate deploy` to the build pipeline in `turbo.json`

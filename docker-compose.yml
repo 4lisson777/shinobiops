@@ -1,4 +1,23 @@
 services:
+  mysql:
+    image: mysql:8.4
+    env_file:
+      - apps/web/.env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "127.0.0.1:3308:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${DB_USER}", "-p${DB_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   web:
     build:
       context: .
@@ -6,17 +25,11 @@ services:
       target: web-runner
     env_file:
       - apps/web/.env
-    environment:
-      DATABASE_URL: "file:./prisma/data/vectorops.db"
-      # Production seed — runs once on first deploy when SEED_ADMIN_EMAIL is set.
-      # Remove or leave unset after the initial deployment.
-      # SEED_ADMIN_NAME: "Your Name"
-      # SEED_ADMIN_EMAIL: "admin@yourcompany.com"
-      # SEED_ADMIN_PASSWORD: "ChangeMe123!"
     ports:
       - "3005:3000"
-    volumes:
-      - vectorops-data:/app/apps/web/prisma/data
+    depends_on:
+      mysql:
+        condition: service_healthy
     init: true
     restart: unless-stopped
     logging:
@@ -49,4 +62,4 @@ services:
           memory: 256m
 
 volumes:
-  vectorops-data:
+  mysql-data:

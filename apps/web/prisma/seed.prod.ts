@@ -1,4 +1,4 @@
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3"
+import { PrismaMariaDb } from "@prisma/adapter-mariadb"
 import { PrismaClient } from "../generated/prisma/client"
 import bcrypt from "bcryptjs"
 
@@ -17,7 +17,7 @@ const adminName = ADMIN_NAME as string
 const adminEmail = ADMIN_EMAIL as string
 const adminPassword = ADMIN_PASSWORD as string
 
-const adapter = new PrismaBetterSqlite3({ url: process.env.DATABASE_URL! })
+const adapter = new PrismaMariaDb(process.env.DATABASE_URL!)
 const prisma = new PrismaClient({ adapter })
 
 const ROLE_NOTIFICATION_DEFAULTS: {
@@ -32,17 +32,7 @@ const ROLE_NOTIFICATION_DEFAULTS: {
   { role: "SUPPORT_MEMBER", notifyOnCreation: false, notifyOnAssignment: false },
 ]
 
-async function applyPragmas(): Promise<void> {
-  await prisma.$executeRawUnsafe("PRAGMA journal_mode = WAL;")
-  await prisma.$executeRawUnsafe("PRAGMA foreign_keys = ON;")
-  await prisma.$executeRawUnsafe("PRAGMA synchronous = NORMAL;")
-  await prisma.$executeRawUnsafe("PRAGMA busy_timeout = 5000;")
-}
-
 async function main(): Promise<void> {
-  console.log("Applying SQLite pragmas...")
-  await applyPragmas()
-
   console.log('\nSeeding organization: "VectorOps"...')
   const org = await prisma.organization.upsert({
     where: { slug: "vectorops" },

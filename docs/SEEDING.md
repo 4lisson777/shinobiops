@@ -1,6 +1,6 @@
 # Seeding de Desenvolvimento
 
-O ShinobiOps possui um script (`seed.ts`) para popular rapidamente o banco de dados SQLite com usuários e configurações iniciais necessários em ambientes locais.
+O ShinobiOps possui um script (`seed.ts`) para popular rapidamente o banco de dados MySQL com usuários e configurações iniciais necessários em ambientes locais.
 
 ## 1. Funcionamento do Script
 - **Local:** `apps/web/prisma/seed.ts`.
@@ -27,13 +27,12 @@ Todos os usuários utilizam a senha: **`Password123!`**
 | Mei Lin | `supportlead@vectorops.dev` | `SUPPORT_LEAD` | SwiftCrane |
 | Kenji Mori | `support@vectorops.dev` | `SUPPORT_MEMBER` | GhostFox |
 
-## 4. Configurações Iniciais
-Além de usuários, o script aplica `PRAGMAs` fundamentais do SQLite:
-- **Journal Mode:** `WAL`.
-- **Foreign Keys:** `ON`.
-- **Synchronous:** `NORMAL`.
-- **Busy Timeout:** `5000ms`.
+## 4. Pré-requisitos
+O MySQL deve estar rodando antes de executar o seed. Para iniciar o MySQL via Docker:
+```bash
+docker compose up mysql -d
+```
 
 ---
 
-*Aviso: O banco de dados SQLite (`sqlite.db`) é local. Em caso de corrupção ou necessidade de reset, apague o arquivo e execute o comando acima para restaurar os usuários base.*
+*Aviso: Em caso de necessidade de reset, pare o container MySQL, remova o volume (`docker compose down -v`), e reinicie o processo de migração e seed.*

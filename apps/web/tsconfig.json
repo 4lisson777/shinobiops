@@ -10,7 +10,12 @@
       {
         "name": "next"
       }
-    ]
+    ],    
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "target": "ES2023",
+    "strict": true,
+    "esModuleInterop": true,
   },
   "include": [
     "next-env.d.ts",

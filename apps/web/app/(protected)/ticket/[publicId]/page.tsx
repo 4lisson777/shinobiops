@@ -122,6 +122,7 @@ export default async function TicketDetailPage({
 
   const timelineEvents: TicketEventWithActor[] = ticket.events.map((e) => ({
     ...e,
+    metadata: (e.metadata ?? {}) as Record<string, unknown>,
     createdAt: e.createdAt.toISOString(),
   }))
 

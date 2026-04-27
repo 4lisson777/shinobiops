@@ -1,6 +1,6 @@
 # VectorOps
 
-Internal fullstack application for production issue escalation and real-time team coordination. Built with Next.js, Prisma, and SQLite.
+Internal fullstack application for production issue escalation and real-time team coordination. Built with Next.js, Prisma, and MySQL.
 
 ## Prerequisites
 
@@ -21,16 +21,19 @@ cp apps/web/.env.example apps/web/.env
 # Edit apps/web/.env and set a real SESSION_SECRET:
 #   openssl rand -base64 32
 
-# 3. Generate Prisma client
+# 3. Start MySQL (Docker required)
+docker compose up mysql -d
+
+# 4. Generate Prisma client
 npm run db:generate -w web
 
-# 4. Run database migrations
+# 5. Run database migrations
 npm run db:migrate -w web
 
-# 5. Seed the database with sample users
+# 6. Seed the database with sample users
 npm run db:seed -w web
 
-# 6. Start the dev server
+# 7. Start the dev server
 npm run dev
 ```
 

@@ -108,7 +108,7 @@ export async function POST(
           ticketId: id,
           eventType: isReassignment ? "REASSIGNED" : "ASSIGNED",
           actorId: session.userId,
-          metadata: JSON.stringify(eventMetadata),
+          metadata: eventMetadata,
         },
       })
 
@@ -119,10 +119,10 @@ export async function POST(
             ticketId: id,
             eventType: "STATUS_CHANGED",
             actorId: session.userId,
-            metadata: JSON.stringify({
+            metadata: {
               oldStatus: "OPEN",
               newStatus: "IN_PROGRESS",
-            }),
+            },
           },
         })
       }

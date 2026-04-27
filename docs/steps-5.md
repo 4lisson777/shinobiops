@@ -206,7 +206,7 @@ Complete all remaining features for a production-ready internal release: the Com
 
 **docker-compose.yml:**
 - Single service: `vectorops`
-- Mount a named volume for `./prisma/data` to persist the SQLite database
+- MySQL service with healthcheck; web service `depends_on` MySQL readiness
 - Environment variables from `.env` file
 - Health check: `curl -f http://localhost:3000/api/health`
 - Restart policy: `unless-stopped`
@@ -270,7 +270,7 @@ Complete all remaining features for a production-ready internal release: the Com
 - [ ] Ninja theme terminology and visual identity are consistent across all pages
 - [ ] Avatar upload works; initials fallback displays correctly
 - [ ] Docker image builds successfully with multi-stage build
-- [ ] Docker Compose starts the app with persistent SQLite volume
+- [ ] Docker Compose starts the app with MySQL service and persistent volume
 - [ ] Migrations run automatically on container startup
 - [ ] Health check endpoint works for Docker orchestration
 - [ ] Custom 404 and error pages are themed and functional

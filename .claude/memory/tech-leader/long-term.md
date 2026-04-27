@@ -60,6 +60,13 @@ Admin component stubs exist returning null: command-dojo-overview, team-manageme
 - Super admin should be a boolean flag, not a role, to avoid polluting the tenant-scoped Role enum
 - TV mode (public route, no auth) needs org slug as a URL parameter for tenant scoping
 
+## Prisma Config / Docker Build Coupling
+- PITFALL: `prisma.config.ts` using `env("DB_URL")` from `prisma/config` is EAGER -- it throws at config-load time even for `prisma generate`, which doesn't actually need a DB URL. This couples codegen to runtime credentials.
+- Fix: use `process.env.DB_URL ?? "<placeholder>"` directly in `datasource.url`. Generate works with placeholder; migrations require the real value at runtime.
+- `apps/web/lib/db.ts` does NOT consume `DB_URL`. It uses `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` directly via `PrismaMariaDb`. `DB_URL` is purely a Prisma CLI / migration concern.
+- PITFALL: docker-compose `build.args` interpolate ONLY from compose-time env (shell or top-level `.env` at compose project root). Service-level `env_file:` is loaded into the running container, NOT into compose's variable interpolation context. Don't try to drive build args from `apps/web/.env`.
+- Cleanest pattern: keep all DB env in `apps/web/.env` and inject via `env_file:`. Don't duplicate into `environment:` blocks.
+
 ## Docker / Build Pitfalls
 - PITFALL: `--packages=external` in esbuild keeps all imports as runtime requires. If a dependency is pruned (npm prune --omit=dev), the bundled CJS file fails at runtime.
 - PITFALL: esbuild ESM output doesn't define `require()`. CJS modules bundled into ESM that use `require("crypto")` fail silently. Fix: add banner `import { createRequire } from 'node:module'; const require = createRequire(import.meta.url);`
@@ -68,7 +75,10 @@ Admin component stubs exist returning null: command-dojo-overview, team-manageme
 - Production seed scripts should NOT import `dotenv/config` -- Docker provides env vars via docker-compose. `dotenv` is a dev convenience only.
 - The Dockerfile uses a 4-stage build: pruner (turbo prune) -> deps (npm ci) -> builder (build + esbuild + prisma-cli install) -> runner (standalone output + isolated prisma CLI).
 - `turbo prune web --docker` produces /json (manifests only, for dep caching) and /full (source files). This ensures only web's transitive deps are installed.
-- Alpine (node:20-alpine) works well with better-sqlite3; needs `apk add python3 make g++` in deps stage only.
+- Alpine (node:22-alpine) is used; no native addon compilation needed for mariadb (pure JS driver).
+- PITFALL: When migrating from SQLite to MySQL, Next.js standalone output caches old deps. Must add `serverExternalPackages: ["@prisma/adapter-mariadb", "mariadb"]` to next.config.mjs and do a clean rebuild.
+- PITFALL: Next.js standalone output traces imports to determine node_modules to include. DB adapters/drivers that are loaded at runtime via Prisma may not be auto-detected. Always list them in `serverExternalPackages`.
+- Old note (obsolete): Alpine worked with better-sqlite3; needed `apk add python3 make g++` in deps stage -- no longer applies after MySQL migration.
 - No `openssl` package needed on Alpine -- Node.js Alpine images include built-in OpenSSL.
 - Docs (fumadocs-mdx) app build currently broken in Docker -- `.source` generation fails. Build only `--filter=web` until fixed.
 - TypeScript appears in pruned node_modules because Prisma and valibot declare it as a peer dependency. Not a devDep leak.
@@ -86,3 +96,17 @@ Admin component stubs exist returning null: command-dojo-overview, team-manageme
 - Master context at ai-driven-project/master-context.md
 - Context files follow strict format with IDs (CTX-CATEGORY-NNN)
 - After implementation, context files should be updated (especially CTX-FEAT-002, CTX-FEAT-004, CTX-INFRA-003, CTX-CORE-002)
+
+## Prisma + Proxy Singleton Pitfall (CRITICAL)
+- PITFALL: `lib/db.ts` originally used `globalThis.__prisma` cache only in dev; production fell through to `return createPrismaClient()` on every call. Combined with a `Proxy` whose `get` handler calls `getDb()` on every property read, every `db.user.findMany(...)` call leaked a fresh `PrismaClient` AND a fresh `mariadb.createPool({connectionLimit: 8})`.
+- Symptom: MySQL `max_connections` (default 151) exhausts within ~18 unique queries. Adapter then reports `pool timeout: failed to retrieve a connection from pool after 10000ms (pool connections: active=0 idle=0 limit=8)`. The pool reports `active=0 idle=0` because the *new* pool can't establish connections (server is full), not because the pool was sized wrong.
+- Direct connection test surfaces the actual server-side error: `(no: 1040, SQLState: 08004) Too many connections`.
+- Fix: cache the client in a module-level `let prismaInstance` for prod, keep `globalThis.__prisma` for dev-HMR only. The Proxy is fine to keep -- it defers client creation past `next build`'s import-time, but the cache must be a true singleton.
+- Diagnostic queries to remember:
+  - `mysql -e "SHOW STATUS LIKE 'Threads_connected'"`
+  - `mysql -e "SHOW VARIABLES LIKE 'max_connections'"`
+  - `mysql -e "SELECT user,count(*) FROM information_schema.PROCESSLIST GROUP BY user"`
+
+## SSR Crash Diagnosis Pattern
+- A minified server error like `TypeError: ... at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__HASH._.js:1:OFFSET)` can be located by `head -c (OFFSET+10) | tail -c 60` on the chunk file inside the running container -- the offset points at the exact JS expression. Useful for finding which component crashed when sourcemaps are unavailable in prod.
+- Defensive components: any component that does `prop.length` / `prop.split` / `prop.trim` should accept `string | null | undefined` and short-circuit on falsy. UserAvatar, in particular, is rendered server-side from session data which can be partial after migrations.

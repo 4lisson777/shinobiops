@@ -390,7 +390,7 @@ ShinobiOps uses a moderate ninja theme to reinforce team identity — not a cost
 
 ## 9. Data Model Overview
 
-> Implementation uses **Prisma ORM** with **SQLite 3**.
+> Implementation uses **Prisma ORM** with **MySQL 8.4**.
 
 ### User
 
@@ -574,27 +574,18 @@ Each ticket and bug has a dedicated detail page accessible by its public ID.
 | Framework | Next.js 14+ (App Router) |
 | Language | TypeScript |
 | ORM | Prisma |
-| Database | SQLite 3 |
+| Database | MySQL 8.4 |
 | UI Components | shadcn/ui (Radix UI + Tailwind CSS) |
 | Real-Time | Server-Sent Events (SSE) |
 | Audio | Web Audio API (bundled sound files) |
 | Containerization | Docker + Docker Compose |
-| Data Persistence | Docker named volume mounted at `/app/prisma/data` |
-| Auth | Custom session via `jose` (JWT) or `iron-session` |
+| Data Persistence | Docker named volume for MySQL data |
+| Auth | Custom session via `iron-session` |
 
-### 11.1 SQLite Recommended Pragmas
-
-```sql
-PRAGMA journal_mode = WAL;       -- concurrent reads with writes
-PRAGMA foreign_keys = ON;        -- enforce relational integrity
-PRAGMA synchronous = NORMAL;     -- safe performance balance
-PRAGMA busy_timeout = 5000;      -- prevent SQLITE_BUSY under concurrency
-```
-
-### 11.2 Docker Configuration
+### 11.1 Docker Configuration
 
 - Single `Dockerfile` — multi-stage build: `deps → builder → runner`
-- `docker-compose.yml` exposes port `3000`, mounts a named volume for the SQLite file
+- `docker-compose.yml` runs MySQL as a service with healthcheck, web app depends on it
 - Environment variables via `.env` (not committed to source control)
 - Health check on `/api/health` endpoint
 
@@ -632,11 +623,11 @@ PRAGMA busy_timeout = 5000;      -- prevent SQLITE_BUSY under concurrency
 
 - Page load under 2 seconds on a LAN connection
 - Real-time notifications delivered within 1 second of the triggering event
-- SQLite WAL mode ensures non-blocking reads during writes
+- MySQL InnoDB engine ensures concurrent read/write performance
 
 ### 13.2 Reliability
 
-- SQLite database file stored on a Docker named volume — data survives container restarts and upgrades
+- MySQL data stored on a Docker named volume — data survives container restarts and upgrades
 - Graceful error handling on all API routes with user-friendly error messages
 
 ### 13.3 Security
@@ -644,7 +635,7 @@ PRAGMA busy_timeout = 5000;      -- prevent SQLITE_BUSY under concurrency
 - Passwords hashed with bcrypt (cost factor ≥ 12)
 - All authenticated routes require a valid session cookie
 - Role-based access checks enforced on every API route (not just the UI)
-- SQLite file not exposed outside the Docker network
+- MySQL only accessible within the Docker network
 
 ### 13.4 Usability
 

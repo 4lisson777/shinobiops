@@ -682,11 +682,11 @@
 
 **Acceptance Criteria:**
 - [ ] `Dockerfile` builds successfully with multi-stage build (deps → builder → runner)
-- [ ] `docker-compose.yml` orchestrates app + SQLite volume
+- [ ] `docker-compose.yml` orchestrates app + MySQL service
 - [ ] `.env` file is read and variables are applied
 - [ ] `entrypoint.sh` runs `prisma migrate deploy` on startup
 - [ ] Health check endpoint `/api/health` returns 200 when healthy
-- [ ] SQLite volume persists data across container restarts
+- [ ] MySQL volume persists data across container restarts
 - [ ] No environment variables are logged or exposed
 - [ ] Container starts on port 3000
 - [ ] Build succeeds without errors or warnings
@@ -786,7 +786,7 @@ test('US-1: User self-registration with role selection', async ({ page }) => {
 
 ### Environment Setup
 
-- Test against a fresh SQLite database per test run (seed with baseline users)
+- Test against a fresh MySQL database per test run (seed with baseline users)
 - Use `TEST_ENV=test` to skip certain middleware or enable test mode if needed
 - Clear notifications and data between test runs
 - Use `page.goto()` with full URLs (e.g., `http://localhost:3000/login`)

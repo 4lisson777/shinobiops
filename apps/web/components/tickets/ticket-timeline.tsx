@@ -6,7 +6,7 @@ export interface TicketEventWithActor {
   id: string
   eventType: string
   actorId: string
-  metadata: string
+  metadata: Record<string, unknown>
   createdAt: string | Date
   actor: {
     id: string
@@ -20,12 +20,12 @@ interface TicketTimelineProps {
   events: TicketEventWithActor[]
 }
 
-function parseMetadata(raw: string): Record<string, string> {
-  try {
-    return JSON.parse(raw) as Record<string, string>
-  } catch {
-    return {}
+function parseMetadata(raw: Record<string, unknown>): Record<string, string> {
+  const result: Record<string, string> = {}
+  for (const [k, v] of Object.entries(raw)) {
+    result[k] = String(v ?? "")
   }
+  return result
 }
 
 const STATUS_LABELS: Record<string, string> = {

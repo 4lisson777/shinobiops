@@ -57,7 +57,7 @@ export async function PATCH(
             ticketId: reorderRequest.ticketId,
             eventType: "REORDER_DECLINED",
             actorId: session.userId,
-            metadata: JSON.stringify({ reorderRequestId: id }),
+            metadata: { reorderRequestId: id },
           },
         })
         return req
@@ -105,7 +105,7 @@ export async function PATCH(
           ticketId,
           eventType: "REORDER_APPROVED",
           actorId: session.userId,
-          metadata: JSON.stringify({ newPosition: targetPosition, reorderRequestId: id }),
+          metadata: { newPosition: targetPosition, reorderRequestId: id },
         },
       })
 

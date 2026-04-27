@@ -15,9 +15,6 @@ node_modules
 
 # Persisted data (never send to build context)
 data
-**/*.db
-**/*.db-wal
-**/*.db-shm
 
 # Environment files (injected at runtime via docker-compose)
 **/.env

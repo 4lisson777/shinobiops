@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
 }
 
 enum Role {
@@ -84,9 +84,9 @@ enum NotificationType {
 }
 
 model Organization {
-  id        String   @id @default(cuid())
-  name      String
-  slug      String   @unique
+  id        String   @id @default(cuid()) @db.VarChar(30)
+  name      String   @db.VarChar(255)
+  slug      String   @unique @db.VarChar(100)
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -106,15 +106,15 @@ model Organization {
 }
 
 model Invite {
-  id             String    @id @default(cuid())
-  organizationId String
-  code           String    @unique
+  id             String    @id @default(cuid()) @db.VarChar(30)
+  organizationId String    @db.VarChar(30)
+  code           String    @unique @db.VarChar(100)
   role           Role
-  email          String?
+  email          String?   @db.VarChar(255)
   expiresAt      DateTime
-  usedById       String?
+  usedById       String?   @db.VarChar(30)
   usedAt         DateTime?
-  createdById    String
+  createdById    String    @db.VarChar(30)
   createdAt      DateTime  @default(now())
 
   organization Organization @relation(fields: [organizationId], references: [id])
@@ -125,21 +125,21 @@ model Invite {
 }
 
 model User {
-  id             String     @id @default(cuid())
-  organizationId String
-  name           String
-  email          String
-  passwordHash   String
+  id             String     @id @default(cuid()) @db.VarChar(30)
+  organizationId String     @db.VarChar(30)
+  name           String     @db.VarChar(255)
+  email          String     @db.VarChar(255)
+  passwordHash   String     @db.VarChar(255)
   role           Role
-  avatarUrl      String?
-  ninjaAlias     String
+  avatarUrl      String?    @db.VarChar(500)
+  ninjaAlias     String     @db.VarChar(100)
   isActive       Boolean    @default(true)
   isSuperAdmin   Boolean    @default(false)
   notifyTickets  Boolean    @default(true)
   notifyBugs     Boolean    @default(true)
   soundEnabled   Boolean    @default(true)
   devStatus      DevStatus? @default(ACTIVE)
-  currentTask    String?
+  currentTask    String?    @db.VarChar(500)
   createdAt      DateTime   @default(now())
   updatedAt      DateTime   @updatedAt
 
@@ -162,18 +162,18 @@ model User {
 }
 
 model Ticket {
-  id             String       @id @default(cuid())
-  organizationId String
-  publicId       String       @unique
-  title          String
-  description    String
+  id             String       @id @default(cuid()) @db.VarChar(30)
+  organizationId String       @db.VarChar(30)
+  publicId       String       @unique @db.VarChar(20)
+  title          String       @db.VarChar(500)
+  description    String       @db.Text
   type           TicketType
   severity       Severity
   status         TicketStatus @default(OPEN)
   deadline       DateTime
   priorityOrder  Int
-  openedById     String
-  assignedToId   String?
+  openedById     String       @db.VarChar(30)
+  assignedToId   String?      @db.VarChar(30)
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
   resolvedAt     DateTime?
@@ -194,14 +194,14 @@ model Ticket {
 }
 
 model BugReport {
-  id               String      @id @default(cuid())
-  ticketId         String      @unique
-  affectedModule   String
-  stepsToReproduce String
-  expectedBehavior String
-  actualBehavior   String
+  id               String      @id @default(cuid()) @db.VarChar(30)
+  ticketId         String      @unique @db.VarChar(30)
+  affectedModule   String      @db.VarChar(255)
+  stepsToReproduce String      @db.Text
+  expectedBehavior String      @db.Text
+  actualBehavior   String      @db.Text
   environment      Environment
-  customerId       String?
+  customerId       String?     @db.VarChar(255)
 
   ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
 
@@ -209,11 +209,11 @@ model BugReport {
 }
 
 model TicketEvent {
-  id        String          @id @default(cuid())
-  ticketId  String
+  id        String          @id @default(cuid()) @db.VarChar(30)
+  ticketId  String          @db.VarChar(30)
   eventType TicketEventType
-  actorId   String
-  metadata  String          @default("{}")
+  actorId   String          @db.VarChar(30)
+  metadata  Json            @default("{}")
   createdAt DateTime        @default(now())
 
   ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
@@ -224,13 +224,13 @@ model TicketEvent {
 }
 
 model ReorderRequest {
-  id                String        @id @default(cuid())
-  ticketId          String
-  requestedById     String
+  id                String        @id @default(cuid()) @db.VarChar(30)
+  ticketId          String        @db.VarChar(30)
+  requestedById     String        @db.VarChar(30)
   requestedPosition Int
-  reason            String?
+  reason            String?       @db.Text
   status            ReorderStatus @default(PENDING)
-  resolvedById      String?
+  resolvedById      String?       @db.VarChar(30)
   resolvedAt        DateTime?
   createdAt         DateTime      @default(now())
 
@@ -242,13 +242,13 @@ model ReorderRequest {
 }
 
 model Notification {
-  id             String           @id @default(cuid())
-  organizationId String
-  userId         String
+  id             String           @id @default(cuid()) @db.VarChar(30)
+  organizationId String           @db.VarChar(30)
+  userId         String           @db.VarChar(30)
   type           NotificationType
-  title          String
-  body           String
-  ticketId       String?
+  title          String           @db.VarChar(500)
+  body           String           @db.Text
+  ticketId       String?          @db.VarChar(30)
   isRead         Boolean          @default(false)
   requiresAck    Boolean          @default(false)
   acknowledgedAt DateTime?
@@ -264,10 +264,10 @@ model Notification {
 }
 
 model HelpRequest {
-  id             String   @id @default(cuid())
-  organizationId String
-  requestedById  String
-  contextMessage String
+  id             String   @id @default(cuid()) @db.VarChar(30)
+  organizationId String   @db.VarChar(30)
+  requestedById  String   @db.VarChar(30)
+  contextMessage String   @db.Text
   createdAt      DateTime @default(now())
 
   organization Organization @relation(fields: [organizationId], references: [id])
@@ -280,10 +280,10 @@ model HelpRequest {
 }
 
 model HelpRequestResponse {
-  id             String   @id @default(cuid())
-  organizationId String
-  helpRequestId  String
-  responderId    String
+  id             String   @id @default(cuid()) @db.VarChar(30)
+  organizationId String   @db.VarChar(30)
+  helpRequestId  String   @db.VarChar(30)
+  responderId    String   @db.VarChar(30)
   respondedAt    DateTime @default(now())
 
   organization Organization @relation(fields: [organizationId], references: [id])
@@ -294,12 +294,12 @@ model HelpRequestResponse {
 }
 
 model Checkpoint {
-  id             String   @id @default(cuid())
-  organizationId String
-  userId         String
-  currentTask    String
+  id             String   @id @default(cuid()) @db.VarChar(30)
+  organizationId String   @db.VarChar(30)
+  userId         String   @db.VarChar(30)
+  currentTask    String   @db.VarChar(500)
   isBlocked      Boolean
-  notes          String?
+  notes          String?  @db.Text
   createdAt      DateTime @default(now())
 
   organization Organization @relation(fields: [organizationId], references: [id])
@@ -311,11 +311,11 @@ model Checkpoint {
 }
 
 model CheckpointConfig {
-  id               String  @id @default(cuid())
-  organizationId   String  @unique
+  id               String  @id @default(cuid()) @db.VarChar(30)
+  organizationId   String  @unique @db.VarChar(30)
   intervalMinutes  Int     @default(60)
-  activeHoursStart String  @default("09:00")
-  activeHoursEnd   String  @default("18:00")
+  activeHoursStart String  @default("09:00") @db.VarChar(5)
+  activeHoursEnd   String  @default("18:00") @db.VarChar(5)
   isEnabled        Boolean @default(true)
 
   organization Organization @relation(fields: [organizationId], references: [id])
@@ -324,8 +324,8 @@ model CheckpointConfig {
 }
 
 model TvConfig {
-  id              String  @id @default(cuid())
-  organizationId  String  @unique
+  id              String  @id @default(cuid()) @db.VarChar(30)
+  organizationId  String  @unique @db.VarChar(30)
   isEnabled       Boolean @default(true)
   refreshInterval Int     @default(30)
 
@@ -335,8 +335,8 @@ model TvConfig {
 }
 
 model RoleNotificationConfig {
-  id                  String   @id @default(cuid())
-  organizationId      String
+  id                  String   @id @default(cuid()) @db.VarChar(30)
+  organizationId      String   @db.VarChar(30)
   role                Role
   notifyOnCreation    Boolean  @default(false)
   notifyOnAssignment  Boolean  @default(false)

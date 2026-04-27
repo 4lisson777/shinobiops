@@ -571,7 +571,7 @@ async function main() {
   // --- Authenticate all roles ---
   console.log("\n[Setup] Authenticating test users...")
 
-  // Sequential logins to avoid concurrent bcrypt + SQLite contention
+  // Sequential logins to avoid concurrent bcrypt contention
   const supportCookie = await login("bruno@vectorops.dev", "Password123!")
   await new Promise((r) => setTimeout(r, 300))
   const qaCookie = await login("nicoli@vectorops.dev", "Password123!")

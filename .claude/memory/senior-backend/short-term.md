@@ -1,13 +1,15 @@
 # Short-Term Memory -- Senior Backend Engineer
 
 ## Current Task
-Fix four runtime bugs (20260425_runtime-bugfixes) — Complete
+Fix Docker build failing on `prisma generate` (DB_URL missing at build time) — Complete
 
-## Files Created / Modified
+## Files Modified
 
 | File | Action |
 |------|--------|
-| `apps/web/components/layout/app-shell.tsx` | Modified — guard `session.name` with `?? ""` before `.split()`; fallback initials to `"?"` |
-| `apps/web/app/layout.tsx` | Modified — moved manifest from `icons.other` to top-level `manifest: "/site.webmanifest"` |
-| `apps/web/components/tv/tv-board.tsx` | Modified — added early return with user-friendly PT-BR message when `orgSlug` is missing; captured narrowed slug in local `const slug` for closure type safety |
-| `apps/web/app/api/tickets/route.ts` | Modified — replaced `as any` cast with explicit `organizationId: session.organizationId` in `tx.ticket.create()` data; updated comment to explain why |
+| `apps/web/prisma.config.ts` | Modified — replaced `env("DB_URL")` with `process.env.DB_URL ?? "mysql://placeholder:..."` |
+| `Dockerfile` | Modified — removed `ARG DB_URL`, `ENV DB_URL=$DB_URL`, and redundant `RUN cd apps/web && npx prisma generate` from builder stage |
+| `docker-compose.yml` | Modified — removed `web.build.args.DB_URL`, `web.environment.DB_URL`, `web.environment.DB_HOST`; runtime env injected solely via `env_file: apps/web/.env` |
+| `apps/web/.env.example` | Modified — added all individual DB vars (DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD); clarified Docker vs local host values |
+| `.env.example` (root) | Modified — simplified to only the 3 vars the mysql service compose-time interpolation needs (DB_NAME, DB_USER, DB_PASSWORD) |
+| `entrypoint.sh` | Modified — TCP probe now uses `DB_HOST`/`DB_PORT` directly instead of regex-parsing `DB_URL` |
